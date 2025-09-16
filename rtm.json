@@ -1,0 +1,9 @@
+{
+  "demo": "rtm.json",
+  "note": "This commit includes RTM, TCC, and checklist artifacts.",
+  "files": [
+    { "path": "rtm.json", "desc": "Requirements Traceability Matrix backfilled with test cases." },
+    { "path": "tcc.json", "desc": "Test Case Catalog mapping tests to requirements." },
+    { "path": "checklist.json", "desc": "Checklist of verification and coverage."}
+  ]
+}
