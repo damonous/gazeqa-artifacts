@@ -1,0 +1,471 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "project": "GazeQA Platform",
+    "rtm_source": "docs/rtm.json",
+    "frd_source": "docs/FRD.md",
+    "generated": { "iso": "2025-09-16T22:28:00+08:00" },
+    "run": {
+      "env": "dev",
+      "build_sha": "",
+      "test_run_id": "",
+      "started_at": null,
+      "finished_at": null
+    }
+  },
+  "summary": {
+    "requirements_total": 17,
+    "requirements_verified": 0,
+    "criteria_total": 34,
+    "criteria_passed": 0
+  },
+  "entries": [
+    {
+      "requirement_id": "FR-001",
+      "title": "Task Intake and Configuration",
+      "priority": "MUST",
+      "dependencies": [],
+      "tests": ["TC-FR-001-001", "TC-FR-001-002"],
+      "criteria": [
+        {
+          "id": "FR-001-AC-1",
+          "text": "Given a valid CreateRun payload, when POST /runs is called, then a run id is returned and status is Pending.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-001-AC-2",
+          "text": "Given an invalid payload, when POST /runs is called, then a 400 with field errors is returned.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": []
+      }
+    },
+    {
+      "requirement_id": "FR-002",
+      "title": "Authentication and Session Persistence",
+      "priority": "MUST",
+      "dependencies": ["FR-001"],
+      "tests": ["TC-FR-002-001", "TC-FR-002-002"],
+      "criteria": [
+        {
+          "id": "FR-002-AC-1",
+          "text": "Given valid credentials, when login is attempted, then post-login indicator is detected within timeout.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-002-AC-2",
+          "text": "Given failure on CUA, when fallback runs, then login succeeds or failure is surfaced with evidence.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-003",
+      "title": "AI-driven Exploration",
+      "priority": "MUST",
+      "dependencies": ["FR-001", "FR-002"],
+      "tests": ["TC-FR-003-001"],
+      "criteria": [
+        {
+          "id": "FR-003-AC-1",
+          "text": "Given a typical SPA, when exploration runs, then ≥80 percent of top-level sections are reached within budget.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-003-AC-2",
+          "text": "Given instrumented logging, when exploration completes, then each visited page has a screenshot and DOM snapshot.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-004",
+      "title": "Deterministic BFS Crawl",
+      "priority": "MUST",
+      "dependencies": ["FR-003"],
+      "tests": ["TC-FR-004-001"],
+      "criteria": [
+        {
+          "id": "FR-004-AC-1",
+          "text": "Given a site with deep links, when BFS runs, then newly discovered pages are appended and de-duplicated.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-004-AC-2",
+          "text": "Given exclusion rules, when encountering logout links, then they are skipped.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-005",
+      "title": "Page Capture, Selectors, and Visual Analysis",
+      "priority": "MUST",
+      "dependencies": ["FR-003", "FR-004"],
+      "tests": ["TC-FR-005-001", "TC-FR-005-002"],
+      "criteria": [
+        {
+          "id": "FR-005-AC-1",
+          "text": "Given a page, when captured, then a screenshot, DOM JSON, and selector candidates are saved.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-005-AC-2",
+          "text": "Given non-standard UI, when visual analysis runs, then at least one actionable locator is produced.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-006",
+      "title": "Requirements Synthesis – Features, Stories, AC",
+      "priority": "MUST",
+      "dependencies": ["FR-005"],
+      "tests": ["TC-FR-006-001"],
+      "criteria": [
+        {
+          "id": "FR-006-AC-1",
+          "text": "Given captured pages, when synthesis runs, then each feature area has at least one story with AC.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-006-AC-2",
+          "text": "Given ambiguous flows, when critique pass runs, then low-quality stories are revised.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-007",
+      "title": "Test Scenario Derivation and Code Generation",
+      "priority": "MUST",
+      "dependencies": ["FR-006", "FR-005"],
+      "tests": ["TC-FR-007-001"],
+      "criteria": [
+        {
+          "id": "FR-007-AC-1",
+          "text": "Given AC, when generation runs, then at least one test per story is produced.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-007-AC-2",
+          "text": "Given generated tests, when collected by PyTest or compiled with Maven, then no syntax or compile errors occur.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-008",
+      "title": "Artifact Packaging and Azure Blob Storage",
+      "priority": "MUST",
+      "dependencies": ["FR-005", "FR-006", "FR-007"],
+      "tests": ["TC-FR-008-001"],
+      "criteria": [
+        {
+          "id": "FR-008-AC-1",
+          "text": "Given a completed run, when persistence runs, then all expected files are present and index lists them.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-008-AC-2",
+          "text": "Given missing upload, when retry policy executes, then eventual consistency is reached or error is surfaced.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-009",
+      "title": "Public API and CLI",
+      "priority": "SHOULD",
+      "dependencies": ["FR-001", "FR-008"],
+      "tests": ["TC-FR-009-001"],
+      "criteria": [
+        {
+          "id": "FR-009-AC-1",
+          "text": "Given API keys, when POST /runs is called from CI, then a run starts and status is retrievable.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-009-AC-2",
+          "text": "Given a completed run, when CLI `gazeqa artifacts <id>` runs, then paths are printed and downloadable.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-010",
+      "title": "Web UI",
+      "priority": "SHOULD",
+      "dependencies": ["FR-001", "FR-006", "FR-008"],
+      "tests": ["TC-FR-010-001"],
+      "criteria": [
+        {
+          "id": "FR-010-AC-1",
+          "text": "Given a run in progress, when viewing the run detail, then logs, screenshots, and current step are visible in near real time.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-010-AC-2",
+          "text": "Given a completed run, when opening FRD, then the rendered Markdown is readable and downloadable.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-011",
+      "title": "Observability and Telemetry",
+      "priority": "MUST",
+      "dependencies": ["FR-001"],
+      "tests": ["TC-FR-011-001"],
+      "criteria": [
+        {
+          "id": "FR-011-AC-1",
+          "text": "Given any LLM call, when viewed in Langfuse, then prompt, response, timing, and token counts are visible.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-011-AC-2",
+          "text": "Given a failure, when searching logs by run id, then the failing step and screenshot are present.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-012",
+      "title": "Reliability and Recovery (Temporal)",
+      "priority": "MUST",
+      "dependencies": ["FR-001"],
+      "tests": ["TC-FR-012-001"],
+      "criteria": [
+        {
+          "id": "FR-012-AC-1",
+          "text": "Given a browser crash, when workflow resumes, then the browser is relaunched and the last page is reloaded.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-012-AC-2",
+          "text": "Given transient network errors, when retries are applied, then the step succeeds without duplicating side effects.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-013",
+      "title": "Multi-tenant Permissions and Isolation",
+      "priority": "COULD",
+      "dependencies": ["FR-008", "FR-009", "FR-010"],
+      "tests": ["TC-FR-013-001"],
+      "criteria": [
+        {
+          "id": "FR-013-AC-1",
+          "text": "Given two orgs, when viewing runs, then each org sees only its own data.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-013-AC-2",
+          "text": "Given role viewer, when accessing settings, then access is denied.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-014",
+      "title": "Test Execution Orchestrator (Optional in v1)",
+      "priority": "COULD",
+      "dependencies": ["FR-007"],
+      "tests": ["TC-FR-014-001"],
+      "criteria": [
+        {
+          "id": "FR-014-AC-1",
+          "text": "Given generated tests, when orchestrator runs, then pass/fail and traces are attached to the run.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-014-AC-2",
+          "text": "Given failures, when viewing results, then failing steps include screenshots.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-015",
+      "title": "CI Integrations (GitHub Actions when available)",
+      "priority": "SHOULD",
+      "dependencies": ["FR-009", "FR-008", "FR-007"],
+      "tests": ["TC-FR-015-001"],
+      "criteria": [
+        {
+          "id": "FR-015-AC-1",
+          "text": "Given a GitHub repo, when action is enabled, then on push to main the platform triggers analysis and publishes artifacts.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-015-AC-2",
+          "text": "Given no repo access, when configuring CI, then UI offers manual CLI instructions only.",
+          "critical": false,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-016",
+      "title": "Safety, Rate Limiting, and Guardrails",
+      "priority": "MUST",
+      "dependencies": ["FR-003", "FR-004"],
+      "tests": ["TC-FR-016-001", "TC-FR-016-002"],
+      "criteria": [
+        {
+          "id": "FR-016-AC-1",
+          "text": "Given rate limits, when crawler runs, then requests per second stay under configured caps.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-016-AC-2",
+          "text": "Given destructive UI elements, when encountered, then agent avoids them unless sandbox_mode=true.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    },
+    {
+      "requirement_id": "FR-017",
+      "title": "Security Controls",
+      "priority": "MUST",
+      "dependencies": ["FR-008", "FR-009"],
+      "tests": ["TC-FR-017-001"],
+      "criteria": [
+        {
+          "id": "FR-017-AC-1",
+          "text": "Given stored credentials, when inspecting logs and DB, then no plaintext secrets are present.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        },
+        {
+          "id": "FR-017-AC-2",
+          "text": "Given artifact downloads, when links are generated, then access requires authorization or time-bound SAS.",
+          "critical": true,
+          "passed": false,
+          "last_checked": null,
+          "evidence": []
+        }
+      ],
+      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+    }
+  ]
+}

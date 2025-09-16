@@ -1,0 +1,529 @@
+{
+  "metadata": {
+    "project": "GazeQA Platform",
+    "version": "1.0.0",
+    "generated": { "iso": "2025-09-16T22:15:00+08:00" },
+    "description": "Test Case Catalog (TCC). Maps concrete tests to requirement IDs and ACs; used by generators to render runnable suites.",
+    "source_of_truth": "docs/FRD.md",
+    "status_values": ["Planned", "In Progress", "Completed", "Blocked"],
+    "priority_values": ["MUST", "SHOULD", "COULD"],
+    "type_values": ["functional", "negative", "error_handling", "a11y", "performance", "visual", "ci"]
+  },
+  "components": [
+    "Orchestrator",
+    "Navigator",
+    "Crawler",
+    "AnalysisStoryGen",
+    "TestGen",
+    "PersistenceIndexer",
+    "API",
+    "CLI",
+    "WebUI",
+    "Observability",
+    "Security",
+    "CI",
+    "ExecOrchestrator"
+  ],
+  "frameworks": [
+    { "id": "PYTEST_PLAYWRIGHT", "name": "PyTest + Playwright (Python)" },
+    { "id": "PLAYWRIGHT", "name": "Playwright Test (JS/TS)" },
+    { "id": "JUNIT_SELENIUM", "name": "JUnit + Selenium (Java)" }
+  ],
+  "test_cases": [
+    {
+      "id": "TC-FR-001-001",
+      "title": "Create run with valid payload",
+      "description": "POST /runs with a valid CreateRun payload returns run id and Pending status.",
+      "requirement_ids": ["FR-001"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["API", "Orchestrator"],
+      "preconditions": [
+        "Platform configured with provider keys",
+        "Bearer token for API auth is valid"
+      ],
+      "steps": [
+        "Call POST /runs with url, budgets, targets, storage profile",
+        "Parse JSON response"
+      ],
+      "expected_results": [
+        "HTTP 201",
+        "Response contains non empty run id",
+        "status == 'Pending'"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["smoke", "api"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+    {
+      "id": "TC-FR-001-002",
+      "title": "Reject invalid CreateRun payload",
+      "description": "POST /runs with invalid fields yields 400 with field errors.",
+      "requirement_ids": ["FR-001"],
+      "priority": "MUST",
+      "type": "negative",
+      "components": ["API"],
+      "preconditions": ["API reachable"],
+      "steps": [
+        "Call POST /runs with missing url and negative time budget"
+      ],
+      "expected_results": [
+        "HTTP 400",
+        "Response.errors includes 'url' and 'time_budget'"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["validation", "api"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-002-001",
+      "title": "Login via CUA succeeds and saves storageState",
+      "description": "CUA fills login form, reaches post login page, and storageState is persisted.",
+      "requirement_ids": ["FR-002"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["Navigator", "Orchestrator", "PersistenceIndexer"],
+      "preconditions": [
+        "Valid username/password provided",
+        "Target app reachable"
+      ],
+      "steps": [
+        "Start run with credentials",
+        "Wait for login step to complete"
+      ],
+      "expected_results": [
+        "Post login indicator detected (selector or URL)",
+        "storageState.json created for run"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT", "JUNIT_SELENIUM"],
+      "tags": ["auth", "ui"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+    {
+      "id": "TC-FR-002-002",
+      "title": "Fallback scripted login used when CUA fails",
+      "description": "On CUA failure, Playwright scripted login authenticates or failure is surfaced with screenshot evidence.",
+      "requirement_ids": ["FR-002"],
+      "priority": "MUST",
+      "type": "error_handling",
+      "components": ["Navigator", "Orchestrator", "Observability"],
+      "preconditions": [
+        "Intentionally break CUA selector for login"
+      ],
+      "steps": [
+        "Start run with credentials",
+        "Simulate CUA selector miss",
+        "Observe fallback execution"
+      ],
+      "expected_results": [
+        "Fallback path invoked",
+        "Login succeeds or run ends with failure status and screenshot attached"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["auth", "fallback"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-003-001",
+      "title": "AI exploration reaches major sections and captures pages",
+      "description": "Exploration hits ≥80 percent top level sections within budget and captures screenshot + DOM per page.",
+      "requirement_ids": ["FR-003", "FR-005"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["Navigator", "Orchestrator", "Observability"],
+      "preconditions": [
+        "Authenticated session established or public app",
+        "Exploration budget set (pages/time)"
+      ],
+      "steps": [
+        "Start run with exploration enabled",
+        "Wait until exploration completes"
+      ],
+      "expected_results": [
+        "coverage_percent >= 80",
+        "Each visited page has screenshot and DOM snapshot entries"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT", "JUNIT_SELENIUM"],
+      "tags": ["ui", "coverage", "smoke"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-004-001",
+      "title": "BFS adds unique pages and skips logout routes",
+      "description": "Deterministic BFS de duplicates against map and avoids logout/destructive endpoints.",
+      "requirement_ids": ["FR-004"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["Crawler", "Navigator", "Orchestrator"],
+      "preconditions": ["Session established", "Exclusion rules configured"],
+      "steps": [
+        "Run BFS crawl after initial exploration",
+        "Inspect combined page map"
+      ],
+      "expected_results": [
+        "No duplicate page hashes added",
+        "Logout URLs appear in skipped list"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["crawler", "rules"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-005-001",
+      "title": "Selector candidates persisted for each page",
+      "description": "Element inventory and selector candidates saved alongside pages.jsonl and screenshots.",
+      "requirement_ids": ["FR-005"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["Navigator", "PersistenceIndexer"],
+      "preconditions": ["Run has at least one visited page"],
+      "steps": [
+        "Open artifacts index",
+        "Load selectors.json for a visited page"
+      ],
+      "expected_results": [
+        "selectors.json exists",
+        "Top candidates include stable attributes (e.g., data-testid)"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["selectors", "artifacts"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+    {
+      "id": "TC-FR-005-002",
+      "title": "Vision analysis yields actionable locator for canvas UI",
+      "description": "On canvas or obfuscated UI, vision pass returns a usable locator that succeeds in a probe click.",
+      "requirement_ids": ["FR-005"],
+      "priority": "MUST",
+      "type": "visual",
+      "components": ["Navigator", "AnalysisStoryGen"],
+      "preconditions": ["Target page with canvas based control"],
+      "steps": [
+        "Force visual analysis on target page",
+        "Attempt probe click with suggested locator"
+      ],
+      "expected_results": [
+        "Locator resolves",
+        "Probe click triggers expected UI change without errors"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT", "JUNIT_SELENIUM"],
+      "tags": ["vision", "selectors"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-006-001",
+      "title": "Synthesis produces features, stories, and AC",
+      "description": "From captured pages, synthesis outputs at least one story with AC per feature area.",
+      "requirement_ids": ["FR-006"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["AnalysisStoryGen", "PersistenceIndexer"],
+      "preconditions": ["pages.jsonl populated"],
+      "steps": [
+        "Run synthesis stage",
+        "Open docs/FRD.md and JSON export"
+      ],
+      "expected_results": [
+        "Each feature area has >= 1 story",
+        "AC present for each story"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["synthesis", "stories"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-007-001",
+      "title": "Generate runnable tests without syntax/compile errors",
+      "description": "Derive scenarios from AC and generate tests for Python and Java that pass collection/compile.",
+      "requirement_ids": ["FR-007"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["TestGen", "PersistenceIndexer"],
+      "preconditions": ["Stories with AC available", "selectors.json available"],
+      "steps": [
+        "Run test generation",
+        "Invoke pytest -q --collect-only",
+        "Invoke mvn -q -DskipTests compile"
+      ],
+      "expected_results": [
+        "PyTest collection completes with 0 errors",
+        "Maven compile succeeds"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT", "JUNIT_SELENIUM"],
+      "tags": ["codegen", "smoke"],
+      "artifacts": ["artifacts/tests/python", "artifacts/tests/java"],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-008-001",
+      "title": "Artifacts uploaded and indexed in Azure Blob",
+      "description": "All expected files are present under per run prefix and listed in artifacts/index.json with sizes and checksums.",
+      "requirement_ids": ["FR-008"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["PersistenceIndexer", "Security"],
+      "preconditions": ["Azure Blob configured", "Completed run"],
+      "steps": [
+        "Open artifacts/index.json",
+        "Verify presence of screenshots, DOM, FRD, tests, selectors"
+      ],
+      "expected_results": [
+        "index.json lists all expected artifact paths",
+        "size > 0 and checksum present for each entry"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["persistence", "azure"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-009-001",
+      "title": "CI can start a run via API and poll status",
+      "description": "With API key, CI pipeline triggers run and reads status until Completed.",
+      "requirement_ids": ["FR-009"],
+      "priority": "SHOULD",
+      "type": "ci",
+      "components": ["API", "CLI", "Orchestrator"],
+      "preconditions": ["API key in CI secret store"],
+      "steps": [
+        "POST /runs from CI job",
+        "Poll GET /runs/{id} until terminal status"
+      ],
+      "expected_results": [
+        "Run transitions Pending -> Running -> Completed",
+        "Artifacts listed by GET /runs/{id}/artifacts"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["ci", "api"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-010-001",
+      "title": "Web UI shows live logs and exposes FRD download",
+      "description": "During a run, UI streams logs and current step; after completion, FRD is rendered and downloadable.",
+      "requirement_ids": ["FR-010"],
+      "priority": "SHOULD",
+      "type": "functional",
+      "components": ["WebUI", "API", "PersistenceIndexer"],
+      "preconditions": ["A run is in progress"],
+      "steps": [
+        "Open run detail page",
+        "Observe log stream and step updates",
+        "After completion, click FRD link"
+      ],
+      "expected_results": [
+        "Logs update near real time",
+        "FRD Markdown view loads and download succeeds"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["ui"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-011-001",
+      "title": "LLM spans and failures are observable in Langfuse and logs",
+      "description": "LLM calls show prompt, response, timing, and token counts; failures include screenshot evidence.",
+      "requirement_ids": ["FR-011"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["Observability", "Orchestrator"],
+      "preconditions": ["Langfuse configured"],
+      "steps": [
+        "Run a short analysis",
+        "Open Langfuse project and filter by run id",
+        "Trigger a controlled failure and inspect logs"
+      ],
+      "expected_results": [
+        "LLM spans show prompt, response, latency, tokens",
+        "Logs contain failing step and screenshot link"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["observability"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-012-001",
+      "title": "Workflow resumes after browser crash",
+      "description": "Temporal resumes from checkpoint, relaunches browser, and reloads last page.",
+      "requirement_ids": ["FR-012"],
+      "priority": "MUST",
+      "type": "error_handling",
+      "components": ["Orchestrator"],
+      "preconditions": ["Run in exploration phase"],
+      "steps": [
+        "Induce browser process kill",
+        "Observe workflow resume"
+      ],
+      "expected_results": [
+        "New browser context created",
+        "Exploration continues from last checkpoint"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["reliability"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-013-001",
+      "title": "Org isolation and RBAC enforcement",
+      "description": "Users in different orgs cannot see each other's runs; viewer role cannot access settings.",
+      "requirement_ids": ["FR-013"],
+      "priority": "COULD",
+      "type": "functional",
+      "components": ["Security", "API", "WebUI", "PersistenceIndexer"],
+      "preconditions": ["Two orgs exist with users in each", "Viewer role assigned"],
+      "steps": [
+        "Org A user lists runs",
+        "Org B user lists runs",
+        "Viewer navigates to settings"
+      ],
+      "expected_results": [
+        "Each list contains only own org runs",
+        "Settings access denied for viewer"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["security", "rbac"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-014-001",
+      "title": "Execute generated tests and collect JUnit results",
+      "description": "Exec orchestrator runs generated suites and attaches JUnit XML and traces to run.",
+      "requirement_ids": ["FR-014"],
+      "priority": "COULD",
+      "type": "functional",
+      "components": ["ExecOrchestrator", "Observability", "PersistenceIndexer"],
+      "preconditions": ["Tests generated for Python and Java"],
+      "steps": [
+        "Kick off execution orchestrator",
+        "Wait for completion"
+      ],
+      "expected_results": [
+        "JUnit XML present in artifacts",
+        "Trace files attached for failures"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT", "JUNIT_SELENIUM"],
+      "tags": ["execution"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-015-001",
+      "title": "GitHub Action triggers analysis and publishes artifacts",
+      "description": "On push to main, workflow calls API to start run; artifacts are published if repo available.",
+      "requirement_ids": ["FR-015"],
+      "priority": "SHOULD",
+      "type": "ci",
+      "components": ["CI", "API", "PersistenceIndexer"],
+      "preconditions": ["Repo with action configured and secrets set"],
+      "steps": [
+        "Push commit to main",
+        "Observe workflow logs and run creation",
+        "Verify artifact publication"
+      ],
+      "expected_results": [
+        "Workflow succeeds",
+        "Run created and artifacts available"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["ci", "github"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-016-001",
+      "title": "Rate limits enforced during crawl and exploration",
+      "description": "Requests per second stay under configured caps; no throttling violations occur.",
+      "requirement_ids": ["FR-016"],
+      "priority": "MUST",
+      "type": "performance",
+      "components": ["Security", "Orchestrator", "Crawler", "Navigator"],
+      "preconditions": ["Rate limits configured low for test"],
+      "steps": [
+        "Run exploration+crawl with instrumentation"
+      ],
+      "expected_results": [
+        "Observed RPS <= configured cap",
+        "No 429s from target due to our bursts"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["throttle"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+    {
+      "id": "TC-FR-016-002",
+      "title": "Avoid destructive UI by default",
+      "description": "Agent does not click buttons labeled Delete/Wipe/Reset unless sandbox_mode is true.",
+      "requirement_ids": ["FR-016"],
+      "priority": "MUST",
+      "type": "functional",
+      "components": ["Security", "Navigator"],
+      "preconditions": ["Page with destructive controls present", "sandbox_mode=false"],
+      "steps": [
+        "Run exploration over page with destructive controls"
+      ],
+      "expected_results": [
+        "No destructive actions executed",
+        "Controls appear in blocklist log"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT", "JUNIT_SELENIUM"],
+      "tags": ["safety"],
+      "artifacts": [],
+      "status": "Planned"
+    },
+
+    {
+      "id": "TC-FR-017-001",
+      "title": "Secrets not logged and SAS links are time bound",
+      "description": "Logs contain no plaintext secrets; artifact downloads require auth or valid time bound SAS.",
+      "requirement_ids": ["FR-017"],
+      "priority": "MUST",
+      "type": "security",
+      "components": ["Security", "API", "PersistenceIndexer"],
+      "preconditions": ["Run with credentials and artifacts completed"],
+      "steps": [
+        "Search logs for credential values",
+        "Attempt artifact download without auth",
+        "Attempt download after SAS expiry"
+      ],
+      "expected_results": [
+        "No plaintext secrets found",
+        "Unauthorized download denied",
+        "Expired SAS returns 403"
+      ],
+      "frameworks": ["PYTEST_PLAYWRIGHT"],
+      "tags": ["security", "privacy"],
+      "artifacts": [],
+      "status": "Planned"
+    }
+  ]
+}

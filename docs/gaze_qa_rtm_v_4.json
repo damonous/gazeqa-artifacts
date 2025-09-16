@@ -1,0 +1,301 @@
+{
+  "metadata": {
+    "project": "GazeQA Platform",
+    "version": "1.0.0",
+    "generated": { "iso": "2025-09-16T22:00:00+08:00" },
+    "description": "Requirements Traceability Matrix (RTM). Maps each FR to components, upstream dependencies, acceptance criteria, and (later) tests.",
+    "source_of_truth": "docs/FRD.md",
+    "status_values": ["Planned", "In Progress", "Completed", "Blocked"],
+    "priority_values": ["MUST", "SHOULD", "COULD"],
+    "type_values": ["feature", "enhancement", "chore"]
+  },
+  "components": [
+    "Orchestrator",
+    "Navigator",
+    "Crawler",
+    "AnalysisStoryGen",
+    "TestGen",
+    "PersistenceIndexer",
+    "API",
+    "CLI",
+    "WebUI",
+    "Observability",
+    "Security",
+    "CI",
+    "ExecOrchestrator"
+  ],
+  "requirements": [
+    {
+      "id": "FR-001",
+      "title": "Task Intake and Configuration",
+      "description": "Create and validate a run with URL, creds, targets, budgets, and storage profile; start a durable workflow.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["API", "CLI", "Orchestrator"],
+      "dependencies": [],
+      "acceptance_criteria": [
+        "Given a valid CreateRun payload, when POST /runs is called, then a run id is returned with status Pending.",
+        "Given an invalid payload, when POST /runs is called, then a 400 response lists field errors."
+      ],
+      "test_cases": ["TC-FR-001-001", "TC-FR-001-002"],
+      "implementation_notes": "Define CreateRun schema; persist Run; emit run.created; stream status via WS.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-002",
+      "title": "Authentication and Session Persistence",
+      "description": "Log in via CUA first then fallback to scripted Playwright; persist storageState securely for reuse.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Navigator", "Orchestrator", "PersistenceIndexer", "Security"],
+      "dependencies": ["FR-001"],
+      "acceptance_criteria": [
+        "Given valid credentials, when login runs, then post login is detected within timeout and storageState is saved.",
+        "Given CUA login failure, when fallback is invoked, then login succeeds or a failure is returned with screenshots."
+      ],
+      "test_cases": ["TC-FR-002-001", "TC-FR-002-002"],
+      "implementation_notes": "Encrypt secrets and storageState at rest; do not log secrets; support optional 2FA callback.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-003",
+      "title": "AI-driven Exploration",
+      "description": "Use CUA to traverse the app, collect screenshots and DOM, avoid destructive actions, and build a page map.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Navigator", "Orchestrator", "Observability"],
+      "dependencies": ["FR-001", "FR-002"],
+      "acceptance_criteria": [
+        "Given a typical SPA, when exploration runs, then at least 80 percent of top level sections are reached within budget.",
+        "Given each visited page, when capture completes, then a screenshot and DOM snapshot are linked to the page map."
+      ],
+      "test_cases": ["TC-FR-003-001"],
+      "implementation_notes": "Breaker for loops; dummy data for forms unless sandbox enabled; maintain visited state set.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-004",
+      "title": "Deterministic BFS Crawl",
+      "description": "Run a BFS over internal links with exclusion rules and de duplicate against the AI page map.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Crawler", "Navigator", "Orchestrator"],
+      "dependencies": ["FR-003"],
+      "acceptance_criteria": [
+        "Given deep link structures, when BFS runs, then newly discovered pages are appended to the map without duplicates.",
+        "Given logout or destructive links, when encountered, then the crawler skips them by rule."
+      ],
+      "test_cases": ["TC-FR-004-001"],
+      "implementation_notes": "Seed with authenticated start URL; configurable allowlist and denylist; depth and time budgets.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-005",
+      "title": "Page Capture, Selectors, and Visual Analysis",
+      "description": "Persist screenshots, DOM snapshots, and selector candidates; use vision for non standard UIs; support optional DOM instrumentation in memory.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Navigator", "AnalysisStoryGen", "PersistenceIndexer"],
+      "dependencies": ["FR-003", "FR-004"],
+      "acceptance_criteria": [
+        "Given a page, when captured, then a screenshot, DOM JSON, and selector candidates are saved to artifacts.",
+        "Given a canvas or obfuscated UI, when visual analysis runs, then at least one actionable locator is produced."
+      ],
+      "test_cases": ["TC-FR-005-001", "TC-FR-005-002"],
+      "implementation_notes": "Emit pages.jsonl index; selector strategy prioritizes stable attributes; include element inventory.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-006",
+      "title": "Requirements Synthesis – Features, Stories, AC",
+      "description": "Cluster pages into features and generate user stories with acceptance criteria using LLM prompts and critique pass.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["AnalysisStoryGen", "WebUI", "PersistenceIndexer"],
+      "dependencies": ["FR-005"],
+      "acceptance_criteria": [
+        "Given captured pages, when synthesis runs, then each feature area contains at least one story with AC.",
+        "Given low quality stories, when critique pass runs, then stories are revised to meet quality bars."
+      ],
+      "test_cases": ["TC-FR-006-001"],
+      "implementation_notes": "Export Markdown to docs/FRD.md and JSON for RTM; maintain stable story ids for traceability.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-007",
+      "title": "Test Scenario Derivation and Code Generation",
+      "description": "Derive scenarios from AC and generate runnable tests in PyTest Playwright and JUnit Selenium with basic static checks.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["TestGen", "PersistenceIndexer"],
+      "dependencies": ["FR-006", "FR-005"],
+      "acceptance_criteria": [
+        "Given stories with AC, when generation runs, then at least one executable test per story is produced.",
+        "Given generated tests, when discovered by PyTest or compiled by Maven, then no syntax or compile errors occur."
+      ],
+      "test_cases": ["TC-FR-007-001"],
+      "implementation_notes": "Emit Python under artifacts/tests/python and Java under artifacts/tests/java; output JUnit XML summaries.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-008",
+      "title": "Artifact Packaging and Azure Blob Storage",
+      "description": "Upload artifacts to Azure Blob with per run prefix and generate an index with metadata and signed links where applicable.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["PersistenceIndexer", "Security"],
+      "dependencies": ["FR-005", "FR-006", "FR-007"],
+      "acceptance_criteria": [
+        "Given a completed run, when persistence executes, then all expected files are present and listed in artifacts/index.json.",
+        "Given transient upload errors, when retries are applied, then uploads eventually succeed or a clear error is surfaced."
+      ],
+      "test_cases": ["TC-FR-008-001"],
+      "implementation_notes": "Use SAS tokens or auth gated URLs; include checksums and sizes; record storage paths per run.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-009",
+      "title": "Public API and CLI",
+      "description": "Expose REST endpoints to create runs, stream status, and list artifacts; provide CLI wrappers for local and CI use.",
+      "type": "feature",
+      "priority": "SHOULD",
+      "components": ["API", "CLI", "Orchestrator"],
+      "dependencies": ["FR-001", "FR-008"],
+      "acceptance_criteria": [
+        "Given API keys, when POST /runs is called from CI, then a run starts and status is retrievable via GET /runs/{id}.",
+        "Given a completed run, when CLI command 'gazeqa artifacts <id>' runs, then artifact paths are printed and downloadable."
+      ],
+      "test_cases": ["TC-FR-009-001"],
+      "implementation_notes": "Provide OpenAPI schema and typed clients; include WS stream for events; handle pagination for artifacts.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-010",
+      "title": "Web UI",
+      "description": "Submit runs, view live logs and coverage, read the FRD, and download artifacts via a simple Lovable based UI.",
+      "type": "feature",
+      "priority": "SHOULD",
+      "components": ["WebUI", "API", "PersistenceIndexer"],
+      "dependencies": ["FR-001", "FR-006", "FR-008"],
+      "acceptance_criteria": [
+        "Given a run in progress, when viewing the run detail, then logs, screenshots, and current step are visible in near real time.",
+        "Given a completed run, when opening the FRD, then the rendered Markdown is readable and downloadable."
+      ],
+      "test_cases": ["TC-FR-010-001"],
+      "implementation_notes": "Keep minimal surface; WCAG AA basics; dark mode later; download buttons for key artifacts.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-011",
+      "title": "Observability and Telemetry",
+      "description": "Structured logs, metrics, and traces across all steps; Langfuse for LLM spans; link Temporal history to run ids.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Observability", "Orchestrator"],
+      "dependencies": ["FR-001"],
+      "acceptance_criteria": [
+        "Given any LLM call, when viewed in Langfuse, then prompt, response, timing, and token counts are visible with run id.",
+        "Given a failure, when searching logs by run id, then the failing step, exception, and screenshot evidence are present."
+      ],
+      "test_cases": ["TC-FR-011-001"],
+      "implementation_notes": "Expose dashboards for coverage, errors, token usage; add alerts on error spikes and SLA breaches.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-012",
+      "title": "Reliability and Recovery (Temporal)",
+      "description": "Use activity retries with backoff and idempotent checkpoints to resume long running flows safely.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Orchestrator"],
+      "dependencies": ["FR-001"],
+      "acceptance_criteria": [
+        "Given a browser crash, when the workflow resumes, then the browser relaunches and the last page reloads from checkpoint.",
+        "Given transient network errors, when retries apply, then the step succeeds without duplicating side effects."
+      ],
+      "test_cases": ["TC-FR-012-001"],
+      "implementation_notes": "Define idempotency keys per activity; persist checkpoints per phase; DLQ unrecoverable failures.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-013",
+      "title": "Multi tenant Permissions and Isolation",
+      "description": "Organization scoping with RBAC for submitter, viewer, and admin; ensure artifact isolation per org.",
+      "type": "enhancement",
+      "priority": "COULD",
+      "components": ["Security", "API", "WebUI", "PersistenceIndexer"],
+      "dependencies": ["FR-008", "FR-009", "FR-010"],
+      "acceptance_criteria": [
+        "Given two orgs, when viewing runs, then each org sees only its own data.",
+        "Given role viewer, when accessing settings, then access is denied."
+      ],
+      "test_cases": ["TC-FR-013-001"],
+      "implementation_notes": "Org id scoping at every query; per org blob prefixes; audit logs for access attempts.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-014",
+      "title": "Test Execution Orchestrator (optional v1)",
+      "description": "Execute generated tests in sandboxed runners and collect JUnit XML with a summary dashboard.",
+      "type": "enhancement",
+      "priority": "COULD",
+      "components": ["ExecOrchestrator", "Observability", "PersistenceIndexer"],
+      "dependencies": ["FR-007"],
+      "acceptance_criteria": [
+        "Given generated tests, when orchestrator runs them, then pass fail and traces are attached to the run.",
+        "Given failures, when results are viewed, then failing steps include screenshots."
+      ],
+      "test_cases": ["TC-FR-014-001"],
+      "implementation_notes": "Support Playwright trace viewer and Selenium logs; emit summary.json and trend metrics.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-015",
+      "title": "CI Integrations (GitHub Actions when available)",
+      "description": "Provide sample workflow files to trigger runs and publish artifacts; skip when no repo access is available.",
+      "type": "enhancement",
+      "priority": "SHOULD",
+      "components": ["CI", "API", "PersistenceIndexer"],
+      "dependencies": ["FR-009", "FR-008", "FR-007"],
+      "acceptance_criteria": [
+        "Given a GitHub repo, when the action is enabled, then on push to main a run is triggered and artifacts are published.",
+        "Given no repo access, when configuring CI, then the UI offers manual CLI instructions only."
+      ],
+      "test_cases": ["TC-FR-015-001"],
+      "implementation_notes": "Ship reusable workflow yaml; document required secrets; guard with repo detection.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-016",
+      "title": "Safety, Rate Limiting, and Guardrails",
+      "description": "Throttle actions per domain and avoid destructive UI by default; allow sandbox overrides and allowlists.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Security", "Orchestrator", "Navigator", "Crawler"],
+      "dependencies": ["FR-003", "FR-004"],
+      "acceptance_criteria": [
+        "Given configured rate limits, when crawl and exploration run, then requests per second stay under caps.",
+        "Given destructive UI elements, when encountered, then the agent avoids them unless sandbox_mode is true."
+      ],
+      "test_cases": ["TC-FR-016-001", "TC-FR-016-002"],
+      "implementation_notes": "Global and per domain throttles; labeled blocklist for Delete Wipe Reset; optional dry run mode.",
+      "status": "Planned"
+    },
+    {
+      "id": "FR-017",
+      "title": "Security Controls",
+      "description": "Secret management, TLS everywhere, encryption at rest for sensitive artifacts, and audit logs for access.",
+      "type": "feature",
+      "priority": "MUST",
+      "components": ["Security", "PersistenceIndexer", "API"],
+      "dependencies": ["FR-008", "FR-009"],
+      "acceptance_criteria": [
+        "Given stored credentials and sessions, when inspecting logs and DB, then no plaintext secrets are present.",
+        "Given artifact downloads, when links are generated, then access requires authorization or time bound SAS."
+      ],
+      "test_cases": ["TC-FR-017-001"],
+      "implementation_notes": "Centralize secret access; rotate keys; redact logs; retain audit logs with run id and actor.",
+      "status": "Planned"
+    }
+  ]
+}
