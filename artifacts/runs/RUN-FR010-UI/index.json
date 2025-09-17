@@ -1,0 +1,38 @@
+{
+  "run_id": "RUN-FR010-UI",
+  "generated_at": "2025-09-17T04:52:26Z",
+  "artifacts": [
+    {
+      "path": "run_manifest.json",
+      "size_bytes": 765
+    },
+    {
+      "path": "ui/styles.css",
+      "size_bytes": 3023
+    },
+    {
+      "path": "ui/dashboard.js",
+      "size_bytes": 5069
+    },
+    {
+      "path": "ui/dashboard.html",
+      "size_bytes": 1868
+    },
+    {
+      "path": "logs/api_get_runs.json",
+      "size_bytes": 233
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-19B45DFD34C2.json",
+      "size_bytes": 799
+    },
+    {
+      "path": "logs/accessibility_report.txt",
+      "size_bytes": 163
+    },
+    {
+      "path": "logs/api_get_run_RUN-19B45DFD34C2.json",
+      "size_bytes": 593
+    }
+  ]
+}

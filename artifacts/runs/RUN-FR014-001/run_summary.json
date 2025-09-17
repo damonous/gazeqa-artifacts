@@ -1,0 +1,38 @@
+{
+  "run_id": "RUN-FR014-001",
+  "env": "qa",
+  "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
+  "started_at": "2025-09-17T07:14:00Z",
+  "finished_at": "2025-09-17T07:18:00Z",
+  "tests": [
+    {
+      "id": "TC-FR-014-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-001/execution/junit_python.xml",
+        "artifacts/runs/RUN-FR014-001/execution/trace.json",
+        "artifacts/runs/RUN-FR014-001/logs/pytest.log",
+        "artifacts/runs/RUN-FR014-001/logs/maven.log"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-014-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T07:20:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-001/execution/junit_python.xml",
+        "artifacts/runs/RUN-FR014-001/execution/trace.json"
+      ]
+    },
+    {
+      "id": "FR-014-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T07:20:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-001/logs/pytest.log"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "run_id": "RUN-FR010-UI",
+  "env": "qa",
+  "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
+  "started_at": "2025-09-17T07:45:00Z",
+  "finished_at": "2025-09-17T07:47:00Z",
+  "tests": [
+    {
+      "id": "TC-FR-010-001",
+      "status": "passed",
+      "evidence": []
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-010-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T04:52:26Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR010-UI/logs/api_get_run_RUN-19B45DFD34C2.json",
+        "artifacts/runs/RUN-FR010-UI/logs/sse_session.log"
+      ]
+    },
+    {
+      "id": "FR-010-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T04:52:26Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR010-UI/ui/dashboard.html",
+        "artifacts/runs/RUN-FR010-UI/logs/api_get_artifacts_RUN-19B45DFD34C2.json"
+      ]
+    }
+  ]
+}

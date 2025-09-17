@@ -1,0 +1,31 @@
+{
+  "run_id": "RUN-FR015-CI",
+  "generated_at": "2025-09-17T04:45:26Z",
+  "artifacts": [
+    {
+      "path": "run_summary.json",
+      "sha256": "43bd8d032f28a534480d6fcfb6cf21f0d32c48a1403be00a0e9ccda5b87f8b32",
+      "size_bytes": 858
+    },
+    {
+      "path": "reports/criteria.json",
+      "sha256": "eeb2d9323963bc45915f6d5286750be5c4f5c81c3f9d20a0cb4c49c6487c3134",
+      "size_bytes": 370
+    },
+    {
+      "path": "reports/test_evidence.json",
+      "sha256": "ae322e747625a3b52997c8bcdad58e87bdcc353f3014836a2df4c30616e5529f",
+      "size_bytes": 101
+    },
+    {
+      "path": "logs/manual_cli_instructions.md",
+      "sha256": "d3f5739c8af75bf198cf0121c0c3db8d4a80960dd941f5c20434ed31dcac5dac",
+      "size_bytes": 857
+    },
+    {
+      "path": "workflow/github_action.yml",
+      "sha256": "c469e1440d787134c05bf32e83cf171d5c55cc66d8984d17486dfea5b4ce9e1a",
+      "size_bytes": 1219
+    }
+  ]
+}

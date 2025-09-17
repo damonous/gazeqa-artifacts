@@ -25,7 +25,7 @@ class RunService:
         self.storage_root = Path(storage_root)
         self.storage_root.mkdir(parents=True, exist_ok=True)
         self.auth_orchestrator = auth_orchestrator
-        self.status_listeners: Dict[str, List[Callable[[str], None]]] = {}
+        self.status_listeners: Dict[str, List[Callable[[dict], None]]] = {}
 
     def create_run(self, payload_dict: Dict[str, object]) -> Dict[str, object]:
         payload = CreateRunPayload.from_dict(payload_dict)
@@ -69,16 +69,14 @@ class RunService:
         )
 
         self._persist_run(run_id, run_dir, run_record, auth_result)
-        self._append_event(
-            run_dir,
-            {
-                "event": "run.created",
-                "run_id": run_id,
-                "status": run_record["status"],
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            },
-        )
-        self._notify_listeners(run_id)
+        event = {
+            "event": "run.created",
+            "run_id": run_id,
+            "status": run_record["status"],
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+        self._append_event(run_dir, event)
+        self._notify_listeners(run_id, event)
         return run_record
 
     def get_run(self, run_id: str) -> Dict[str, object]:
@@ -109,30 +107,74 @@ class RunService:
             }
         ]
 
-    def update_status(self, run_id: str, status: str) -> None:
+    def record_checkpoint(
+        self,
+        run_id: str,
+        checkpoint: str,
+        details: Optional[Dict[str, object]] = None,
+    ) -> None:
+        path = self.storage_root / run_id / "temporal" / "checkpoints.jsonl"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "run_id": run_id,
+            "checkpoint": checkpoint,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+        if details:
+            payload.update(details)
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(payload) + "\n")
+
+    def update_status(
+        self,
+        run_id: str,
+        status: str,
+        metadata: Optional[Dict[str, object]] = None,
+    ) -> None:
         run_dir = self.storage_root / run_id
+        timestamp = datetime.now(timezone.utc).isoformat()
         history = self.get_status_history(run_id)
-        history.append({"status": status, "timestamp": datetime.now(timezone.utc).isoformat()})
+        history.append({"status": status, "timestamp": timestamp})
         (run_dir / "status_history.json").write_text(json.dumps(history, indent=2), encoding="utf-8")
 
         manifest = self.get_run(run_id)
         manifest["status"] = status
         manifest.setdefault("status_history", history)
+        if metadata:
+            manifest.setdefault("status_metadata", {}).update(metadata)
         (run_dir / "run_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
-        self._append_event(
-            run_dir,
-            {
-                "event": "run.status",
-                "run_id": run_id,
-                "status": status,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            },
-        )
-        self._notify_listeners(run_id)
+        summary_path = run_dir / "run_summary.json"
+        if summary_path.exists():
+            summary = json.loads(summary_path.read_text(encoding="utf-8"))
+            summary["status"] = status
+            summary["status_history"] = history
+            summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
-    def register_listener(self, run_id: str, callback: Callable[[str], None]) -> None:
+        event = {
+            "event": "run.status",
+            "run_id": run_id,
+            "status": status,
+            "timestamp": timestamp,
+        }
+        if metadata:
+            event["metadata"] = metadata
+        self._append_event(run_dir, event)
+        self._notify_listeners(run_id, event)
+
+    def register_listener(self, run_id: str, callback: Callable[[dict], None]) -> None:
         self.status_listeners.setdefault(run_id, []).append(callback)
+
+    def unregister_listener(self, run_id: str, callback: Callable[[dict], None]) -> None:
+        listeners = self.status_listeners.get(run_id)
+        if not listeners:
+            return
+        try:
+            listeners.remove(callback)
+        except ValueError:
+            return
+        if not listeners:
+            self.status_listeners.pop(run_id, None)
 
     def get_run_events(self, run_id: str) -> List[Dict[str, object]]:
         events_path = self.storage_root / run_id / "events.jsonl"
@@ -194,15 +236,29 @@ class RunService:
 
     def _append_event(self, run_dir: Path, event: Dict[str, object]) -> None:
         events_path = run_dir / "events.jsonl"
+        events_path.parent.mkdir(parents=True, exist_ok=True)
         with events_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(event) + "\n")
 
-    def _notify_listeners(self, run_id: str) -> None:
-        for callback in self.status_listeners.get(run_id, []):
+    def _append_status_history(self, run_dir: Path, event: Dict[str, object]) -> None:
+        history_path = run_dir / "status_history.json"
+        try:
+            history = json.loads(history_path.read_text(encoding="utf-8")) if history_path.exists() else []
+        except json.JSONDecodeError:
+            history = []
+        history.append({
+            "status": event.get("status"),
+            "timestamp": event.get("timestamp")
+        })
+        history_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
+
+    def _notify_listeners(self, run_id: str, event: dict) -> None:
+        for callback in list(self.status_listeners.get(run_id, [])):
             try:
-                callback(run_id)
+                callback(event)
             except Exception:  # pragma: no cover
                 continue
+
 
     @staticmethod
     def _to_relative_path(path_value: Optional[str], run_dir: Path) -> Optional[str]:

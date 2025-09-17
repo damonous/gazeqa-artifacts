@@ -1,0 +1,31 @@
+{
+  "run_id": "RUN-19B45DFD34C2",
+  "generated_at": "2025-09-17T04:52:26.469399+00:00",
+  "entries": [
+    {
+      "path": "events.jsonl",
+      "size": 506,
+      "sha256": "34d11cbaf934e450f5037e56744e5a43031e09f1615a0cb893c95956db4e9fba"
+    },
+    {
+      "path": "run_manifest.json",
+      "size": 592,
+      "sha256": "963961a8bceccc751e29415c908e4ef7a0a58cc7ed85005653d4160feaf735e2"
+    },
+    {
+      "path": "run_summary.json",
+      "size": 613,
+      "sha256": "6465136a1e1c7d623a9c372afee9dd194554865c3ac7aa870be4c04eab123c80"
+    },
+    {
+      "path": "status_history.json",
+      "size": 441,
+      "sha256": "bc739e68e484101131273073f8ac11c5aa495736ee5ee77bf0d4a4b35c483611"
+    }
+  ],
+  "offset": 0,
+  "limit": 100,
+  "total": 4,
+  "next_offset": null,
+  "previous_offset": null
+}

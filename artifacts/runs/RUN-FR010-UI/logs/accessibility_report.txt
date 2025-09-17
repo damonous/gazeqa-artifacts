@@ -1,0 +1,6 @@
+Accessibility heuristics for Lovable dashboard:
+- has main role: PASS
+- has nav: PASS
+- has live region: PASS
+- declares language: PASS
+- has primary header: PASS

@@ -1,0 +1,15 @@
+{
+  "run_id": "RUN-FR014-EXEC",
+  "generated_at": "2025-09-17T04:41:11Z",
+  "artifacts": {
+    "execution": {
+      "python_junit": "execution/junit_python.xml",
+      "java_reports": null,
+      "trace": "execution/trace.json"
+    },
+    "logs": {
+      "pytest": "logs/pytest.log",
+      "maven": "logs/maven.log"
+    }
+  }
+}

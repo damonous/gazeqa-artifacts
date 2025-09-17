@@ -163,7 +163,7 @@
 
 ## FR-010 Web UI
 - Owner: Agent Beta
-- Status: Planned
+- Status: In Progress
 - Components: WebUI, API, PersistenceIndexer
 - Dependencies: FR-001, FR-006, FR-008
 - Implementation Tasks:

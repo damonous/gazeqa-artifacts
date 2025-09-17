@@ -79,7 +79,35 @@ class RunServiceTests(unittest.TestCase):
         )
         self.assertTrue(summary["auth"]["success"])
         self.assertEqual(summary["auth"]["stage"], "cua")
-        self.assertIn("auth/storageState.json.enc", summary["auth"]["evidence"]) 
+        self.assertIn("auth/storageState.json.enc", summary["auth"]["evidence"])
+
+    def test_update_status_updates_history(self) -> None:
+        payload = {"target_url": "https://example.test"}
+        run = self.service.create_run(payload)
+        run_id = run["id"]
+
+        self.service.update_status(run_id, "Exploring")
+        history = self.service.get_status_history(run_id)
+        self.assertEqual(history[-1]["status"], "Exploring")
+
+        manifest = self.service.get_run(run_id)
+        self.assertEqual(manifest["status"], "Exploring")
+
+    def test_listener_notified_on_status_change(self) -> None:
+        payload = {"target_url": "https://example.test"}
+        run = self.service.create_run(payload)
+        run_id = run["id"]
+
+        events: list[dict] = []
+
+        def listener(event: dict) -> None:
+            events.append(event)
+
+        self.service.register_listener(run_id, listener)
+        self.service.update_status(run_id, "Synthesizing")
+        self.service.unregister_listener(run_id, listener)
+
+        self.assertTrue(any(evt.get("status") == "Synthesizing" for evt in events))
 
 
 if __name__ == "__main__":

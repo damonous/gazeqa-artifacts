@@ -1,0 +1,6 @@
+{
+  "TC-FR-015-001": [
+    "workflow/github_action.yml",
+    "logs/manual_cli_instructions.md"
+  ]
+}

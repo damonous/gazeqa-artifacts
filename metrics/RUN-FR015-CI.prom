@@ -1,0 +1,27 @@
+# HELP gazeqa_tests_total Total RTM tests reported by run summary
+# TYPE gazeqa_tests_total gauge
+gazeqa_tests_total{env="qa",run_id="RUN-FR015-CI"} 1.0
+# HELP gazeqa_tests_passed Passed RTM tests for run
+# TYPE gazeqa_tests_passed gauge
+gazeqa_tests_passed{env="qa",run_id="RUN-FR015-CI"} 1.0
+# HELP gazeqa_tests_failed Failed RTM tests for run
+# TYPE gazeqa_tests_failed gauge
+gazeqa_tests_failed{env="qa",run_id="RUN-FR015-CI"} 0.0
+# HELP gazeqa_criteria_total Acceptance criteria evaluated in run summary
+# TYPE gazeqa_criteria_total gauge
+gazeqa_criteria_total{env="qa",run_id="RUN-FR015-CI"} 2.0
+# HELP gazeqa_criteria_passed Acceptance criteria passed in run summary
+# TYPE gazeqa_criteria_passed gauge
+gazeqa_criteria_passed{env="qa",run_id="RUN-FR015-CI"} 2.0
+# HELP gazeqa_requirements_total Checklist summary field requirements_total
+# TYPE gazeqa_requirements_total gauge
+gazeqa_requirements_total{env="qa"} 17.0
+# HELP gazeqa_requirements_verified Checklist summary field requirements_verified
+# TYPE gazeqa_requirements_verified gauge
+gazeqa_requirements_verified{env="qa"} 11.0
+# HELP gazeqa_checklist_criteria_total Checklist summary field criteria_total
+# TYPE gazeqa_checklist_criteria_total gauge
+gazeqa_checklist_criteria_total{env="qa"} 34.0
+# HELP gazeqa_checklist_criteria_passed Checklist summary field criteria_passed
+# TYPE gazeqa_checklist_criteria_passed gauge
+gazeqa_checklist_criteria_passed{env="qa"} 22.0

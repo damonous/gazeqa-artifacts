@@ -1,0 +1,8 @@
+{
+  "TC-FR-014-001": [
+    "execution/junit_python.xml",
+    "execution/trace.json",
+    "logs/pytest.log",
+    "logs/maven.log"
+  ]
+}

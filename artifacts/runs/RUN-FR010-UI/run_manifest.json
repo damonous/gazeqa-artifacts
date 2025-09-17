@@ -1,0 +1,28 @@
+{
+  "run_id": "RUN-FR010-UI",
+  "generated_at": "2025-09-17T04:52:26Z",
+  "artifacts": {
+    "ui": {
+      "dashboard": "ui/dashboard.html",
+      "script": "ui/dashboard.js",
+      "styles": "ui/styles.css"
+    },
+    "logs": {
+      "accessibility": "logs/accessibility_report.txt",
+      "api_get_runs": "logs/api_get_runs.json",
+      "api_get_run": "logs/api_get_run_RUN-19B45DFD34C2.json",
+      "api_get_artifacts": "logs/api_get_artifacts_RUN-19B45DFD34C2.json",
+      "sse_session": "logs/sse_session.log"
+    },
+    "reports": {
+      "criteria": "reports/criteria.json"
+    }
+  },
+  "accessibility_checks": {
+    "has_main_role": true,
+    "has_nav": true,
+    "has_live_region": true,
+    "declares_language": true,
+    "has_primary_header": true
+  }
+}

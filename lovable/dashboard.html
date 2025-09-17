@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GazeQA Lovable Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>GazeQA Run Dashboard</h1>
+      <p class="tagline">Monitor automated synthesis runs, download artifacts, and watch live status updates.</p>
+    </header>
+    <div class="layout" role="application">
+      <nav aria-label="Runs">
+        <div class="nav-header">
+          <h2>Recent Runs</h2>
+          <button type="button" id="refresh-runs" class="secondary">Refresh</button>
+        </div>
+        <ul id="runs-list" class="runs-list" role="listbox" aria-activedescendant=""></ul>
+      </nav>
+      <main role="main">
+        <section aria-labelledby="run-title" class="run-details">
+          <h2 id="run-title">Run Details</h2>
+          <dl id="run-summary" class="summary-grid"></dl>
+        </section>
+        <section aria-labelledby="artifacts-title" class="artifacts">
+          <div class="section-header">
+            <h2 id="artifacts-title">Artifacts</h2>
+            <button type="button" id="refresh-artifacts" class="secondary" disabled>Refresh</button>
+          </div>
+          <ul id="artifact-list" class="artifact-list"></ul>
+        </section>
+        <section aria-labelledby="logs-title" class="logs">
+          <h2 id="logs-title">Live Events</h2>
+          <div id="logs-output" class="log-stream" aria-live="polite" aria-atomic="false"></div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>
+        This prototype Lovable dashboard consumes the local GazeQA API.
+        Configure <code>GAZEQA_API_BASE</code> to point at a remote instance.
+      </p>
+    </footer>
+    <script src="dashboard.js" type="module"></script>
+  </body>
+</html>

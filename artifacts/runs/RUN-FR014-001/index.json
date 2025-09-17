@@ -1,0 +1,26 @@
+{
+  "run_id": "RUN-FR014-EXEC",
+  "generated_at": "2025-09-17T04:41:11Z",
+  "artifacts": [
+    {
+      "path": "run_manifest.json",
+      "size_bytes": 328
+    },
+    {
+      "path": "execution/junit_python.xml",
+      "size_bytes": 1762
+    },
+    {
+      "path": "execution/trace.json",
+      "size_bytes": 620
+    },
+    {
+      "path": "logs/pytest.log",
+      "size_bytes": 745
+    },
+    {
+      "path": "logs/maven.log",
+      "size_bytes": 49
+    }
+  ]
+}

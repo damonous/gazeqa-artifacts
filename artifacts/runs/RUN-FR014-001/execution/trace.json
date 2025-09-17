@@ -1,0 +1,25 @@
+[
+  {
+    "command": [
+      "pytest",
+      "--junitxml",
+      "artifacts/runs/RUN-FR014-001/execution/junit_python.xml",
+      "artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py",
+      "artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py"
+    ],
+    "cwd": "/home/rbrooks/code/gazeqa-cli-agents",
+    "exit_code": 0,
+    "junit": "execution/junit_python.xml"
+  },
+  {
+    "command": [
+      "mvn",
+      "-B",
+      "-q",
+      "test"
+    ],
+    "cwd": "artifacts/runs/RUN-FR006-009-004/tests/java",
+    "exit_code": null,
+    "skipped": "mvn not available"
+  }
+]

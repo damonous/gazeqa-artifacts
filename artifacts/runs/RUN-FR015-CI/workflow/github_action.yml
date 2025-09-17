@@ -1,0 +1,47 @@
+name: GazeQA Artifact Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Run generated suites
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/test_execution_orchestrator.py artifacts/runs/RUN-FR006-009-004/tests/manifest.json --output artifacts/runs/RUN-FR014-CI
+
+      - name: Upload orchestrator artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gazeqa-generated-tests
+          path: artifacts/runs/RUN-FR014-CI
+
+      - name: Capture API snapshots
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/capture_ui_evidence.py
+
+      - name: Upload UI evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gazeqa-ui-evidence
+          path: artifacts/runs/RUN-FR010-UI

@@ -1,0 +1,22 @@
+{
+  "criteria": [
+    {
+      "id": "FR-010-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T04:52:26Z",
+      "evidence": [
+        "logs/api_get_run_RUN-19B45DFD34C2.json",
+        "logs/sse_session.log"
+      ]
+    },
+    {
+      "id": "FR-010-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T04:52:26Z",
+      "evidence": [
+        "ui/dashboard.html",
+        "logs/api_get_artifacts_RUN-19B45DFD34C2.json"
+      ]
+    }
+  ]
+}

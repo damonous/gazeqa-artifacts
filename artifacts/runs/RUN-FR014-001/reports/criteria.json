@@ -1,0 +1,21 @@
+{
+  "criteria": [
+    {
+      "id": "FR-014-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T07:20:00Z",
+      "evidence": [
+        "execution/junit_python.xml",
+        "execution/trace.json"
+      ]
+    },
+    {
+      "id": "FR-014-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T07:20:00Z",
+      "evidence": [
+        "logs/pytest.log"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "RUN-19B45DFD34C2",
+  "status": "Completed",
+  "status_history": [
+    {
+      "status": "Pending",
+      "timestamp": "2025-09-17T04:52:21.953981+00:00"
+    },
+    {
+      "status": "Running",
+      "timestamp": "2025-09-17T04:52:21.953993+00:00"
+    }
+  ],
+  "target_url": "https://alpha-stage.example/about",
+  "credentials": {
+    "username": null,
+    "secret_ref": null
+  },
+  "budgets": {
+    "time_budget_minutes": 5,
+    "page_budget": 40
+  },
+  "storage_profile": "default",
+  "tags": [
+    "fr-010",
+    "lovable"
+  ],
+  "created_at": "2025-09-17T04:52:21.953981+00:00"
+}

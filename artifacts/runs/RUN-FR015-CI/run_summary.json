@@ -1,0 +1,35 @@
+{
+  "run_id": "RUN-FR015-CI",
+  "env": "qa",
+  "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
+  "started_at": "2025-09-17T07:20:00Z",
+  "finished_at": "2025-09-17T07:22:30Z",
+  "tests": [
+    {
+      "id": "TC-FR-015-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-FR015-CI/workflow/github_action.yml",
+        "artifacts/runs/RUN-FR015-CI/logs/manual_cli_instructions.md"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-015-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T07:22:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR015-CI/workflow/github_action.yml"
+      ]
+    },
+    {
+      "id": "FR-015-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T07:22:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR015-CI/logs/manual_cli_instructions.md"
+      ]
+    }
+  ]
+}
