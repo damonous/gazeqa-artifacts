@@ -1,0 +1,20 @@
+{
+  "run_id": "RUN-FR006-009-002",
+  "generated_at": "2025-09-17T05:07:40Z",
+  "artifacts": {
+    "frd_markdown": "frd/requirements_synthesis.md",
+    "stories_json": "frd/stories_export.json",
+    "selector_index": "selectors/index.json",
+    "test_manifest": "tests/manifest.json",
+    "criteria": "reports/criteria.json",
+    "test_evidence": "reports/test_evidence.json",
+    "logs": {
+      "story_quality_review": "logs/story_quality_review.log",
+      "pytest_collect": "logs/pytest_collect.log",
+      "maven_compile": "logs/maven_compile.log",
+      "artifact_packaging": "logs/artifact_packaging.log",
+      "cli_run_create": "logs/cli_run_create.log",
+      "api_run_create": "logs/api_run_create.log"
+    }
+  }
+}

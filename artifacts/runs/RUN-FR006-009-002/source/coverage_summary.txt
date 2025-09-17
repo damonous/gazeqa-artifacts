@@ -1,0 +1,3 @@
+Coverage percent: 84%
+Sections visited: Home, Dashboard, Settings, Reports, Users
+Missing: Billing (requires elevated role)

@@ -1,0 +1,45 @@
+{
+  "generated_at": "2025-09-17T05:05:30Z",
+  "stories": [
+    {
+      "story_id": "STORY-FR-006-REPORTS",
+      "tests": [
+        {
+          "id": "TC-FR-006-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_extended_synthesis.py::test_reports_story_references_selectors"
+        },
+        {
+          "id": "TC-FR-007-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_extended_synthesis.py::test_selector_inventory_is_complete"
+        }
+      ]
+    },
+    {
+      "story_id": "STORY-FR-006-SETTINGS",
+      "tests": [
+        {
+          "id": "TC-FR-006-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_extended_synthesis.py::test_story_catalog_includes_new_clusters"
+        }
+      ]
+    },
+    {
+      "story_id": "STORY-FR-006-USERS",
+      "tests": [
+        {
+          "id": "TC-FR-007-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_extended_synthesis.py::test_users_story_validates_role_column"
+        },
+        {
+          "id": "TC-FR-007-001",
+          "framework": "JUNIT",
+          "path": "tests/java/src/test/java/com/gazeqa/generated/ExtendedStoryLifecycleTest.java#acceptanceCriteriaCountsAlign"
+        }
+      ]
+    }
+  ]
+}

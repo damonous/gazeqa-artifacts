@@ -1,0 +1,6 @@
+artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py::test_story_catalog_includes_new_clusters
+artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py::test_reports_story_references_selectors
+artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py::test_users_story_validates_role_column
+artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py::test_selector_inventory_is_complete
+
+4 tests collected in 0.02s

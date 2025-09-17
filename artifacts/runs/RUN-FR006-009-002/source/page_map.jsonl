@@ -1,0 +1,5 @@
+{"page_id": "home", "source": "exploration", "depth": 0, "url": "https://alpha-stage.example/home", "screenshot": "exploration/screenshots/home.png"}
+{"page_id": "dashboard", "source": "bfs", "depth": 1, "url": "https://alpha-stage.example/dashboard", "screenshot": "exploration/screenshots/dashboard.png"}
+{"page_id": "reports", "source": "bfs", "depth": 2, "url": "https://alpha-stage.example/reports", "screenshot": "exploration/screenshots/reports.png"}
+{"page_id": "users", "source": "bfs", "depth": 2, "url": "https://alpha-stage.example/admin/users", "screenshot": "exploration/screenshots/users.png"}
+{"page_id": "settings", "source": "exploration", "depth": 1, "url": "https://alpha-stage.example/settings", "screenshot": "exploration/screenshots/settings.png"}

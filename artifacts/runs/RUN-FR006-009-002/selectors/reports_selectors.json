@@ -1,0 +1,26 @@
+{
+  "page_id": "reports",
+  "selectors": {
+    "reports_header": {
+      "strategies": [
+        "text=Reports",
+        "css=h1"
+      ],
+      "confidence": 0.96
+    },
+    "report_list": {
+      "strategies": [
+        "css=ul",
+        "xpath=//ul[contains(., 'Revenue')]"
+      ],
+      "confidence": 0.91
+    },
+    "revenue_item": {
+      "strategies": [
+        "text=Revenue",
+        "xpath=//li[text()='Revenue']"
+      ],
+      "confidence": 0.9
+    }
+  }
+}

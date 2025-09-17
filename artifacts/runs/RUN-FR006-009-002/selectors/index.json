@@ -1,0 +1,23 @@
+{
+  "run_id": "RUN-FR006-009-002",
+  "selector_packages": [
+    {
+      "page_id": "reports",
+      "path": "selectors/reports_selectors.json",
+      "source_dom": "source/dom/reports.html",
+      "screenshot": "source/screenshots/reports.png"
+    },
+    {
+      "page_id": "settings",
+      "path": "selectors/settings_selectors.json",
+      "source_dom": "source/dom/settings.html",
+      "screenshot": "source/screenshots/settings.png"
+    },
+    {
+      "page_id": "users",
+      "path": "selectors/users_selectors.json",
+      "source_dom": "source/dom/users.html",
+      "screenshot": "source/screenshots/users.png"
+    }
+  ]
+}

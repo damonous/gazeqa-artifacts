@@ -1,0 +1,15 @@
+{
+  "run_id": "RUN-ALPHA-EXP-001",
+  "generated_at": "2025-09-17T04:12:30Z",
+  "summary": {
+    "coverage_percent": 0.84,
+    "sections_total": 6,
+    "sections_covered": ["Home", "Dashboard", "Settings", "Reports", "Users"],
+    "sections_missing": ["Billing"]
+  },
+  "limits": {
+    "exploration_budget_minutes": 12,
+    "actions_executed": 58,
+    "max_actions": 120
+  }
+}

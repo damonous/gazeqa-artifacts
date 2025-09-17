@@ -1,0 +1,19 @@
+{
+  "page_id": "settings",
+  "selectors": {
+    "settings_header": {
+      "strategies": [
+        "text=Settings",
+        "css=h1"
+      ],
+      "confidence": 0.95
+    },
+    "timezone_field": {
+      "strategies": [
+        "label=Timezone",
+        "css=label:has-text('Timezone') + *"
+      ],
+      "confidence": 0.88
+    }
+  }
+}

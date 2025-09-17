@@ -1,0 +1,13 @@
+{
+  "target_url": "https://alpha-stage.example/reports",
+  "credentials": {
+    "username": "agent_beta",
+    "secret_ref": "vault://gazeqa/agent_beta"
+  },
+  "budgets": {
+    "time_budget_minutes": 20,
+    "page_budget": 180
+  },
+  "storage_profile": "synthesis-extended",
+  "tags": ["fr-006", "fr-007", "fr-008", "reports"]
+}

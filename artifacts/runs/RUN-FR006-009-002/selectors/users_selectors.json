@@ -1,0 +1,19 @@
+{
+  "page_id": "users",
+  "selectors": {
+    "users_header": {
+      "strategies": [
+        "text=Users",
+        "css=h1"
+      ],
+      "confidence": 0.94
+    },
+    "user_table": {
+      "strategies": [
+        "css=table",
+        "xpath=//table[.//th='Role']"
+      ],
+      "confidence": 0.9
+    }
+  }
+}

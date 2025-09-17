@@ -1,0 +1,7 @@
+[
+  {
+    "url": "https://alpha-stage.example/logout",
+    "reason": "logout route matched exclusion rule",
+    "source_page": "https://alpha-stage.example/settings"
+  }
+]
