@@ -1,0 +1,79 @@
+{
+  "run_id": "RUN-ALPHA-001",
+  "env": "qa",
+  "build_sha": "2c591d920c306578114fb531ae999398a767e8c9",
+  "started_at": "2025-09-17T00:29:16Z",
+  "finished_at": "2025-09-17T00:29:16Z",
+  "tests": [
+    {
+      "id": "TC-FR-001-001",
+      "status": "passed",
+      "evidence": [
+        "intake/create_run_payload.json",
+        "intake/validation_report.txt"
+      ]
+    },
+    {
+      "id": "TC-FR-001-002",
+      "status": "passed",
+      "evidence": [
+        "intake/validation_report.txt",
+        "intake/secrets_broker_audit.log"
+      ]
+    },
+    {
+      "id": "TC-FR-002-001",
+      "status": "passed",
+      "evidence": [
+        "auth/cua_login_observation.txt",
+        "auth/login_storage_state.json"
+      ]
+    },
+    {
+      "id": "TC-FR-002-002",
+      "status": "passed",
+      "evidence": [
+        "auth/fallback_summary.txt",
+        "auth/login_storage_state.json"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-001-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T03:47:01Z",
+      "evidence": [
+        "intake/create_run_payload.json",
+        "intake/validation_report.txt"
+      ]
+    },
+    {
+      "id": "FR-001-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T03:47:02Z",
+      "evidence": [
+        "intake/validation_report.txt",
+        "intake/secrets_broker_audit.log"
+      ]
+    },
+    {
+      "id": "FR-002-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T03:47:08Z",
+      "evidence": [
+        "auth/cua_login_observation.txt",
+        "auth/login_storage_state.json"
+      ]
+    },
+    {
+      "id": "FR-002-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T03:47:12Z",
+      "evidence": [
+        "auth/fallback_summary.txt",
+        "auth/login_storage_state.json"
+      ]
+    }
+  ]
+}

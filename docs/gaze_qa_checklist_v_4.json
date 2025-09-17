@@ -18,7 +18,7 @@
   },
   "summary": {
     "requirements_total": 17,
-    "requirements_verified": 1,
+    "requirements_verified": 2,
     "criteria_total": 34,
     "criteria_passed": 7
   },
@@ -56,14 +56,14 @@
       ],
       "verification": {
         "test_coverage": true,
-        "verification_passed": false,
+        "verification_passed": true,
         "last_verified": "2025-09-17T00:33:01Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-2B595E8E2C84/run_manifest.json",
           "artifacts/runs/RUN-2B595E8E2C84/evidence/invalid_create_run.log"
         ],
         "criteria_complete": true,
-        "tests_complete": false
+        "tests_complete": true
       }
     },
     {
