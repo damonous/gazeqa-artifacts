@@ -1,0 +1,6 @@
+artifacts/runs/RUN-FR006-009-001/tests/python/test_synthesized_requirements.py::test_story_catalog_includes_three_features
+artifacts/runs/RUN-FR006-009-001/tests/python/test_synthesized_requirements.py::test_acceptance_criteria_embed_evidence_paths
+artifacts/runs/RUN-FR006-009-001/tests/python/test_synthesized_requirements.py::test_imported_selectors_available_for_dashboard
+artifacts/runs/RUN-FR006-009-001/tests/python/test_synthesized_requirements.py::test_java_suite_declares_story_mappings
+
+4 tests collected in 0.01s

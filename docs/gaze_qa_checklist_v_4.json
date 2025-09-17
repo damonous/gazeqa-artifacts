@@ -9,18 +9,18 @@
     },
     "run": {
       "env": "qa",
-      "build_sha": "2c591d920c306578114fb531ae999398a767e8c9",
-      "test_run_id": "RUN-BETA-001",
-      "started_at": "2025-09-17T00:28:30Z",
-      "finished_at": "2025-09-17T00:28:30Z"
+      "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
+      "test_run_id": "RUN-FR006-009-001",
+      "started_at": "2025-09-17T04:14:00Z",
+      "finished_at": "2025-09-17T04:22:00Z"
     },
     "execution_plan": "docs/rtm_execution_plan_v1.md"
   },
   "summary": {
     "requirements_total": 17,
-    "requirements_verified": 2,
+    "requirements_verified": 9,
     "criteria_total": 34,
-    "criteria_passed": 7
+    "criteria_passed": 18
   },
   "entries": [
     {
@@ -86,7 +86,7 @@
           "last_checked": "2025-09-17T03:47:08Z",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-001/auth/cua_login_observation.txt",
-            "artifacts/runs/RUN-ALPHA-001/auth/login_storage_state.json"
+            "artifacts/runs/RUN-ALPHA-001/auth/storageState.json.enc"
           ]
         },
         {
@@ -97,21 +97,21 @@
           "last_checked": "2025-09-17T03:47:12Z",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-001/auth/fallback_summary.txt",
-            "artifacts/runs/RUN-ALPHA-001/auth/login_storage_state.json"
+            "artifacts/runs/RUN-ALPHA-001/auth/storageState.json.enc"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
-        "verification_passed": false,
-        "last_verified": null,
+        "verification_passed": true,
+        "last_verified": "2025-09-17T03:47:12Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-ALPHA-001/auth/cua_login_observation.txt",
-          "artifacts/runs/RUN-ALPHA-001/auth/login_storage_state.json",
+          "artifacts/runs/RUN-ALPHA-001/auth/storageState.json.enc",
           "artifacts/runs/RUN-ALPHA-001/auth/fallback_summary.txt"
         ],
         "criteria_complete": true,
-        "tests_complete": false
+        "tests_complete": true
       }
     },
     {
@@ -123,33 +123,47 @@
         "FR-002"
       ],
       "tests": [
-        "TC-FR-003-001"
+        "TC-FR-003-001",
+        "TC-FR-003-002"
       ],
       "criteria": [
         {
           "id": "FR-003-AC-1",
           "text": "Given a typical SPA, when exploration runs, then \u226580 percent of top-level sections are reached within budget.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:16:02Z",
+          "evidence": [
+            "artifacts/runs/RUN-ALPHA-EXP-001/coverage/report.json",
+            "artifacts/runs/RUN-ALPHA-EXP-001/coverage/coverage_summary.txt"
+          ]
         },
         {
           "id": "FR-003-AC-2",
           "text": "Given instrumented logging, when exploration completes, then each visited page has a screenshot and DOM snapshot.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:16:05Z",
+          "evidence": [
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/home.png",
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/dashboard.png",
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/dom/home.html",
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/dom/dashboard.html"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
-        "verification_passed": false,
-        "last_verified": null,
-        "evidence_bundle": [],
-        "criteria_complete": false,
-        "tests_complete": false
+        "test_coverage": true,
+        "verification_passed": true,
+        "last_verified": "2025-09-17T04:16:05Z",
+        "evidence_bundle": [
+          "artifacts/runs/RUN-ALPHA-EXP-001/coverage/report.json",
+          "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
+          "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/home.png"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
       }
     },
     {
@@ -167,26 +181,36 @@
           "id": "FR-004-AC-1",
           "text": "Given a site with deep links, when BFS runs, then newly discovered pages are appended and de-duplicated.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:16:20Z",
+          "evidence": [
+            "artifacts/runs/RUN-ALPHA-EXP-001/bfs/page_map.jsonl",
+            "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json"
+          ]
         },
         {
           "id": "FR-004-AC-2",
           "text": "Given exclusion rules, when encountering logout links, then they are skipped.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:16:27Z",
+          "evidence": [
+            "artifacts/runs/RUN-ALPHA-EXP-001/bfs/skipped_links.json",
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
-        "verification_passed": false,
-        "last_verified": null,
-        "evidence_bundle": [],
-        "criteria_complete": false,
-        "tests_complete": false
+        "test_coverage": true,
+        "verification_passed": true,
+        "last_verified": "2025-09-17T04:16:27Z",
+        "evidence_bundle": [
+          "artifacts/runs/RUN-ALPHA-EXP-001/bfs/page_map.jsonl",
+          "artifacts/runs/RUN-ALPHA-EXP-001/bfs/skipped_links.json",
+          "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
       }
     },
     {
@@ -260,26 +284,35 @@
           "id": "FR-006-AC-1",
           "text": "Given captured pages, when synthesis runs, then each feature area has at least one story with AC.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:15:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/frd/requirements_synthesis.md",
+            "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json"
+          ]
         },
         {
           "id": "FR-006-AC-2",
           "text": "Given ambiguous flows, when critique pass runs, then low-quality stories are revised.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:15:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
-        "verification_passed": false,
+        "test_coverage": true,
+        "verification_passed": true,
         "last_verified": null,
-        "evidence_bundle": [],
-        "criteria_complete": false,
-        "tests_complete": false
+        "evidence_bundle": [
+          "artifacts/runs/RUN-FR006-009-001/frd/requirements_synthesis.md",
+          "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json",
+          "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
       }
     },
     {
@@ -299,34 +332,44 @@
           "text": "Given AC, when generation runs, then at least one test per story is produced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T00:28:03Z",
+          "last_checked": "2025-09-17T04:19:00Z",
           "evidence": [
             "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
             "artifacts/runs/RUN-DEMO-001/reports/junit_generated.xml",
             "artifacts/runs/RUN-BETA-001/tests/manifest.json",
-            "artifacts/runs/RUN-BETA-001/reports/junit_generated.xml"
+            "artifacts/runs/RUN-BETA-001/reports/junit_generated.xml",
+            "artifacts/runs/RUN-FR006-009-001/tests/manifest.json",
+            "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log"
           ]
         },
         {
           "id": "FR-007-AC-2",
           "text": "Given generated tests, when collected by PyTest or compiled with Maven, then no syntax or compile errors occur.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:19:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log"
+          ]
         }
       ],
       "verification": {
         "test_coverage": true,
-        "verification_passed": false,
+        "verification_passed": true,
         "last_verified": "2025-09-17T00:33:34Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
           "artifacts/runs/RUN-DEMO-001/tests/python/test_generated_suite.py",
           "artifacts/runs/RUN-BETA-001/tests/manifest.json",
-          "artifacts/runs/RUN-BETA-001/tests/python/test_generated_suite.py"
+          "artifacts/runs/RUN-BETA-001/tests/python/test_generated_suite.py",
+          "artifacts/runs/RUN-FR006-009-001/tests/manifest.json",
+          "artifacts/runs/RUN-FR006-009-001/tests/python/test_synthesized_requirements.py",
+          "artifacts/runs/RUN-FR006-009-001/tests/java/src/test/java/com/gazeqa/generated/StoryLifecycleTest.java",
+          "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log",
+          "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log"
         ],
-        "criteria_complete": false,
+        "criteria_complete": true,
         "tests_complete": true
       }
     },
@@ -347,26 +390,36 @@
           "id": "FR-008-AC-1",
           "text": "Given a completed run, when persistence runs, then all expected files are present and index lists them.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:21:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/index.json",
+            "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log"
+          ]
         },
         {
           "id": "FR-008-AC-2",
           "text": "Given missing upload, when retry policy executes, then eventual consistency is reached or error is surfaced.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:21:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
-        "verification_passed": false,
+        "test_coverage": true,
+        "verification_passed": true,
         "last_verified": null,
-        "evidence_bundle": [],
-        "criteria_complete": false,
-        "tests_complete": false
+        "evidence_bundle": [
+          "artifacts/runs/RUN-FR006-009-001/index.json",
+          "artifacts/runs/RUN-FR006-009-001/run_manifest.json",
+          "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
       }
     },
     {
@@ -385,26 +438,34 @@
           "id": "FR-009-AC-1",
           "text": "Given API keys, when POST /runs is called from CI, then a run starts and status is retrievable.",
           "critical": false,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:21:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log"
+          ]
         },
         {
           "id": "FR-009-AC-2",
           "text": "Given a completed run, when CLI `gazeqa artifacts <id>` runs, then paths are printed and downloadable.",
           "critical": false,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T04:21:00Z",
+          "evidence": [
+            "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
-        "verification_passed": false,
+        "test_coverage": true,
+        "verification_passed": true,
         "last_verified": null,
-        "evidence_bundle": [],
-        "criteria_complete": false,
-        "tests_complete": false
+        "evidence_bundle": [
+          "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log",
+          "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log",
+          "artifacts/runs/RUN-FR006-009-001/api_cli/cli_payload.json"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
       }
     },
     {

@@ -1,0 +1,50 @@
+{
+  "generated_at": "2025-09-17T04:18:00Z",
+  "stories": [
+    {
+      "story_id": "STORY-FR-006-DASHBOARD",
+      "tests": [
+        {
+          "id": "TC-FR-006-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_synthesized_requirements.py::test_acceptance_criteria_embed_evidence_paths"
+        },
+        {
+          "id": "TC-FR-007-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_synthesized_requirements.py::test_story_catalog_includes_three_features"
+        },
+        {
+          "id": "TC-FR-007-001",
+          "framework": "JUNIT",
+          "path": "tests/java/src/test/java/com/gazeqa/generated/StoryLifecycleTest.java#dashboardStoryPresent"
+        }
+      ]
+    },
+    {
+      "story_id": "STORY-FR-006-LOGIN",
+      "tests": [
+        {
+          "id": "TC-FR-006-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_synthesized_requirements.py::test_acceptance_criteria_embed_evidence_paths"
+        },
+        {
+          "id": "TC-FR-007-001",
+          "framework": "JUNIT",
+          "path": "tests/java/src/test/java/com/gazeqa/generated/StoryLifecycleTest.java#acceptanceCriteriaCounts"
+        }
+      ]
+    },
+    {
+      "story_id": "STORY-FR-006-SCENARIO-AUTHORING",
+      "tests": [
+        {
+          "id": "TC-FR-007-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_synthesized_requirements.py::test_java_suite_declares_story_mappings"
+        }
+      ]
+    }
+  ]
+}

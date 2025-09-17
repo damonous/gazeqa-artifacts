@@ -1,0 +1,1 @@
+Dashboard vision locator derived from chart title overlay; selector validated via simulated hover.

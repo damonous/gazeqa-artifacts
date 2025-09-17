@@ -1,0 +1,25 @@
+{
+  "TC-FR-006-001": [
+    "frd/requirements_synthesis.md",
+    "frd/stories_export.json",
+    "logs/story_quality_review.log"
+  ],
+  "TC-FR-007-001": [
+    "tests/manifest.json",
+    "tests/python/test_synthesized_requirements.py",
+    "tests/java/src/test/java/com/gazeqa/generated/StoryLifecycleTest.java",
+    "logs/pytest_collect.log",
+    "logs/maven_compile.log"
+  ],
+  "TC-FR-008-001": [
+    "index.json",
+    "run_manifest.json",
+    "logs/maven_compile.log",
+    "logs/artifact_packaging.log"
+  ],
+  "TC-FR-009-001": [
+    "logs/cli_run_create.log",
+    "logs/api_run_create.log",
+    "api_cli/cli_payload.json"
+  ]
+}

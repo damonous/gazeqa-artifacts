@@ -1,0 +1,3 @@
+[2025-09-17T04:10:12Z] STORY-FR-006-DASHBOARD quality_score=0.87 feedback=clarified uptime messaging with SLA note
+[2025-09-17T04:10:14Z] STORY-FR-006-LOGIN quality_score=0.92 feedback=added session forwarding acceptance criteria
+[2025-09-17T04:10:17Z] STORY-FR-006-SCENARIO-AUTHORING quality_score=0.90 feedback=ensured JSON export includes metadata completeness flag

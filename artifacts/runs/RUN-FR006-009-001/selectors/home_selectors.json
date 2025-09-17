@@ -1,0 +1,18 @@
+{
+  "primary_submit": {
+    "css": "button[data-testid=\"primary-action\"]",
+    "confidence": 0.94,
+    "strategies": [
+      "data-testid",
+      "aria-label"
+    ]
+  },
+  "nav_profile": {
+    "css": "nav .profile",
+    "confidence": 0.88,
+    "strategies": [
+      "role=link",
+      "text=Profile"
+    ]
+  }
+}

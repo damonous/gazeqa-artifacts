@@ -1,0 +1,20 @@
+{
+  "run_id": "RUN-BETA-001",
+  "generated_at": "2025-09-17T00:28:03Z",
+  "pages": [
+    {
+      "page_id": "home",
+      "url": "https://demo.gazeqa.test/home",
+      "selectors_file": "selectors/home_selectors.json",
+      "screenshot": "selectors/home_screenshot.txt",
+      "dom_snapshot": "selectors/home_dom_snapshot.txt"
+    },
+    {
+      "page_id": "dashboard",
+      "url": "https://demo.gazeqa.test/dashboard",
+      "selectors_file": "selectors/dashboard_selectors.json",
+      "screenshot": "selectors/dashboard_screenshot.txt",
+      "dom_snapshot": "selectors/dashboard_dom_snapshot.txt"
+    }
+  ]
+}

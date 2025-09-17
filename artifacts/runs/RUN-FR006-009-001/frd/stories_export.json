@@ -1,0 +1,112 @@
+{
+  "run_id": "RUN-FR006-009-001",
+  "generated_at": "2025-09-17T04:15:00Z",
+  "source_run": "RUN-BETA-001",
+  "features": [
+    {
+      "feature_id": "FEAT-FR-006-DASHBOARD",
+      "story_id": "STORY-FR-006-DASHBOARD",
+      "title": "Unified Dashboard Insights",
+      "user_story": "As an operations lead, I want to view key performance indicators on the dashboard so that I can track account health in real time.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-DASHBOARD-1",
+          "behavior": "Dashboard loads KPIs together on first paint.",
+          "validation": "Verify selectors/index.json renders metric-header, revenue widget, uptime panel without missing nodes.",
+          "evidence": [
+            "selectors/index.json",
+            "selectors/dashboard_selectors.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-DASHBOARD-2",
+          "behavior": "Refresh toast appears when metrics flag stale data.",
+          "validation": "Simulate stale dataset and assert toast with Retry CTA using dashboard_observations.txt.",
+          "evidence": [
+            "selectors/dashboard_observations.txt"
+          ]
+        }
+      ],
+      "quality_score": 0.87,
+      "notes": "Clarified uptime messaging with SLA note from critique loop.",
+      "traceability": {
+        "page_clusters": ["dashboard"],
+        "selector_sources": [
+          "artifacts/runs/RUN-BETA-001/selectors/index.json",
+          "artifacts/runs/RUN-BETA-001/selectors/dashboard_selectors.json"
+        ],
+        "quality_review_log": "logs/story_quality_review.log"
+      }
+    },
+    {
+      "feature_id": "FEAT-FR-006-LOGIN",
+      "story_id": "STORY-FR-006-LOGIN",
+      "title": "Guided Login Experience",
+      "user_story": "As a returning user, I want guided prompts through the login form so that I can authenticate quickly without errors.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-LOGIN-1",
+          "behavior": "Inline validation appears under missing credentials.",
+          "validation": "Use selectors/home_dom_snapshot.txt to assert inline error nodes attach to the empty field.",
+          "evidence": [
+            "selectors/home_dom_snapshot.txt",
+            "selectors/home_selectors.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-LOGIN-2",
+          "behavior": "Successful login persists session token and redirects to dashboard.",
+          "validation": "Replay login flow and confirm dashboard route event in generated test suite.",
+          "evidence": [
+            "tests/python/test_generated_suite.py::test_selector_candidates_exist"
+          ]
+        }
+      ],
+      "quality_score": 0.92,
+      "notes": "Added post-login redirect coverage and session persistence requirement.",
+      "traceability": {
+        "page_clusters": ["auth"],
+        "selector_sources": [
+          "artifacts/runs/RUN-BETA-001/selectors/home_dom_snapshot.txt",
+          "artifacts/runs/RUN-BETA-001/selectors/home_selectors.json"
+        ],
+        "quality_review_log": "logs/story_quality_review.log"
+      }
+    },
+    {
+      "feature_id": "FEAT-FR-006-AUTHORING",
+      "story_id": "STORY-FR-006-SCENARIO-AUTHORING",
+      "title": "Scenario Authoring Workspace",
+      "user_story": "As a QA engineer, I want to export synthesized user stories with acceptance criteria so that I can hand off executable tests to automation immediately.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-AUTHORING-1",
+          "behavior": "Synthesis outputs structured JSON entries for every feature cluster.",
+          "validation": "Verify frd/stories_export.json includes one entry per story with non-empty acceptance_criteria.",
+          "evidence": [
+            "frd/stories_export.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-AUTHORING-2",
+          "behavior": "Quality review flags and repairs ambiguous stories before export.",
+          "validation": "Ensure quality_score >= 0.8 for all stories and review feedback is stored in logs/story_quality_review.log.",
+          "evidence": [
+            "logs/story_quality_review.log"
+          ]
+        }
+      ],
+      "quality_score": 0.90,
+      "notes": "Ensured metadata completeness and critique loop attachments.",
+      "traceability": {
+        "page_clusters": ["synthesis"],
+        "selector_sources": [
+          "artifacts/runs/RUN-BETA-001/selectors/index.json",
+          "artifacts/runs/RUN-BETA-001/selectors/dashboard_selectors.json",
+          "artifacts/runs/RUN-BETA-001/selectors/home_selectors.json"
+        ],
+        "quality_review_log": "logs/story_quality_review.log"
+      }
+    }
+  ]
+}

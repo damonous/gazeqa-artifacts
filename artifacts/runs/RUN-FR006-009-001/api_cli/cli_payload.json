@@ -1,0 +1,13 @@
+{
+  "target_url": "https://demo.gazeqa.dev/login",
+  "credentials": {
+    "username": "agent_beta",
+    "secret_ref": "vault://gazeqa/agent_beta"
+  },
+  "budgets": {
+    "time_budget_minutes": 15,
+    "page_budget": 120
+  },
+  "storage_profile": "synthesis-local",
+  "tags": ["fr-006", "fr-007", "packaging"]
+}

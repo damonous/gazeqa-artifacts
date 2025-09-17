@@ -1,0 +1,18 @@
+{
+  "graph_canvas": {
+    "css": "#usage-chart canvas",
+    "confidence": 0.76,
+    "strategies": [
+      "vision-model",
+      "fallback-css"
+    ]
+  },
+  "export_button": {
+    "css": "button[data-test=\"export-report\"]",
+    "confidence": 0.91,
+    "strategies": [
+      "data-test",
+      "text=Export"
+    ]
+  }
+}

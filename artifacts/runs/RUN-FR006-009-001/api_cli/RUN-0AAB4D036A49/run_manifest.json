@@ -1,0 +1,19 @@
+{
+  "id": "RUN-0AAB4D036A49",
+  "target_url": "https://demo.gazeqa.dev/projects",
+  "credentials": {
+    "username": null,
+    "secret_ref": null
+  },
+  "budgets": {
+    "time_budget_minutes": 10,
+    "page_budget": 60
+  },
+  "storage_profile": "api-integration",
+  "tags": [
+    "fr-009",
+    "api"
+  ],
+  "status": "Pending",
+  "created_at": "2025-09-17T01:01:25.192238+00:00"
+}
