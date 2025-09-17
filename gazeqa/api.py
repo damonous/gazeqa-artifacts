@@ -4,8 +4,11 @@ from __future__ import annotations
 import json
 import logging
 import os
+import queue
 import threading
+import time
 import urllib.parse
+from functools import partial
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -13,15 +16,68 @@ from typing import Optional, Tuple
 
 from .auth import build_auth_orchestrator
 from .bfs import BFSCrawler, CrawlConfig
+from .discovery import discover_site_map
 from .exploration import ExplorationConfig, ExplorationEngine
 from .models import ValidationError
 from .observability import RunObservability
 from .run_service import RunService
-from .site_map import build_default_site_map
 from .workflow import RunWorkflow
 
 
 logger = logging.getLogger(__name__)
+
+
+class WorkflowExecutor:
+    """Simple worker pool that executes workflows sequentially."""
+
+    def __init__(self, workflow: RunWorkflow, *, max_workers: int = 2) -> None:
+        self.workflow = workflow
+        self.queue: queue.Queue[str] = queue.Queue()
+        self.stop_event = threading.Event()
+        self.workers: list[threading.Thread] = []
+        for index in range(max(1, max_workers)):
+            worker = threading.Thread(
+                target=self._worker,
+                name=f"workflow-worker-{index+1}",
+                daemon=True,
+            )
+            worker.start()
+            self.workers.append(worker)
+
+    def submit(self, run_id: str) -> None:
+        if self.stop_event.is_set():  # pragma: no cover - defensive
+            raise RuntimeError("Workflow executor stopped")
+        self.queue.put(run_id)
+
+    def shutdown(self, timeout: float = 2.0) -> None:
+        self.stop_event.set()
+        deadline = None if timeout is None else (time.time() + timeout)
+        while not self.queue.empty():
+            try:
+                self.queue.get_nowait()
+            except queue.Empty:  # pragma: no cover - guard
+                break
+        for worker in self.workers:
+            if deadline is None:
+                worker.join()
+            else:
+                remaining = max(0.0, deadline - time.time())
+                if remaining == 0:
+                    break
+                worker.join(timeout=remaining)
+
+    def _worker(self) -> None:
+        while not self.stop_event.is_set():
+            try:
+                run_id = self.queue.get(timeout=0.5)
+            except queue.Empty:
+                continue
+            try:
+                self.workflow.execute(run_id)
+            except Exception:  # pragma: no cover - defensive logging
+                logger.exception("Workflow execution failed for run %s", run_id)
+            finally:
+                self.queue.task_done()
 
 
 class RunRequestHandler(BaseHTTPRequestHandler):
@@ -39,6 +95,10 @@ class RunRequestHandler(BaseHTTPRequestHandler):
     @property
     def workflow(self) -> Optional[RunWorkflow]:
         return getattr(self.server, "workflow", None)  # type: ignore[attr-defined]
+
+    @property
+    def executor(self) -> Optional[WorkflowExecutor]:
+        return getattr(self.server, "workflow_executor", None)  # type: ignore[attr-defined]
 
     # ------------------------------------------------------------------ helpers
     def _auth_valid(self, query: str) -> bool:
@@ -152,12 +212,10 @@ class RunRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"error": "validation_failed", "field_errors": exc.errors}, status=HTTPStatus.BAD_REQUEST)
                 return
             self._send_json(run_record, status=HTTPStatus.CREATED)
-            if self.workflow:
-                threading.Thread(
-                    target=self._execute_workflow,
-                    args=(run_record["id"],),
-                    daemon=True,
-                ).start()
+            if self.executor:
+                self.executor.submit(run_record["id"])
+            elif self.workflow:
+                self._execute_workflow(run_record["id"])
             return
 
         if parsed.path.startswith("/runs/"):
@@ -313,18 +371,25 @@ def serve(
     exploration_engine = ExplorationEngine(ExplorationConfig(storage_root=storage_path))
     crawler = BFSCrawler(CrawlConfig(storage_root=storage_path))
     telemetry = RunObservability(storage_path)
+    site_map_builder = partial(discover_site_map, storage_root=storage_path)
     workflow = RunWorkflow(
         run_service,
         auth_orchestrator,
         exploration_engine,
         crawler,
         telemetry=telemetry,
-        site_map_builder=build_default_site_map,
+        site_map_builder=site_map_builder,
     )
     server.run_service = run_service  # type: ignore[attr-defined]
     server.workflow = workflow  # type: ignore[attr-defined]
-    server.ui_dir = Path(ui_root)  # type: ignore[attr-defined]
-    server.ui_dir.mkdir(parents=True, exist_ok=True)
+    server.workflow_executor = WorkflowExecutor(workflow)  # type: ignore[attr-defined]
+    ui_path = Path(ui_root)
+    if not ui_path.exists():
+        fallback = Path("lovable")
+        if fallback.exists():
+            ui_path = fallback
+    ui_path.mkdir(parents=True, exist_ok=True)
+    server.ui_dir = ui_path  # type: ignore[attr-defined]
     threading.Thread(target=server.serve_forever, daemon=True).start()
     return server
 

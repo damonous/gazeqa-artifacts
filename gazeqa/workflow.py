@@ -132,7 +132,7 @@ class RunWorkflow:
         retry_policy: RetryPolicy | None = None,
         telemetry: Optional["TelemetrySink"] = None,
         site_map_builder: Optional[
-            Callable[[CreateRunPayload], Tuple[List[PageDescriptor], Dict[str, List[PageDescriptor]]]]
+            Callable[[str, CreateRunPayload], Tuple[List[PageDescriptor], Dict[str, List[PageDescriptor]]]]
         ] = None,
     ) -> None:
         self.run_service = run_service
@@ -164,7 +164,7 @@ class RunWorkflow:
     ) -> Dict[str, Any]:
         manifest = self.run_service.get_run(run_id)
         payload = CreateRunPayload.from_dict(manifest)
-        resolved_site_map, resolved_adjacency = self._resolve_site_map(site_map, adjacency, payload)
+        resolved_site_map, resolved_adjacency = self._resolve_site_map(run_id, site_map, adjacency, payload)
         self._record_checkpoint(run_id, "workflow.started", {"target_url": payload.target_url})
         self._emit("workflow.started", {"run_id": run_id, "target_url": payload.target_url})
         phase = "initializing"
@@ -335,6 +335,7 @@ class RunWorkflow:
 
     def _resolve_site_map(
         self,
+        run_id: str,
         site_map: Iterable[PageDescriptor] | None,
         adjacency: Dict[str, List[PageDescriptor]] | None,
         payload: CreateRunPayload,
@@ -343,7 +344,7 @@ class RunWorkflow:
             return list(site_map), dict(adjacency)
         if self.site_map_builder is None:
             raise WorkflowError("Site map builder not configured and site map not provided")
-        pages, graph = self.site_map_builder(payload)
+        pages, graph = self.site_map_builder(run_id, payload)
         return list(pages), dict(graph)
 
 

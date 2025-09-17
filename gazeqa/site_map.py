@@ -1,18 +1,24 @@
 """Default site map and adjacency builders for demo workflows."""
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Dict, List, Tuple
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from .exploration import PageDescriptor
 from .models import CreateRunPayload
 
 
-def build_default_site_map(payload: CreateRunPayload) -> Tuple[List[PageDescriptor], Dict[str, List[PageDescriptor]]]:
+def build_default_site_map(
+    run_id: str,
+    payload: CreateRunPayload,
+    storage_root: Path | str,
+) -> Tuple[List[PageDescriptor], Dict[str, List[PageDescriptor]]]:
     """Return a deterministic mission/team/admin site map for prototype runs."""
 
     base = payload.target_url.rstrip("/")
-    if not base:
+    parsed = urlparse(base)
+    if not base or parsed.scheme not in {"http", "https"}:
         base = "https://example.test"
 
     def page(page_id: str, path: str, title: str, section: str) -> PageDescriptor:
@@ -37,4 +43,3 @@ def build_default_site_map(payload: CreateRunPayload) -> Tuple[List[PageDescript
 
 
 __all__ = ["build_default_site_map"]
-

@@ -1,30 +1,126 @@
 {
   "run_id": "RUN-FR010-UI",
-  "generated_at": "2025-09-17T04:52:26Z",
+  "generated_at": "2025-09-17T09:04:33Z",
   "artifacts": [
     {
+      "path": "run_summary.json",
+      "size_bytes": 857
+    },
+    {
       "path": "run_manifest.json",
-      "size_bytes": 765
+      "size_bytes": 822
+    },
+    {
+      "path": "reports/criteria.json",
+      "size_bytes": 473
+    },
+    {
+      "path": "ui/dashboard.png",
+      "size_bytes": 83692
     },
     {
       "path": "ui/styles.css",
-      "size_bytes": 3023
+      "size_bytes": 3556
+    },
+    {
+      "path": "ui/index.html",
+      "size_bytes": 2454
     },
     {
       "path": "ui/dashboard.js",
-      "size_bytes": 5069
+      "size_bytes": 6778
     },
     {
       "path": "ui/dashboard.html",
-      "size_bytes": 1868
+      "size_bytes": 2454
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-FBA36398CAE1.json",
+      "size_bytes": 2230
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-7F204DD50B38.json",
+      "size_bytes": 798
+    },
+    {
+      "path": "logs/sse_session_RUN-CDE25D6BEEF7.log",
+      "size_bytes": 1068
+    },
+    {
+      "path": "logs/sse_session_RUN-F9CEE6BA24D2.log",
+      "size_bytes": 580
+    },
+    {
+      "path": "logs/api_get_run_RUN-FBA36398CAE1.json",
+      "size_bytes": 793
+    },
+    {
+      "path": "logs/sse_session_RUN-9455AB55EABF.log",
+      "size_bytes": 672
+    },
+    {
+      "path": "logs/api_get_run_RUN-7F204DD50B38.json",
+      "size_bytes": 593
+    },
+    {
+      "path": "logs/api_get_run_RUN-9455AB55EABF.json",
+      "size_bytes": 793
+    },
+    {
+      "path": "logs/api_get_run_RUN-FC3162461632.json",
+      "size_bytes": 793
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-FC3162461632.json",
+      "size_bytes": 2230
     },
     {
       "path": "logs/api_get_runs.json",
       "size_bytes": 233
     },
     {
+      "path": "logs/api_get_artifacts_RUN-CDE25D6BEEF7.json",
+      "size_bytes": 2230
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-8F0E54F79D15.json",
+      "size_bytes": 2231
+    },
+    {
+      "path": "logs/sse_session_RUN-A7F14FE8B3A6.log",
+      "size_bytes": 779
+    },
+    {
+      "path": "logs/api_get_run_RUN-8F0E54F79D15.json",
+      "size_bytes": 793
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-9455AB55EABF.json",
+      "size_bytes": 2228
+    },
+    {
+      "path": "logs/sse_session.log",
+      "size_bytes": 631
+    },
+    {
+      "path": "logs/api_get_run_RUN-9D76DB4E3DD9.json",
+      "size_bytes": 793
+    },
+    {
       "path": "logs/api_get_artifacts_RUN-19B45DFD34C2.json",
       "size_bytes": 799
+    },
+    {
+      "path": "logs/api_get_run_RUN-A7F14FE8B3A6.json",
+      "size_bytes": 793
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-F9CEE6BA24D2.json",
+      "size_bytes": 2228
+    },
+    {
+      "path": "logs/api_get_run_RUN-F9CEE6BA24D2.json",
+      "size_bytes": 793
     },
     {
       "path": "logs/accessibility_report.txt",
@@ -33,6 +129,18 @@
     {
       "path": "logs/api_get_run_RUN-19B45DFD34C2.json",
       "size_bytes": 593
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-A7F14FE8B3A6.json",
+      "size_bytes": 2230
+    },
+    {
+      "path": "logs/api_get_run_RUN-CDE25D6BEEF7.json",
+      "size_bytes": 793
+    },
+    {
+      "path": "logs/api_get_artifacts_RUN-9D76DB4E3DD9.json",
+      "size_bytes": 2231
     }
   ]
 }

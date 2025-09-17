@@ -22,7 +22,7 @@
    - Ensure metrics for the run are tagged with `run_id`; dashboards referenced in `docs/observability_dashboard_plan.md` will ingest data automatically.
 
 4. **Metrics export** (agent executing run)
-   - Run `python3 tools/run_summary_to_metrics.py artifacts/<date>/<run-id>/run_summary.json --checklist docs/gaze_qa_checklist_v_4.json --output metrics/<run-id>.prom`.
+   - Run `python3 tools/run_summary_to_metrics.py artifacts/<date>/<run-id>/run_summary.json --checklist docs/gaze_qa_checklist_v_4.json --observability artifacts/<date>/<run-id>/observability/metrics.json --output metrics/<run-id>.prom`.
    - Upload `.prom` file via CI artifact or expose through Prometheus textfile collector so dashboards receive updated gauges.
 
 ## Communication Cadence
@@ -48,4 +48,3 @@ Following this process keeps the RTM checklist synchronized with live evidence a
 - API responses (`GET /runs`, `GET /runs/<id>`, `GET /runs/<id>/artifacts`) should be captured for checklist updates covering FR-009 tests.
 - Web UI: capture screenshots of run list/detail pages and note SSE status updates (FR-010 evidence).
 - Reliability runs store checkpoints under `temporal/checkpoints.jsonl` and status history via API (`POST /runs/{id}/status`) for FR-012 evidence.
-

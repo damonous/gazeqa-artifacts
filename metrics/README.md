@@ -8,6 +8,7 @@ To test locally:
    ```bash
    python3 tools/run_summary_to_metrics.py artifacts/<date>/<run-id>/run_summary.json \
      --checklist docs/gaze_qa_checklist_v_4.json \
+     --observability artifacts/<date>/<run-id>/observability/metrics.json \
      --output metrics/gazeqa_metrics.prom
    ```
 3. Point Prometheus to scrape the resulting `.prom` file (e.g., via node_exporter textfile collector) or curl it with a local HTTP file server.

@@ -8,19 +8,19 @@
       "iso": "2025-09-16T22:28:00+08:00"
     },
     "run": {
-      "env": "qa",
-      "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
-      "test_run_id": "RUN-FR010-UI",
-      "started_at": "2025-09-17T07:45:00Z",
-      "finished_at": "2025-09-17T07:47:00Z"
+      "env": "ci",
+      "build_sha": "f1b584291407c7fa42d52f8c18e2deca60fe5b44",
+      "test_run_id": "RUN-FR014-PIPELINE",
+      "started_at": "2025-09-17T09:08:03Z",
+      "finished_at": "2025-09-17T09:08:03Z"
     },
     "execution_plan": "docs/rtm_execution_plan_v1.md"
   },
   "summary": {
     "requirements_total": 17,
-    "requirements_verified": 13,
+    "requirements_verified": 14,
     "criteria_total": 34,
-    "criteria_passed": 26
+    "criteria_passed": 28
   },
   "entries": [
     {
@@ -250,12 +250,14 @@
           "text": "Given a page, when captured, then a screenshot, DOM JSON, and selector candidates are saved.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T00:28:03Z",
+          "last_checked": "2025-09-17T09:06:56Z",
           "evidence": [
             "artifacts/runs/RUN-DEMO-001/selectors/index.json",
             "artifacts/runs/RUN-DEMO-001/selectors/pages.jsonl",
             "artifacts/runs/RUN-BETA-001/selectors/index.json",
-            "artifacts/runs/RUN-BETA-001/selectors/pages.jsonl"
+            "artifacts/runs/RUN-BETA-001/selectors/pages.jsonl",
+            "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/index.json",
+            "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/pages.jsonl"
           ]
         },
         {
@@ -263,10 +265,11 @@
           "text": "Given non-standard UI, when visual analysis runs, then at least one actionable locator is produced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T00:28:03Z",
+          "last_checked": "2025-09-17T09:06:56Z",
           "evidence": [
             "artifacts/runs/RUN-DEMO-001/selectors/dashboard_observations.txt",
-            "artifacts/runs/RUN-BETA-001/selectors/dashboard_observations.txt"
+            "artifacts/runs/RUN-BETA-001/selectors/dashboard_observations.txt",
+            "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/dashboard_observations.txt"
           ]
         }
       ],
@@ -282,7 +285,11 @@
           "artifacts/runs/RUN-BETA-001/selectors/index.json",
           "artifacts/runs/RUN-BETA-001/selectors/home_selectors.json",
           "artifacts/runs/RUN-BETA-001/selectors/dashboard_selectors.json",
-          "artifacts/runs/RUN-BETA-001/selectors/dashboard_observations.txt"
+          "artifacts/runs/RUN-BETA-001/selectors/dashboard_observations.txt",
+          "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/index.json",
+          "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/home_selectors.json",
+          "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/dashboard_selectors.json",
+          "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/selectors/dashboard_observations.txt"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -375,7 +382,7 @@
           "text": "Given AC, when generation runs, then at least one test per story is produced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T07:06:00Z",
+          "last_checked": "2025-09-17T09:06:56Z",
           "evidence": [
             "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
             "artifacts/runs/RUN-DEMO-001/reports/junit_generated.xml",
@@ -390,7 +397,9 @@
             "artifacts/runs/RUN-FR006-009-004/tests/manifest.json",
             "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
             "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/manifest.json",
-            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log"
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/tests/manifest.json",
+            "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/reports/junit_generated.xml"
           ]
         },
         {
@@ -446,7 +455,9 @@
           "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py",
           "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/java/src/test/java/com/gazeqa/generated/ExtendedStoryLifecycleTest.java",
           "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
-          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log"
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/tests/manifest.json",
+          "artifacts/runs/RUN-FR014-PIPELINE/artifacts/runs/RUN-FR014-PIPELINE/tests/python/test_generated_suite.py"
         ],
         "criteria_complete": true,
         "tests_complete": true

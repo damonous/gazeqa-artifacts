@@ -255,10 +255,14 @@ class RunService:
             history = json.loads(history_path.read_text(encoding="utf-8")) if history_path.exists() else []
         except json.JSONDecodeError:
             history = []
-        history.append({
-            "status": event.get("status"),
-            "timestamp": event.get("timestamp")
-        })
+        status = event.get("status")
+        timestamp = event.get("timestamp")
+        if status is None or timestamp is None:
+            return
+        entry = {"status": status, "timestamp": timestamp}
+        if history and history[-1].get("status") == status:
+            return
+        history.append(entry)
         history_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
 
     def _notify_listeners(self, run_id: str, event: dict) -> None:

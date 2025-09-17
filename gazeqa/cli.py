@@ -4,14 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from functools import partial
 from pathlib import Path
 
 from .auth import build_auth_orchestrator
 from .bfs import BFSCrawler, CrawlConfig
+from .discovery import discover_site_map
 from .exploration import ExplorationConfig, ExplorationEngine
 from .observability import RunObservability
 from .run_service import RunService, ValidationError
-from .site_map import build_default_site_map
 from .workflow import RunWorkflow, WorkflowError
 
 
@@ -48,13 +49,15 @@ def main(argv: list[str] | None = None) -> None:
     exploration_engine = ExplorationEngine(ExplorationConfig(storage_root=args.storage_root))
     crawler = BFSCrawler(CrawlConfig(storage_root=args.storage_root))
     telemetry = RunObservability(args.storage_root)
+    site_map_builder = partial(discover_site_map, storage_root=args.storage_root)
+
     workflow = RunWorkflow(
         service,
         auth_orchestrator,
         exploration_engine,
         crawler,
         telemetry=telemetry,
-        site_map_builder=build_default_site_map,
+        site_map_builder=site_map_builder,
     )
     try:
         result = workflow.start(payload)

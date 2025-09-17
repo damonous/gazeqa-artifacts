@@ -278,6 +278,27 @@ def write_criteria_payload(run_dir: Path) -> None:
     write_json(run_dir / "reports" / "criteria.json", criteria)
 
 
+def write_observability_stub(run_dir: Path) -> None:
+    obs_dir = run_dir / "observability"
+    obs_dir.mkdir(parents=True, exist_ok=True)
+    metrics = {
+        "auth": {"stage": "cua", "success": True},
+        "exploration": {"coverage_percent": 0.92, "visited_count": 5, "skipped_count": 1},
+        "crawl": {"visited_count": 5, "skipped_count": 2, "health_ratio": round(5 / 7, 4)},
+        "guardrails": {"exploration": {"rate_limit": 1}, "crawl": {"blocklist": 2}},
+    }
+    write_json(obs_dir / "metrics.json", metrics)
+    log_entry = {
+        "event": "workflow.completed",
+        "run_id": run_dir.name,
+        "timestamp": iso_now(),
+        "coverage_percent": metrics["exploration"]["coverage_percent"],
+        "crawl_visited": metrics["crawl"]["visited_count"],
+        "crawl_skipped": metrics["crawl"]["skipped_count"],
+    }
+    write_text(obs_dir / "logs.jsonl", json.dumps(log_entry) + "\n")
+
+
 def write_run_manifest(run_dir: Path, run_id: str, junit_path: Path) -> None:
     manifest = {
         "run_id": run_id,
@@ -326,6 +347,7 @@ def generate_artifacts(run_dir: Path, run_id: str) -> None:
 
     write_criteria_payload(run_dir)
     write_run_manifest(run_dir, run_id, junit_path)
+    write_observability_stub(run_dir)
 
 
 def parse_args() -> argparse.Namespace:

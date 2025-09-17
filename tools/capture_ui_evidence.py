@@ -5,8 +5,10 @@ from __future__ import annotations
 import contextlib
 import http.client
 import json
-import threading
+import os
+import socket
 import time
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Dict, List
@@ -18,6 +20,13 @@ UI_SOURCE_DIR = Path("lovable")
 API_HOST = "127.0.0.1"
 API_PORT = 8056
 API_BASE = f"http://{API_HOST}:{API_PORT}"
+API_TOKEN = os.getenv("GAZEQA_API_TOKEN", "")
+UI_SCREENSHOT = OUTPUT_RUN / "ui" / "dashboard.png"
+
+try:  # pragma: no cover - optional dependency
+    from playwright.sync_api import sync_playwright
+except Exception:  # pragma: no cover - install guard
+    sync_playwright = None
 
 
 def ensure_dirs() -> None:
@@ -64,6 +73,8 @@ def create_run() -> Dict[str, object]:
         }
     )
     headers = {"Content-Type": "application/json"}
+    if API_TOKEN:
+        headers["Authorization"] = f"Bearer {API_TOKEN}"
     connection.request("POST", "/runs", body=payload, headers=headers)
     response = connection.getresponse()
     body = response.read().decode("utf-8")
@@ -73,36 +84,78 @@ def create_run() -> Dict[str, object]:
     return json.loads(body)
 
 
-def update_status(server, run_id: str) -> None:
-    statuses = ["Exploring", "Synthesizing", "Completed"]
-    for status in statuses:
-        time.sleep(0.5)
-        server.run_service.update_status(run_id, status)
-
-
 def record_api_call(path: str, target: Path) -> Dict[str, object]:
-    with urllib.request.urlopen(f"{API_BASE}{path}") as response:
+    request = urllib.request.Request(f"{API_BASE}{path}")
+    if API_TOKEN:
+        request.add_header("Authorization", f"Bearer {API_TOKEN}")
+    with urllib.request.urlopen(request) as response:
         payload = response.read().decode("utf-8")
     data = json.loads(payload)
     target.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     return data
 
 
-def capture_sse(run_id: str, output: Path, stop_event: threading.Event) -> None:
-    req = urllib.request.Request(f"{API_BASE}/runs/{run_id}/events/stream")
+def capture_sse_snapshot(run_id: str, output: Path, max_events: int = 12) -> None:
+    url = f"{API_BASE}/runs/{run_id}/events/stream"
+    if API_TOKEN:
+        sep = "&" if "?" in url else "?"
+        url = f"{url}{sep}token={API_TOKEN}"
+    req = urllib.request.Request(url)
     with contextlib.closing(urllib.request.urlopen(req, timeout=10)) as response:
-        buffer: List[str] = []
-        while not stop_event.is_set():
-            line = response.readline().decode("utf-8")
-            if not line:
+        lines: List[str] = []
+        events_seen = 0
+        while events_seen < max_events:
+            try:
+                chunk = response.readline()
+            except socket.timeout:
                 break
-            buffer.append(line.rstrip("\n"))
-            if line.strip() == "":
-                # blank line indicates event boundary; stop after 5 events
-                events_seen = sum(1 for item in buffer if item.startswith("data:"))
-                if events_seen >= 5:
-                    break
-        output.write_text("\n".join(buffer) + "\n", encoding="utf-8")
+            if not chunk:
+                break
+            text = chunk.decode("utf-8").rstrip("\n")
+            lines.append(text)
+            if text.startswith("data:"):
+                events_seen += 1
+            if text == "" and events_seen >= max_events:
+                break
+        output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def capture_dashboard_screenshot() -> None:
+    if sync_playwright is None:  # pragma: no cover - optional dependency
+        note = OUTPUT_RUN / "logs" / "screenshot_unavailable.txt"
+        note.parent.mkdir(parents=True, exist_ok=True)
+        note.write_text("Playwright not available; screenshot skipped.\n", encoding="utf-8")
+        return
+
+    query = {
+        "apiBase": API_BASE,
+    }
+    if API_TOKEN:
+        query["token"] = API_TOKEN
+    query_string = urllib.parse.urlencode(query)
+    dashboard_url = f"{API_BASE}/ui/?{query_string}"
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        context = browser.new_context()
+        page = context.new_page()
+        page.goto(dashboard_url, wait_until="networkidle", timeout=15000)
+        page.wait_for_timeout(1000)
+        UI_SCREENSHOT.parent.mkdir(parents=True, exist_ok=True)
+        page.screenshot(path=str(UI_SCREENSHOT), full_page=True)
+        browser.close()
+
+
+def wait_for_completion(server, run_id: str, timeout: float = 20.0) -> str:
+    deadline = time.time() + timeout
+    status = "Running"
+    while time.time() < deadline:
+        manifest = server.run_service.get_run(run_id)
+        status = manifest.get("status", status)
+        if status in {"Completed", "Failed"}:
+            break
+        time.sleep(0.5)
+    return status
 
 
 def build_manifest(api_calls: Dict[str, Path], sse_log: Path, accessibility_result: Dict[str, bool]) -> None:
@@ -128,6 +181,8 @@ def build_manifest(api_calls: Dict[str, Path], sse_log: Path, accessibility_resu
         },
         "accessibility_checks": accessibility_result,
     }
+    if UI_SCREENSHOT.exists():
+        manifest["artifacts"]["ui"]["screenshot"] = "ui/dashboard.png"
     (OUTPUT_RUN / "run_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     artifacts = []
@@ -182,15 +237,9 @@ def main() -> None:
         run_record = create_run()
         run_id = run_record['id']
 
-        stop_event = threading.Event()
-        sse_log = OUTPUT_RUN / "logs" / "sse_session.log"
-        thread = threading.Thread(target=capture_sse, args=(run_id, sse_log, stop_event), daemon=True)
-        thread.start()
-
-        update_status(server, run_id)
-        time.sleep(1)
-        stop_event.set()
-        thread.join(timeout=2)
+        wait_for_completion(server, run_id)
+        sse_log = OUTPUT_RUN / "logs" / f"sse_session_{run_id}.log"
+        capture_sse_snapshot(run_id, sse_log)
 
         api_logs = {
             'runs': OUTPUT_RUN / "logs" / "api_get_runs.json",
@@ -200,6 +249,8 @@ def main() -> None:
         record_api_call('/runs?offset=0&limit=5', api_logs['runs'])
         record_api_call(f"/runs/{run_id}", api_logs['run_detail'])
         record_api_call(f"/runs/{run_id}/artifacts", api_logs['artifacts'])
+
+        capture_dashboard_screenshot()
 
         build_manifest(api_logs, sse_log, accessibility_result)
         write_checklist_stub(api_logs, sse_log)

@@ -25,8 +25,11 @@ def collect_python_tests(manifest: Dict[str, object], run_root: Path) -> List[st
     tests: List[str] = []
     for story in manifest.get("stories", []):
         for case in story.get("tests", []):
-            if case.get("framework") == "PYTEST":
-                tests.append(case.get("path"))
+            framework = str(case.get("framework", "")).upper()
+            if framework.startswith("PYTEST"):
+                path = case.get("path")
+                if path:
+                    tests.append(path)
     unique = sorted(set(tests))
     return [run_root / entry.split('::')[0] for entry in unique]
 

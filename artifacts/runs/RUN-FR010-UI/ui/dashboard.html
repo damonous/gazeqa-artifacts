@@ -10,6 +10,17 @@
     <header>
       <h1>GazeQA Run Dashboard</h1>
       <p class="tagline">Monitor automated synthesis runs, download artifacts, and watch live status updates.</p>
+      <form id="config-form" class="config">
+        <div class="form-field">
+          <label for="api-base">API base</label>
+          <input id="api-base" name="api-base" type="url" inputmode="url" placeholder="https://api.example.com" required />
+        </div>
+        <div class="form-field">
+          <label for="api-token">Bearer token</label>
+          <input id="api-token" name="api-token" type="text" autocomplete="off" placeholder="Optional" />
+        </div>
+        <button type="submit" class="secondary" aria-label="Save API configuration">Save</button>
+      </form>
     </header>
     <div class="layout" role="application">
       <nav aria-label="Runs">

@@ -53,6 +53,8 @@ class CreateRunPayload:
             errors["target_url"] = "target_url must include scheme and host"
 
         cred_raw = raw.get("credentials") or {}
+        if isinstance(cred_raw, dict) and cred_raw and not any(cred_raw.values()):
+            cred_raw = {}
         if not isinstance(cred_raw, dict):
             errors["credentials"] = "credentials must be an object"
             cred_raw = {}

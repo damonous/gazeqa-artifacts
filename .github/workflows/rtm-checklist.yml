@@ -47,6 +47,7 @@ jobs:
         run: |
           python3 tools/run_summary_to_metrics.py artifacts/run_summary.json \
             --checklist docs/gaze_qa_checklist_v_4.json \
+            --observability artifacts/runs/${{ github.run_id }}/observability/metrics.json \
             --output metrics/gazeqa_metrics.prom
 
       - name: Show checklist summary changes

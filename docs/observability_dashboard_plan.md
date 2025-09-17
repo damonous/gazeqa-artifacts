@@ -21,7 +21,7 @@
 
 ### Metrics Export Utility
 - Use `tools/run_summary_to_metrics.py` after each automation run to produce Prometheus text-format metrics (consume via node_exporter textfile collector or custom scrape target).
-- Command example: `python3 tools/run_summary_to_metrics.py artifacts/<date>/<run-id>/run_summary.json --checklist docs/gaze_qa_checklist_v_4.json --output metrics/latest.prom`.
+- Command example: `python3 tools/run_summary_to_metrics.py artifacts/<date>/<run-id>/run_summary.json --checklist docs/gaze_qa_checklist_v_4.json --observability artifacts/<date>/<run-id>/observability/metrics.json --output metrics/latest.prom`.
 - Metrics exposed: `gazeqa_tests_total`, `gazeqa_tests_passed`, `gazeqa_tests_failed`, `gazeqa_criteria_total`, `gazeqa_criteria_passed`, and global checklist gauges.
 
 ### 1. Run Overview

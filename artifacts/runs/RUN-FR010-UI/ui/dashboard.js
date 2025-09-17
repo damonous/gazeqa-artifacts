@@ -1,20 +1,54 @@
-const apiBase = window.localStorage.getItem('GAZEQA_API_BASE') || window.location.origin;
 const runsList = document.getElementById('runs-list');
 const runSummary = document.getElementById('run-summary');
 const artifactList = document.getElementById('artifact-list');
 const logsOutput = document.getElementById('logs-output');
 const refreshRunsBtn = document.getElementById('refresh-runs');
 const refreshArtifactsBtn = document.getElementById('refresh-artifacts');
+const configForm = document.getElementById('config-form');
+const apiBaseInput = document.getElementById('api-base');
+const apiTokenInput = document.getElementById('api-token');
 
 let activeRunId = null;
 let eventSource = null;
 
-function apiUrl(path) {
-  return `${apiBase}${path}`;
+const urlParams = new URLSearchParams(window.location.search);
+const storedBase = window.localStorage.getItem('GAZEQA_API_BASE');
+const storedToken = window.localStorage.getItem('GAZEQA_API_TOKEN');
+
+function normalizeBase(value) {
+  if (!value) {
+    return window.location.origin;
+  }
+  let next = value.trim();
+  if (!/^https?:\/\//i.test(next)) {
+    next = `https://${next}`;
+  }
+  return next.replace(/\/+$/, '');
 }
 
-async function fetchJson(path) {
-  const response = await fetch(apiUrl(path));
+const initialBase = normalizeBase(storedBase || urlParams.get('apiBase') || window.location.origin);
+
+const apiConfig = {
+  base: initialBase,
+  token: storedToken || urlParams.get('token') || '',
+};
+
+apiBaseInput.value = apiConfig.base;
+if (apiConfig.token) {
+  apiTokenInput.value = apiConfig.token;
+}
+
+function apiUrl(path) {
+  const url = new URL(path, apiConfig.base);
+  return url.toString();
+}
+
+async function fetchJson(path, init = {}) {
+  const headers = new Headers(init.headers || {});
+  if (apiConfig.token) {
+    headers.set('Authorization', `Bearer ${apiConfig.token}`);
+  }
+  const response = await fetch(apiUrl(path), { ...init, headers });
   if (!response.ok) {
     throw new Error(`Request failed: ${response.status}`);
   }
@@ -102,8 +136,11 @@ function subscribeToEvents(runId) {
   if (eventSource) {
     eventSource.close();
   }
-  const streamUrl = apiUrl(`/runs/${encodeURIComponent(runId)}/events/stream`);
-  eventSource = new EventSource(streamUrl);
+  const streamUrl = new URL(`/runs/${encodeURIComponent(runId)}/events/stream`, apiConfig.base);
+  if (apiConfig.token) {
+    streamUrl.searchParams.set('token', apiConfig.token);
+  }
+  eventSource = new EventSource(streamUrl.toString());
   eventSource.onmessage = (message) => {
     try {
       const payload = JSON.parse(message.data);
@@ -157,6 +194,25 @@ refreshArtifactsBtn.addEventListener('click', () => {
   if (activeRunId) {
     selectRun(activeRunId);
   }
+});
+
+configForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  let baseValue = apiBaseInput.value.trim();
+  if (!baseValue) {
+    return;
+  }
+  baseValue = normalizeBase(baseValue);
+  const tokenValue = apiTokenInput.value.trim();
+  apiConfig.base = baseValue;
+  apiConfig.token = tokenValue;
+  window.localStorage.setItem('GAZEQA_API_BASE', apiConfig.base);
+  if (apiConfig.token) {
+    window.localStorage.setItem('GAZEQA_API_TOKEN', apiConfig.token);
+  } else {
+    window.localStorage.removeItem('GAZEQA_API_TOKEN');
+  }
+  refreshRuns();
 });
 
 refreshRuns();
