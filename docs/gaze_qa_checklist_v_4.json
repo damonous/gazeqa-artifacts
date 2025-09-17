@@ -461,10 +461,13 @@
           "text": "Given API keys, when POST /runs is called from CI, then a run starts and status is retrievable.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T05:07:30Z",
+          "last_checked": "2025-09-17T06:20:10Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log",
-            "artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log"
+            "artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log",
+            "artifacts/runs/RUN-1212BF4DDBE2/api/post_runs_response.json",
+            "artifacts/runs/RUN-1212BF4DDBE2/api/get_runs_offset0_limit20.json",
+            "artifacts/runs/RUN-1212BF4DDBE2/api/get_run_events.json"
           ]
         },
         {
@@ -489,7 +492,10 @@
           "artifacts/runs/RUN-FR006-009-001/api_cli/cli_payload.json",
           "artifacts/runs/RUN-FR006-009-002/logs/cli_run_create.log",
           "artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log",
-          "artifacts/runs/RUN-FR006-009-002/api_cli/cli_payload.json"
+          "artifacts/runs/RUN-FR006-009-002/api_cli/cli_payload.json",
+          "artifacts/runs/RUN-1212BF4DDBE2/api/post_runs_response.json",
+          "artifacts/runs/RUN-1212BF4DDBE2/api/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-1212BF4DDBE2/api/get_run_events.json"
         ],
         "criteria_complete": true,
         "tests_complete": true

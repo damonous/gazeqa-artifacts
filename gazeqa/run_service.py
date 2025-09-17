@@ -60,6 +60,15 @@ class RunService:
             }
 
         self._persist_run(run_id, run_dir, run_record, auth_result)
+        self._append_event(
+            run_dir,
+            {
+                "event": "run.created",
+                "run_id": run_id,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "status": run_record["status"],
+            },
+        )
         return run_record
 
     def get_run(self, run_id: str) -> Dict[str, object]:
@@ -75,6 +84,23 @@ class RunService:
     def build_artifact_manifest(self, run_id: str) -> Dict[str, object]:
         builder = ArtifactManifestBuilder(self.storage_root)
         return builder.build(run_id)
+
+    def get_run_events(self, run_id: str) -> List[Dict[str, object]]:
+        run_dir = self.storage_root / run_id
+        events_path = run_dir / "events.jsonl"
+        if not events_path.exists():
+            raise FileNotFoundError(f"Run {run_id} events not found")
+        events: List[Dict[str, object]] = []
+        with events_path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    events.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+        return events
 
     def _generate_run_id(self) -> str:
         return f"RUN-{uuid.uuid4().hex[:12].upper()}"
@@ -117,6 +143,12 @@ class RunService:
 
         summary_path = run_dir / "run_summary.json"
         summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+
+    def _append_event(self, run_dir: Path, event: Dict[str, object]) -> None:
+        events_path = run_dir / "events.jsonl"
+        events_path.parent.mkdir(parents=True, exist_ok=True)
+        with events_path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(event) + "\n")
 
     @staticmethod
     def _to_relative_path(path_value: Optional[str], run_dir: Path) -> Optional[str]:

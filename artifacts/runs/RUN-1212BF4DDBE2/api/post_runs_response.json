@@ -1,0 +1,18 @@
+{
+  "id": "RUN-1212BF4DDBE2",
+  "target_url": "https://alpha-stage.example/api",
+  "credentials": {
+    "username": null,
+    "secret_ref": null
+  },
+  "budgets": {
+    "time_budget_minutes": 30,
+    "page_budget": 200
+  },
+  "storage_profile": "default",
+  "tags": [
+    "fr-009"
+  ],
+  "status": "Pending",
+  "created_at": "2025-09-17T02:51:58.280939+00:00"
+}

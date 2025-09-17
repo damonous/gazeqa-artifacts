@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import threading
+import urllib.parse
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -28,14 +29,14 @@ class RunRequestHandler(BaseHTTPRequestHandler):
             return {}, False
 
     def do_GET(self) -> None:  # noqa: N802
-        if self.path == "/runs":
-            runs = self.run_service.list_runs()
-            self._send_json({"runs": runs})
+        parsed = urllib.parse.urlsplit(self.path)
+        if parsed.path == "/runs":
+            self._send_paginated_runs(parsed.query)
             return
-        if self.path.startswith("/runs/"):
-            segments = self.path.split("/")
-            if len(segments) == 3 and segments[2]:
-                run_id = segments[2]
+        if parsed.path.startswith("/runs"):
+            parts = [p for p in parsed.path.split("/") if p]
+            if len(parts) == 2:
+                run_id = parts[1]
                 try:
                     run = self.run_service.get_run(run_id)
                 except FileNotFoundError:
@@ -43,14 +44,18 @@ class RunRequestHandler(BaseHTTPRequestHandler):
                     return
                 self._send_json(run)
                 return
-            if len(segments) == 4 and segments[3] == "artifacts":
-                run_id = segments[2]
+            if len(parts) == 3 and parts[2] == "artifacts":
+                run_id = parts[1]
                 try:
                     manifest = self.run_service.build_artifact_manifest(run_id)
                 except FileNotFoundError:
                     self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
                     return
                 self._send_json(manifest)
+                return
+            if len(parts) == 3 and parts[2] == "events":
+                run_id = parts[1]
+                self._send_run_events(run_id)
                 return
         self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
 
@@ -79,6 +84,41 @@ class RunRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def _send_paginated_runs(self, query: str) -> None:
+        params = urllib.parse.parse_qs(query)
+        try:
+            offset = max(0, int(params.get("offset", [0])[0]))
+        except ValueError:
+            offset = 0
+        try:
+            limit = int(params.get("limit", [20])[0])
+        except ValueError:
+            limit = 20
+        limit = max(1, min(limit, 100))
+        runs = self.run_service.list_runs()
+        slice_ = runs[offset : offset + limit]
+        total = len(runs)
+        next_offset = offset + limit if offset + limit < total else None
+        prev_offset = offset - limit if offset - limit >= 0 else None
+        self._send_json(
+            {
+                "runs": slice_,
+                "offset": offset,
+                "limit": limit,
+                "next_offset": next_offset,
+                "previous_offset": prev_offset,
+                "total": total,
+            }
+        )
+
+    def _send_run_events(self, run_id: str) -> None:
+        try:
+            events = self.run_service.get_run_events(run_id)
+        except FileNotFoundError:
+            self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
+            return
+        self._send_json({"run_id": run_id, "events": events})
 
 
 def serve(host: str = "127.0.0.1", port: int = 8000, storage_root: Path | str = "artifacts/runs") -> ThreadingHTTPServer:
