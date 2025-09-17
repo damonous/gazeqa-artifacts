@@ -313,7 +313,13 @@
             "artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
             "artifacts/runs/RUN-FR006-009-003/frd/stories_export.json",
             "artifacts/runs/RUN-FR006-009-004/frd/requirements_synthesis.md",
-            "artifacts/runs/RUN-FR006-009-004/frd/stories_export.json"
+            "artifacts/runs/RUN-FR006-009-004/frd/stories_export.json",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/frd/requirements_synthesis.md",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/frd/stories_export.json",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/frd/stories_export.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/frd/requirements_synthesis.md",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/frd/stories_export.json"
           ]
         },
         {
@@ -326,7 +332,10 @@
             "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log",
             "artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log",
             "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log",
-            "artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log"
+            "artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log"
           ]
         }
       ],
@@ -346,7 +355,16 @@
           "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log",
           "artifacts/runs/RUN-FR006-009-004/frd/requirements_synthesis.md",
           "artifacts/runs/RUN-FR006-009-004/frd/stories_export.json",
-          "artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log"
+          "artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/frd/requirements_synthesis.md",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/frd/stories_export.json",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/frd/stories_export.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/frd/requirements_synthesis.md",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/frd/stories_export.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -382,7 +400,13 @@
             "artifacts/runs/RUN-FR006-009-003/tests/manifest.json",
             "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
             "artifacts/runs/RUN-FR006-009-004/tests/manifest.json",
-            "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log"
+            "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/manifest.json",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/tests/manifest.json",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/tests/manifest.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log"
           ]
         },
         {
@@ -399,7 +423,13 @@
             "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
             "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log",
             "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
-            "artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log"
+            "artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log"
           ]
         }
       ],
@@ -431,7 +461,22 @@
           "artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py",
           "artifacts/runs/RUN-FR006-009-004/tests/java/src/test/java/com/gazeqa/generated/DomBackedStoryLifecycleTest.java",
           "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
-          "artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log"
+          "artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/manifest.json",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/tests/java/src/test/java/com/gazeqa/generated/ExtendedStoryLifecycleTest.java",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/tests/manifest.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/tests/python/test_adjacency_synthesis.py",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/tests/java/src/test/java/com/gazeqa/generated/AdjacencyStoryLifecycleTest.java",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/tests/manifest.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/tests/java/src/test/java/com/gazeqa/generated/DomBackedStoryLifecycleTest.java",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -464,7 +509,13 @@
             "artifacts/runs/RUN-FR006-009-003/index.json",
             "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
             "artifacts/runs/RUN-FR006-009-004/index.json",
-            "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
+            "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/index.json",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/index.json",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/index.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
           ]
         },
         {
@@ -477,7 +528,10 @@
             "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log",
             "artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log",
             "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
-            "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
+            "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
           ]
         }
       ],
@@ -501,7 +555,19 @@
           "artifacts/runs/RUN-FR006-009-004/selectors/index.json",
           "artifacts/runs/RUN-FR006-009-004/index.json",
           "artifacts/runs/RUN-FR006-009-004/run_manifest.json",
-          "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
+          "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/selectors/index.json",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/index.json",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/run_manifest.json",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/selectors/index.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/index.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/run_manifest.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/selectors/index.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/index.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/run_manifest.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -534,7 +600,12 @@
             "artifacts/runs/RUN-FR006-009-003/logs/post_runs_response.json",
             "artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json",
             "artifacts/runs/RUN-FR006-009-004/logs/post_runs_response.json",
-            "artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json"
+            "artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/post_runs_response.json",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/post_runs_response.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json"
           ]
         },
         {
@@ -549,7 +620,12 @@
             "artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
             "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json",
             "artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json",
-            "artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json"
+            "artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json",
+            "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/cli_run_create.log",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
+            "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json",
+            "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json"
           ]
         }
       ],
@@ -576,7 +652,20 @@
           "artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json",
           "artifacts/runs/RUN-FR006-009-004/api/responses/post_runs_response.json",
           "artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json",
-          "artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json"
+          "artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/cli_run_create.log",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log",
+          "artifacts/runs/RUN-FR006-009-002/artifacts/runs/RUN-FR006-009-002/api_cli/cli_payload.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/post_runs_response.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/api/responses/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-FR006-009-003/artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/api/responses/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/api/responses/post_runs_response.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-FR006-009-004/artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json"
         ],
         "criteria_complete": true,
         "tests_complete": true

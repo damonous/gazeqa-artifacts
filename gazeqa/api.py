@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import threading
 import urllib.parse
 from http import HTTPStatus
@@ -15,10 +16,18 @@ from .run_service import RunService, ValidationError
 
 class RunRequestHandler(BaseHTTPRequestHandler):
     server_version = "GazeQA/0.1"
+    AUTH_TOKEN = os.getenv("GAZEQA_API_TOKEN")
 
     @property
     def run_service(self) -> RunService:
         return self.server.run_service  # type: ignore[attr-defined]
+
+    def _authenticate(self) -> bool:
+        if not self.AUTH_TOKEN:
+            return True
+        auth_header = self.headers.get("Authorization", "")
+        expected = f"Bearer {self.AUTH_TOKEN}"
+        return auth_header == expected
 
     def _read_json(self) -> Tuple[dict, bool]:
         length = int(self.headers.get("Content-Length", "0"))
@@ -60,6 +69,9 @@ class RunRequestHandler(BaseHTTPRequestHandler):
         self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
 
     def do_POST(self) -> None:  # noqa: N802
+        if not self._authenticate():
+            self._send_json({"error": "unauthorized"}, status=HTTPStatus.UNAUTHORIZED)
+            return
         if self.path != "/runs":
             self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
             return

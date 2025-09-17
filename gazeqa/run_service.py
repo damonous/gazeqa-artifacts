@@ -5,7 +5,7 @@ import json
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, TYPE_CHECKING
+from typing import Callable, Dict, Iterable, List, Optional, TYPE_CHECKING
 
 from .artifacts import ArtifactManifestBuilder
 from .models import CreateRunPayload, ValidationError
@@ -25,12 +25,20 @@ class RunService:
         self.storage_root = Path(storage_root)
         self.storage_root.mkdir(parents=True, exist_ok=True)
         self.auth_orchestrator = auth_orchestrator
+        self.status_listeners: Dict[str, List[Callable[[str], None]]] = {}
 
     def create_run(self, payload_dict: Dict[str, object]) -> Dict[str, object]:
         payload = CreateRunPayload.from_dict(payload_dict)
         run_id = self._generate_run_id()
-        run_record = {
+        run_dir = self.storage_root / run_id
+        timestamp = datetime.now(timezone.utc).isoformat()
+
+        run_record: Dict[str, object] = {
             "id": run_id,
+            "status": "Pending",
+            "status_history": [
+                {"status": "Pending", "timestamp": timestamp}
+            ],
             "target_url": payload.target_url,
             "credentials": {
                 "username": payload.credentials.username,
@@ -42,22 +50,23 @@ class RunService:
             },
             "storage_profile": payload.storage_profile,
             "tags": payload.tags,
-            "status": "Pending",
-            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": timestamp,
         }
 
         auth_result: Optional[dict] = None
-        run_dir = self.storage_root / run_id
-
         if self.auth_orchestrator and not payload.credentials.is_empty():
             auth_result = self.auth_orchestrator.authenticate(run_id, payload.credentials)
-            run_record["auth"] = {
-                "stage": auth_result.get("stage"),
-                "success": auth_result.get("success"),
-                "storage_state_path": self._to_relative_path(
-                    auth_result.get("storage_state_path"), run_dir
-                ),
-            }
+            status = "Authenticated" if auth_result.get("success") else "AuthFailed"
+            run_record["status"] = status
+            run_record.setdefault("status_history", []).append(
+                {"status": status, "timestamp": datetime.now(timezone.utc).isoformat()}
+            )
+
+        # Transition to running state once persisted
+        run_record["status"] = "Running"
+        run_record.setdefault("status_history", []).append(
+            {"status": "Running", "timestamp": datetime.now(timezone.utc).isoformat()}
+        )
 
         self._persist_run(run_id, run_dir, run_record, auth_result)
         self._append_event(
@@ -65,15 +74,15 @@ class RunService:
             {
                 "event": "run.created",
                 "run_id": run_id,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "status": run_record["status"],
+                "timestamp": datetime.now(timezone.utc).isoformat(),
             },
         )
+        self._notify_listeners(run_id)
         return run_record
 
     def get_run(self, run_id: str) -> Dict[str, object]:
-        run_dir = self.storage_root / run_id
-        manifest_path = run_dir / "run_manifest.json"
+        manifest_path = self.storage_root / run_id / "run_manifest.json"
         if not manifest_path.exists():
             raise FileNotFoundError(f"Run {run_id} not found")
         return json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -85,21 +94,59 @@ class RunService:
         builder = ArtifactManifestBuilder(self.storage_root)
         return builder.build(run_id)
 
-    def get_run_events(self, run_id: str) -> List[Dict[str, object]]:
+    def get_status_history(self, run_id: str) -> List[Dict[str, object]]:
+        history_path = self.storage_root / run_id / "status_history.json"
+        if history_path.exists():
+            return json.loads(history_path.read_text(encoding="utf-8"))
+        manifest = self.get_run(run_id)
+        history = manifest.get("status_history")
+        if history:
+            return history  # type: ignore[return-value]
+        return [
+            {
+                "status": manifest.get("status", "Pending"),
+                "timestamp": manifest.get("created_at"),
+            }
+        ]
+
+    def update_status(self, run_id: str, status: str) -> None:
         run_dir = self.storage_root / run_id
-        events_path = run_dir / "events.jsonl"
+        history = self.get_status_history(run_id)
+        history.append({"status": status, "timestamp": datetime.now(timezone.utc).isoformat()})
+        (run_dir / "status_history.json").write_text(json.dumps(history, indent=2), encoding="utf-8")
+
+        manifest = self.get_run(run_id)
+        manifest["status"] = status
+        manifest.setdefault("status_history", history)
+        (run_dir / "run_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+        self._append_event(
+            run_dir,
+            {
+                "event": "run.status",
+                "run_id": run_id,
+                "status": status,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+        )
+        self._notify_listeners(run_id)
+
+    def register_listener(self, run_id: str, callback: Callable[[str], None]) -> None:
+        self.status_listeners.setdefault(run_id, []).append(callback)
+
+    def get_run_events(self, run_id: str) -> List[Dict[str, object]]:
+        events_path = self.storage_root / run_id / "events.jsonl"
         if not events_path.exists():
-            raise FileNotFoundError(f"Run {run_id} events not found")
+            return []
         events: List[Dict[str, object]] = []
         with events_path.open("r", encoding="utf-8") as handle:
             for line in handle:
                 line = line.strip()
-                if not line:
-                    continue
-                try:
-                    events.append(json.loads(line))
-                except json.JSONDecodeError:
-                    continue
+                if line:
+                    try:
+                        events.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
         return events
 
     def _generate_run_id(self) -> str:
@@ -122,11 +169,14 @@ class RunService:
             "env": "dev",
             "tests": [],
             "criteria": [],
-            "intake": {
-                "status": "Pending",
-                "created_at": run_record["created_at"],
-            },
+            "status": run_record.get("status"),
+            "status_history": run_record.get("status_history", []),
         }
+        summary_path = run_dir / "run_summary.json"
+        summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+
+        history_path = run_dir / "status_history.json"
+        history_path.write_text(json.dumps(run_record.get("status_history", []), indent=2), encoding="utf-8")
 
         if auth_result:
             summary["auth"] = {
@@ -140,15 +190,19 @@ class RunService:
                 ),
                 "metadata": auth_result.get("metadata", {}),
             }
-
-        summary_path = run_dir / "run_summary.json"
-        summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+            summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
     def _append_event(self, run_dir: Path, event: Dict[str, object]) -> None:
         events_path = run_dir / "events.jsonl"
-        events_path.parent.mkdir(parents=True, exist_ok=True)
         with events_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(event) + "\n")
+
+    def _notify_listeners(self, run_id: str) -> None:
+        for callback in self.status_listeners.get(run_id, []):
+            try:
+                callback(run_id)
+            except Exception:  # pragma: no cover
+                continue
 
     @staticmethod
     def _to_relative_path(path_value: Optional[str], run_dir: Path) -> Optional[str]:
@@ -161,8 +215,8 @@ class RunService:
             return str(path_value)
 
     @staticmethod
-    def _normalize_evidence(paths: Iterable[str], run_dir: Path) -> list[str]:
-        normalized: list[str] = []
+    def _normalize_evidence(paths: Iterable[str], run_dir: Path) -> List[str]:
+        normalized: List[str] = []
         for item in paths:
             candidate = Path(item)
             try:

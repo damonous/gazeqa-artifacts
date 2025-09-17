@@ -1,0 +1,25 @@
+groups:
+  - name: gazeqa-core
+    interval: 1m
+    rules:
+      - alert: LowCoverage
+        expr: gauge_abs(gazeqa_tests_failed) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Detected failed RTM tests"
+      - alert: RequirementsRegression
+        expr: gazeqa_requirements_verified < 5
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Requirements verified dropped below threshold"
+      - alert: CoverageRegression
+        expr: increase(gazeqa_criteria_passed[10m]) <= 0
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "No new criteria passed in the last 10 minutes"

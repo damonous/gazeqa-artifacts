@@ -1,0 +1,49 @@
+{
+  "title": "GazeQA Overview",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Requirements Verified",
+      "targets": [
+        {
+          "expr": "gazeqa_requirements_verified"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Tests vs Criteria",
+      "targets": [
+        {
+          "expr": "gazeqa_tests_total"
+        },
+        {
+          "expr": "gazeqa_criteria_passed"
+        }
+      ],
+      "legend": true
+    },
+    {
+      "type": "table",
+      "title": "Recent Runs",
+      "targets": [
+        {
+          "expr": "topk(10, gazeqa_tests_total)"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Coverage vs Crawl",
+      "targets": [
+        {
+          "expr": "gazeqa_criteria_passed"
+        },
+        {
+          "expr": "gazeqa_tests_total"
+        }
+      ],
+      "legend": true
+    }
+  ]
+}

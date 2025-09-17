@@ -1,0 +1,13 @@
+{
+  "target_url": "https://example-app.test",
+  "credentials": {
+    "username": "qa@example.com",
+    "secret_ref": "vault://kv/gazeqa/runs/demo"
+  },
+  "budgets": {
+    "time_budget_minutes": 60,
+    "page_budget": 250
+  },
+  "storage_profile": "azure-blob",
+  "tags": ["demo", "smoke"]
+}

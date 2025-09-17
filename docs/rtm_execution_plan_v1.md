@@ -147,7 +147,7 @@
 
 ## FR-009 Public API and CLI
 - Owner: Agent Beta
-- Status: In Progress
+- Status: Completed
 - Latest Evidence: RUN-FR006-009-004 (CLI/API pagination + events logs)
 - Components: API, CLI, Orchestrator
 - Dependencies: FR-001, FR-008

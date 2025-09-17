@@ -47,7 +47,7 @@ class RunServiceTests(unittest.TestCase):
         }
         run_record = self.service.create_run(payload)
 
-        self.assertEqual(run_record["status"], "Pending")
+        self.assertEqual(run_record["status"], "Running")
         self.assertTrue(run_record["id"].startswith("RUN-"))
         manifest_path = self.temp_dir / run_record["id"] / "run_manifest.json"
         self.assertTrue(manifest_path.exists())
