@@ -1,0 +1,73 @@
+{
+  "run_id": "RUN-ALPHA-EXP-002",
+  "env": "qa",
+  "build_sha": "b011ff1ac9b329b19930838edf479bda1ac71f68",
+  "started_at": "2025-09-17T02:16:57Z",
+  "finished_at": "2025-09-17T02:16:57Z",
+  "tests": [
+    {
+      "id": "TC-FR-003-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/coverage/coverage_report.json",
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/visited_pages.jsonl"
+      ]
+    },
+    {
+      "id": "TC-FR-003-002",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/screenshots/home.png",
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/dom/home.html"
+      ]
+    },
+    {
+      "id": "TC-FR-004-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/bfs/page_map.jsonl",
+        "artifacts/runs/RUN-ALPHA-EXP-002/bfs/skipped_links.json",
+        "artifacts/runs/RUN-ALPHA-EXP-002/bfs/coverage_merge.json"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-003-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:12:05Z",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/coverage/coverage_report.json",
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/visited_pages.jsonl"
+      ]
+    },
+    {
+      "id": "FR-003-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:12:08Z",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/visited_pages.jsonl",
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/screenshots/home.png",
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/screenshots/dashboard.png"
+      ]
+    },
+    {
+      "id": "FR-004-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:12:20Z",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/bfs/page_map.jsonl",
+        "artifacts/runs/RUN-ALPHA-EXP-002/bfs/coverage_merge.json"
+      ]
+    },
+    {
+      "id": "FR-004-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:12:24Z",
+      "evidence": [
+        "artifacts/runs/RUN-ALPHA-EXP-002/bfs/skipped_links.json",
+        "artifacts/runs/RUN-ALPHA-EXP-002/exploration/visited_pages.jsonl"
+      ]
+    }
+  ]
+}

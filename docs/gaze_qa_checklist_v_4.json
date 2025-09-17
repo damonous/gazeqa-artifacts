@@ -10,9 +10,9 @@
     "run": {
       "env": "qa",
       "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
-      "test_run_id": "RUN-FR006-009-001",
-      "started_at": "2025-09-17T04:14:00Z",
-      "finished_at": "2025-09-17T04:22:00Z"
+      "test_run_id": "RUN-FR006-009-002",
+      "started_at": "2025-09-17T05:04:30Z",
+      "finished_at": "2025-09-17T05:08:00Z"
     },
     "execution_plan": "docs/rtm_execution_plan_v1.md"
   },
@@ -285,10 +285,12 @@
           "text": "Given captured pages, when synthesis runs, then each feature area has at least one story with AC.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:15:00Z",
+          "last_checked": "2025-09-17T05:06:00Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/frd/requirements_synthesis.md",
-            "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json"
+            "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json",
+            "artifacts/runs/RUN-FR006-009-002/frd/requirements_synthesis.md",
+            "artifacts/runs/RUN-FR006-009-002/frd/stories_export.json"
           ]
         },
         {
@@ -296,20 +298,24 @@
           "text": "Given ambiguous flows, when critique pass runs, then low-quality stories are revised.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:15:00Z",
+          "last_checked": "2025-09-17T05:06:00Z",
           "evidence": [
-            "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log",
+            "artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": null,
+        "last_verified": "2025-09-17T05:08:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-FR006-009-001/frd/requirements_synthesis.md",
           "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json",
-          "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log"
+          "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log",
+          "artifacts/runs/RUN-FR006-009-002/frd/requirements_synthesis.md",
+          "artifacts/runs/RUN-FR006-009-002/frd/stories_export.json",
+          "artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -332,14 +338,16 @@
           "text": "Given AC, when generation runs, then at least one test per story is produced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:19:00Z",
+          "last_checked": "2025-09-17T05:06:20Z",
           "evidence": [
             "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
             "artifacts/runs/RUN-DEMO-001/reports/junit_generated.xml",
             "artifacts/runs/RUN-BETA-001/tests/manifest.json",
             "artifacts/runs/RUN-BETA-001/reports/junit_generated.xml",
             "artifacts/runs/RUN-FR006-009-001/tests/manifest.json",
-            "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-002/tests/manifest.json",
+            "artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log"
           ]
         },
         {
@@ -347,17 +355,19 @@
           "text": "Given generated tests, when collected by PyTest or compiled with Maven, then no syntax or compile errors occur.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:19:00Z",
+          "last_checked": "2025-09-17T05:06:20Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log",
-            "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log",
+            "artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": "2025-09-17T00:33:34Z",
+        "last_verified": "2025-09-17T05:08:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
           "artifacts/runs/RUN-DEMO-001/tests/python/test_generated_suite.py",
@@ -367,7 +377,12 @@
           "artifacts/runs/RUN-FR006-009-001/tests/python/test_synthesized_requirements.py",
           "artifacts/runs/RUN-FR006-009-001/tests/java/src/test/java/com/gazeqa/generated/StoryLifecycleTest.java",
           "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log",
-          "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log"
+          "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR006-009-002/tests/manifest.json",
+          "artifacts/runs/RUN-FR006-009-002/tests/python/test_extended_synthesis.py",
+          "artifacts/runs/RUN-FR006-009-002/tests/java/src/test/java/com/gazeqa/generated/ExtendedStoryLifecycleTest.java",
+          "artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
+          "artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -391,10 +406,12 @@
           "text": "Given a completed run, when persistence runs, then all expected files are present and index lists them.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:21:00Z",
+          "last_checked": "2025-09-17T05:07:15Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/index.json",
-            "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-002/index.json",
+            "artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log"
           ]
         },
         {
@@ -402,21 +419,26 @@
           "text": "Given missing upload, when retry policy executes, then eventual consistency is reached or error is surfaced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:21:00Z",
+          "last_checked": "2025-09-17T05:07:15Z",
           "evidence": [
-            "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": null,
+        "last_verified": "2025-09-17T05:08:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-FR006-009-001/index.json",
           "artifacts/runs/RUN-FR006-009-001/run_manifest.json",
           "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log",
-          "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log"
+          "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log",
+          "artifacts/runs/RUN-FR006-009-002/selectors/index.json",
+          "artifacts/runs/RUN-FR006-009-002/index.json",
+          "artifacts/runs/RUN-FR006-009-002/run_manifest.json",
+          "artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -439,9 +461,10 @@
           "text": "Given API keys, when POST /runs is called from CI, then a run starts and status is retrievable.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T04:21:00Z",
+          "last_checked": "2025-09-17T05:07:30Z",
           "evidence": [
-            "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log",
+            "artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log"
           ]
         },
         {
@@ -449,20 +472,24 @@
           "text": "Given a completed run, when CLI `gazeqa artifacts <id>` runs, then paths are printed and downloadable.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T04:21:00Z",
+          "last_checked": "2025-09-17T05:07:30Z",
           "evidence": [
-            "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log"
+            "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log",
+            "artifacts/runs/RUN-FR006-009-002/logs/cli_run_create.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": null,
+        "last_verified": "2025-09-17T05:08:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log",
           "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log",
-          "artifacts/runs/RUN-FR006-009-001/api_cli/cli_payload.json"
+          "artifacts/runs/RUN-FR006-009-001/api_cli/cli_payload.json",
+          "artifacts/runs/RUN-FR006-009-002/logs/cli_run_create.log",
+          "artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log",
+          "artifacts/runs/RUN-FR006-009-002/api_cli/cli_payload.json"
         ],
         "criteria_complete": true,
         "tests_complete": true

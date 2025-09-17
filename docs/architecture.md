@@ -276,3 +276,9 @@
 - Coverage threshold defaults to 80 percent; configurable via `ExplorationConfig`.
 - Artifacts stored under `artifacts/runs/<RUN-ID>/exploration/` to align with TC-FR-003-001 evidence.
 - Unit test `tests/test_exploration.py` verifies persistence and coverage calculation.
+
+## 7. BFS Crawl Prototype (FR-004)
+- `gazeqa.bfs.BFSCrawler` traverses an in-memory link graph, persisting `bfs/page_map.jsonl`, `bfs/skipped_links.json`, and `bfs/coverage_merge.json` for each run.
+- `CrawlConfig` supports depth caps and keyword skips (e.g., logout/destructive links) so criteria for exclusion rules can be validated.
+- Unit test `tests/test_bfs.py` confirms persistence and skip logic.
+- Combine with exploration artifacts to hit FR-004 acceptance criteria (TC-FR-004-001).
