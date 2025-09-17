@@ -1,17 +1,15 @@
-"""HTTP API and Lovable dashboard endpoints for GazeQA."""
+"""HTTP API for GazeQA: runs, artifacts, SSE, and Lovable UI assets."""
 from __future__ import annotations
 
 import json
 import os
 import threading
-import time
 import urllib.parse
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Tuple
 
-from .auth import build_auth_orchestrator
 from .models import ValidationError
 from .run_service import RunService
 
@@ -20,28 +18,34 @@ class RunRequestHandler(BaseHTTPRequestHandler):
     server_version = "GazeQA/0.3"
     AUTH_TOKEN = os.getenv("GAZEQA_API_TOKEN")
 
-    # ------------------------------------------------------------------ helpers
     @property
     def run_service(self) -> RunService:
         return self.server.run_service  # type: ignore[attr-defined]
 
     @property
-    def ui_dir(self) -> Optional[Path]:
-        return getattr(self.server, "ui_dir", None)  # type: ignore[attr-defined]
+    def ui_dir(self) -> Path:
+        return self.server.ui_dir  # type: ignore[attr-defined]
 
-    def _parse(self) -> Tuple[str, str, str]:
-        parsed = urllib.parse.urlsplit(self.path)
-        return parsed.path, parsed.query, parsed.fragment
-
-    def _is_authorized(self, query: str) -> bool:
+    # ------------------------------------------------------------------ helpers
+    def _auth_valid(self, query: str) -> bool:
         if not self.AUTH_TOKEN:
             return True
-        header = self.headers.get("Authorization", "")
-        if header == f"Bearer {self.AUTH_TOKEN}":
+        auth_header = self.headers.get("Authorization", "")
+        expected = f"Bearer {self.AUTH_TOKEN}"
+        if auth_header == expected:
             return True
         params = urllib.parse.parse_qs(query)
-        supplied = params.get("token", [None])[0]
-        return supplied == self.AUTH_TOKEN
+        return params.get("token", [None])[0] == self.AUTH_TOKEN
+
+    def _read_json(self) -> Tuple[dict, bool]:
+        length = int(self.headers.get("Content-Length", "0"))
+        raw = self.rfile.read(length)
+        if not raw:
+            return {}, False
+        try:
+            return json.loads(raw.decode("utf-8")), True
+        except json.JSONDecodeError:
+            return {}, False
 
     def _send_json(self, data: dict, status: int = HTTPStatus.OK) -> None:
         body = json.dumps(data).encode("utf-8")
@@ -51,120 +55,116 @@ class RunRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    # ------------------------------------------------------------------ static UI
-    def _serve_static(self, resource: str) -> bool:
-        ui_dir = self.ui_dir
-        if not ui_dir:
-            return False
-        resource = resource or "dashboard.html"
-        file_path = ui_dir / resource
-        if not file_path.exists() or not file_path.is_file():
-            return False
+    def _serve_static(self, resource: str) -> None:
+        file_path = (self.ui_dir / resource) if resource else (self.ui_dir / "index.html")
+        if not file_path.exists():
+            self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
+            return
         content = file_path.read_bytes()
-        suffix = file_path.suffix.lower()
-        if suffix == ".html":
-            content_type = "text/html; charset=utf-8"
-        elif suffix == ".js":
-            content_type = "text/javascript; charset=utf-8"
-        elif suffix == ".css":
-            content_type = "text/css; charset=utf-8"
-        else:
-            content_type = "application/octet-stream"
+        content_type = {
+            ".html": "text/html; charset=utf-8",
+            ".js": "text/javascript; charset=utf-8",
+            ".css": "text/css; charset=utf-8",
+        }.get(file_path.suffix, "application/octet-stream")
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(content)))
         self.end_headers()
         self.wfile.write(content)
-        return True
 
-    # ------------------------------------------------------------------ requests
+    # ------------------------------------------------------------------ GET
     def do_GET(self) -> None:  # noqa: N802
-        path, query, _ = self._parse()
+        parsed = urllib.parse.urlsplit(self.path)
+        path = parsed.path
 
-        if path in {"/", "", "/lovable", "/lovable/"}:
-            if self._serve_static("dashboard.html"):
-                return
-        if path.startswith("/lovable/"):
-            if self._serve_static(path[len("/lovable/") :]):
-                return
+        # Static Lovable UI
+        if path in {"/", "", "/ui", "/ui/"}:
+            self._serve_static("index.html")
+            return
         if path.startswith("/ui/"):
-            if self._serve_static(path[len("/ui/") :]):
-                return
+            self._serve_static(path[len("/ui/"):])
+            return
 
-        if not self._is_authorized(query):
+        if not self._auth_valid(parsed.query):
             self._send_json({"error": "unauthorized"}, status=HTTPStatus.UNAUTHORIZED)
             return
 
         if path == "/runs":
-            self._send_paginated_runs(query)
+            self._send_paginated_runs(parsed.query)
             return
 
         if path.startswith("/runs/"):
-            segments = [segment for segment in path.split("/") if segment]
-            if len(segments) >= 2:
-                run_id = segments[1]
-                if len(segments) == 2:
-                    self._send_run_manifest(run_id)
+            segments = path.split("/")
+            if len(segments) >= 3 and segments[2]:
+                run_id = segments[2]
+                if len(segments) == 3:
+                    try:
+                        run = self.run_service.get_run(run_id)
+                    except FileNotFoundError:
+                        self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
+                        return
+                    self._send_json(run)
                     return
-                if len(segments) == 3 and segments[2] == "artifacts":
-                    self._send_artifacts(run_id, query)
+                if len(segments) == 4 and segments[3] == "artifacts":
+                    manifest = self.run_service.build_artifact_manifest(run_id)
+                    self._send_artifacts(manifest, parsed.query)
                     return
-                if len(segments) == 3 and segments[2] == "events":
-                    self._send_run_events(run_id)
+                if len(segments) == 4 and segments[3] == "events":
+                    self._stream_events(run_id, parsed.query)
                     return
-                if len(segments) == 4 and segments[2] == "events" and segments[3] == "stream":
-                    self._stream_run_events(run_id)
-                    return
+            self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
+            return
 
         self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
 
+    # ------------------------------------------------------------------ POST
     def do_POST(self) -> None:  # noqa: N802
-        path, query, _ = self._parse()
-        if not self._is_authorized(query):
+        parsed = urllib.parse.urlsplit(self.path)
+        if not self._auth_valid(parsed.query):
             self._send_json({"error": "unauthorized"}, status=HTTPStatus.UNAUTHORIZED)
             return
-        if path != "/runs":
-            self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
+
+        if parsed.path == "/runs":
+            payload, ok = self._read_json()
+            if not ok:
+                self._send_json({"error": "Invalid JSON payload"}, status=HTTPStatus.BAD_REQUEST)
+                return
+            try:
+                run_record = self.run_service.create_run(payload)
+            except ValidationError as exc:
+                self._send_json({"error": "validation_failed", "field_errors": exc.errors}, status=HTTPStatus.BAD_REQUEST)
+                return
+            self._send_json(run_record, status=HTTPStatus.CREATED)
             return
-        payload, ok = self._read_json()
-        if not ok:
-            self._send_json({"error": "Invalid JSON payload"}, status=HTTPStatus.BAD_REQUEST)
-            return
-        try:
-            run_record = self.run_service.create_run(payload)
-        except ValidationError as exc:
-            self._send_json({"error": "validation_failed", "field_errors": exc.errors}, status=HTTPStatus.BAD_REQUEST)
-            return
-        self._send_json(run_record, status=HTTPStatus.CREATED)
+
+        if parsed.path.startswith("/runs/"):
+            segments = parsed.path.split("/")
+            if len(segments) == 4 and segments[3] == "status":
+                payload, ok = self._read_json()
+                if not ok or "status" not in payload:
+                    self._send_json({"error": "Missing status"}, status=HTTPStatus.BAD_REQUEST)
+                    return
+                metadata = payload.get("metadata") if isinstance(payload, dict) else None
+                self.run_service.update_status(segments[2], payload["status"], metadata)
+                self._send_json({"status": "ok"})
+                return
+            if len(segments) == 4 and segments[3] == "checkpoints":
+                payload, ok = self._read_json()
+                if not ok or "checkpoint" not in payload:
+                    self._send_json({"error": "Missing checkpoint"}, status=HTTPStatus.BAD_REQUEST)
+                    return
+                details = payload.get("details") if isinstance(payload, dict) else None
+                self.run_service.record_checkpoint(segments[2], payload["checkpoint"], details)
+                self._send_json({"status": "ok"})
+                return
+
+        self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
 
     # ------------------------------------------------------------------ helpers
-    def _read_json(self) -> Tuple[dict, bool]:
-        length = int(self.headers.get("Content-Length", "0"))
-        raw = self.rfile.read(length)
-        try:
-            return json.loads(raw.decode("utf-8")), True
-        except json.JSONDecodeError:
-            return {}, False
-
-    def _send_run_manifest(self, run_id: str) -> None:
-        try:
-            manifest = self.run_service.get_run(run_id)
-        except FileNotFoundError:
-            self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
-            return
-        self._send_json(manifest)
-
     def _send_paginated_runs(self, query: str) -> None:
         params = urllib.parse.parse_qs(query)
-        try:
-            offset = max(0, int(params.get("offset", [0])[0]))
-        except ValueError:
-            offset = 0
-        try:
-            limit = int(params.get("limit", [20])[0])
-        except ValueError:
-            limit = 20
-        limit = max(1, min(limit, 100))
+        offset = int(params.get("offset", [0])[0])
+        limit = max(1, min(100, int(params.get("limit", [20])[0])))
         runs = self.run_service.list_runs()
         total = len(runs)
         slice_ = runs[offset : offset + limit]
@@ -181,29 +181,17 @@ class RunRequestHandler(BaseHTTPRequestHandler):
             }
         )
 
-    def _send_artifacts(self, run_id: str, query: str) -> None:
-        try:
-            manifest = self.run_service.build_artifact_manifest(run_id)
-        except FileNotFoundError:
-            self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
-            return
+    def _send_artifacts(self, manifest: dict, query: str) -> None:
         params = urllib.parse.parse_qs(query)
-        try:
-            offset = max(0, int(params.get("offset", [0])[0]))
-        except ValueError:
-            offset = 0
-        try:
-            limit = int(params.get("limit", [100])[0])
-        except ValueError:
-            limit = 100
-        limit = max(1, min(limit, 500))
+        offset = int(params.get("offset", [0])[0])
+        limit = max(1, min(200, int(params.get("limit", [50])[0])))
         entries = manifest.get("entries", [])
         total = len(entries)
         slice_ = entries[offset : offset + limit]
         next_offset = offset + limit if offset + limit < total else None
         prev_offset = offset - limit if offset - limit >= 0 else None
-        manifest = dict(manifest)
-        manifest.update(
+        manifest_copy = dict(manifest)
+        manifest_copy.update(
             {
                 "entries": slice_,
                 "offset": offset,
@@ -213,15 +201,14 @@ class RunRequestHandler(BaseHTTPRequestHandler):
                 "previous_offset": prev_offset,
             }
         )
-        self._send_json(manifest)
+        self._send_json(manifest_copy)
 
-    def _send_run_events(self, run_id: str) -> None:
-        events = self.run_service.get_run_events(run_id)
-        self._send_json({"run_id": run_id, "events": events})
-
-    def _stream_run_events(self, run_id: str) -> None:
+    def _stream_events(self, run_id: str, query: str) -> None:
+        if not self._auth_valid(query):
+            self._send_json({"error": "unauthorized"}, status=HTTPStatus.UNAUTHORIZED)
+            return
         try:
-            existing = self.run_service.get_run_events(run_id)
+            history = self.run_service.get_status_history(run_id)
         except FileNotFoundError:
             self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
             return
@@ -229,68 +216,54 @@ class RunRequestHandler(BaseHTTPRequestHandler):
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", "text/event-stream")
         self.send_header("Cache-Control", "no-cache")
-        self.send_header("Connection", "keep-alive")
         self.end_headers()
-        self.close_connection = False
-
-        finished = threading.Event()
-        lock = threading.Lock()
 
         def write_event(event: dict) -> None:
-            message = f"data: {json.dumps(event, ensure_ascii=False)}\n\n".encode("utf-8")
-            with lock:
-                self.wfile.write(message)
-                self.wfile.flush()
+            payload = json.dumps(event)
+            self.wfile.write(f"event: status\ndata: {payload}\n\n".encode("utf-8"))
+            self.wfile.flush()
 
         try:
-            for event in existing:
+            for event in history:
                 write_event(event)
-        except (BrokenPipeError, ConnectionError, OSError):
-            finished.set()
+        except BrokenPipeError:
+            return
+
+        stop_event = threading.Event()
 
         def listener(event: dict) -> None:
-            if finished.is_set():
-                return
             try:
                 write_event(event)
-            except (BrokenPipeError, ConnectionError, OSError):
-                finished.set()
+            except BrokenPipeError:
+                stop_event.set()
 
         self.run_service.register_listener(run_id, listener)
         try:
-            while not finished.wait(10):
+            while not stop_event.wait(30):
                 try:
-                    with lock:
-                        self.wfile.write(b": heartbeat\n\n")
-                        self.wfile.flush()
-                except (BrokenPipeError, ConnectionError, OSError):
+                    self.wfile.write(b": heartbeat\n\n")
+                    self.wfile.flush()
+                except BrokenPipeError:
                     break
         finally:
             self.run_service.unregister_listener(run_id, listener)
-            finished.set()
 
 
 def serve(
     host: str = "127.0.0.1",
     port: int = 8000,
     storage_root: Path | str = "artifacts/runs",
-    ui_root: Path | str = "lovable",
+    ui_root: Path | str = "webui",
 ) -> ThreadingHTTPServer:
     server = ThreadingHTTPServer((host, port), RunRequestHandler)
-    orchestrator = build_auth_orchestrator(Path(storage_root))
-    server.run_service = RunService(  # type: ignore[attr-defined]
-        storage_root=storage_root,
-        auth_orchestrator=orchestrator,
-    )
-    ui_path = Path(ui_root)
-    if ui_path.exists():
-        server.ui_dir = ui_path  # type: ignore[attr-defined]
-    thread = threading.Thread(target=server.serve_forever, daemon=True)
-    thread.start()
+    server.run_service = RunService(storage_root=storage_root)  # type: ignore[attr-defined]
+    server.ui_dir = Path(ui_root)  # type: ignore[attr-defined]
+    server.ui_dir.mkdir(parents=True, exist_ok=True)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
     return server
 
 
-def main() -> None:  # pragma: no cover
+def main() -> None:
     server = serve()
     print(f"GazeQA API listening on http://{server.server_address[0]}:{server.server_address[1]}")
     try:

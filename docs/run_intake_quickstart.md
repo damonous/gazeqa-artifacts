@@ -87,3 +87,8 @@ Artifacts saved to `artifacts/runs/RUN-CRAWL-DEMO/crawl/crawl_result.json` feed 
 - `GET /runs/<id>/events` returns a prototype Server-Sent Events stream (status updates). Capture responses for FR-009 checklist evidence.
 
 API specification: `docs/api/openapi.yaml` provides schemas for CLI/UI integrations.
+
+### Workflow Hooks
+- `POST /runs/{id}/status` — append a status event (body: `{ "status": "Exploring", "metadata": {...} }`).
+- `POST /runs/{id}/checkpoints` — record Temporal checkpoints (`{ "checkpoint": "exploration.complete", "details": {...} }`).
+Use these from orchestration jobs so the SSE stream and dashboard stay current.

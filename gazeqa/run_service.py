@@ -76,6 +76,7 @@ class RunService:
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
         self._append_event(run_dir, event)
+        self._append_status_history(run_dir, event)
         self._notify_listeners(run_id, event)
         return run_record
 
@@ -160,6 +161,7 @@ class RunService:
         if metadata:
             event["metadata"] = metadata
         self._append_event(run_dir, event)
+        self._append_status_history(run_dir, event)
         self._notify_listeners(run_id, event)
 
     def register_listener(self, run_id: str, callback: Callable[[dict], None]) -> None:

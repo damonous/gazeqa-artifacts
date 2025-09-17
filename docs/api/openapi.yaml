@@ -288,3 +288,64 @@ paths:
           description: Missing or invalid bearer token
         '404':
           description: Run not found
+  /runs/{runId}/status:
+    post:
+      summary: Update run status
+      description: Append a status event (used by workflow orchestrators).
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Status recorded
+        '400':
+          description: Missing status
+        '401':
+          description: Unauthorized
+        '404':
+          description: Run not found
+  /runs/{runId}/checkpoints:
+    post:
+      summary: Record workflow checkpoint
+      description: Persist Temporal-style checkpoint evidence for FR-012.
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [checkpoint]
+              properties:
+                checkpoint:
+                  type: string
+                details:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Checkpoint recorded
+        '400':
+          description: Missing checkpoint
+        '401':
+          description: Unauthorized
+        '404':
+          description: Run not found
+
