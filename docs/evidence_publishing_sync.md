@@ -47,4 +47,5 @@ Following this process keeps the RTM checklist synchronized with live evidence a
 
 - API responses (`GET /runs`, `GET /runs/<id>`, `GET /runs/<id>/artifacts`) should be captured for checklist updates covering FR-009 tests.
 - Web UI: capture screenshots of run list/detail pages and note SSE status updates (FR-010 evidence).
+- Reliability runs store checkpoints under `temporal/checkpoints.jsonl` and status history via API (`POST /runs/{id}/status`) for FR-012 evidence.
 

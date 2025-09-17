@@ -4,12 +4,8 @@ from pathlib import Path
 from gazeqa.bfs import BFSCrawler, CrawlConfig
 from gazeqa.exploration import ExplorationConfig, ExplorationEngine, PageDescriptor
 from gazeqa.run_service import RunService
-from gazeqa.workflow import (
-    RetryPolicy,
-    RetryableWorkflowError,
-    RunWorkflow,
-    WorkflowError,
-)
+from gazeqa.observability import RunObservability
+from gazeqa.workflow import RetryPolicy, RetryableWorkflowError, RunWorkflow, WorkflowError
 
 
 class SuccessfulAuth:
@@ -56,7 +52,8 @@ def test_workflow_success_records_checkpoints(tmp_path: Path) -> None:
     run_service = RunService(storage_root=tmp_path)
     exploration_engine = ExplorationEngine(ExplorationConfig(storage_root=tmp_path))
     crawler = BFSCrawler(CrawlConfig(storage_root=tmp_path))
-    workflow = RunWorkflow(run_service, auth, exploration_engine, crawler)
+    telemetry = RunObservability(storage_root=tmp_path)
+    workflow = RunWorkflow(run_service, auth, exploration_engine, crawler, telemetry=telemetry)
 
     home = _page("home", "home", "Home")
     about = _page("about", "about", "About")
@@ -87,6 +84,11 @@ def test_workflow_success_records_checkpoints(tmp_path: Path) -> None:
 
     assert auth.calls == [run_id]
     assert result["crawl"]["visited_count"] >= 2
+
+    metrics_path = tmp_path / run_id / "observability" / "metrics.json"
+    metrics = json.loads(metrics_path.read_text())
+    assert metrics["exploration"]["coverage_percent"] is not None
+    assert metrics["crawl"]["visited_count"] >= 1
 
 
 def test_workflow_retries_auth_until_success(tmp_path: Path) -> None:
@@ -160,3 +162,25 @@ def test_workflow_failure_sets_failed_status(tmp_path: Path) -> None:
     checkpoint_path = tmp_path / run_record["id"] / "temporal" / "checkpoints.jsonl"
     entries = _checkpoint_entries(checkpoint_path)
     assert any(entry["checkpoint"] == "workflow.failed" for entry in entries)
+
+
+def test_workflow_skips_auth_when_orchestrator_missing(tmp_path: Path) -> None:
+    run_service = RunService(storage_root=tmp_path)
+    exploration_engine = ExplorationEngine(ExplorationConfig(storage_root=tmp_path))
+    crawler = BFSCrawler(CrawlConfig(storage_root=tmp_path))
+    workflow = RunWorkflow(run_service, None, exploration_engine, crawler)
+
+    home = _page("home", "home", "Home")
+    about = _page("about", "about", "About")
+    site_map = [home, about]
+    adjacency = {"home": [about]}
+
+    payload = {
+        "target_url": "https://example.test",
+        "credentials": {"username": "qa@example.com", "secret_ref": "vault://creds/1"},
+    }
+
+    result = workflow.start(payload_dict=payload, site_map=site_map, adjacency=adjacency)
+    auth_result = result["auth"]
+    assert auth_result["stage"] == "skipped"
+    assert auth_result["reason"] == "orchestrator_unavailable"

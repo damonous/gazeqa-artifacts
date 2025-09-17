@@ -21,10 +21,13 @@ class RunService:
         self,
         storage_root: Path | str = "artifacts/runs",
         auth_orchestrator: "AuthenticationOrchestrator" | None = None,
+        *,
+        invoke_auth_on_create: bool = True,
     ) -> None:
         self.storage_root = Path(storage_root)
         self.storage_root.mkdir(parents=True, exist_ok=True)
         self.auth_orchestrator = auth_orchestrator
+        self.invoke_auth_on_create = invoke_auth_on_create
         self.status_listeners: Dict[str, List[Callable[[dict], None]]] = {}
 
     def create_run(self, payload_dict: Dict[str, object]) -> Dict[str, object]:
@@ -54,7 +57,11 @@ class RunService:
         }
 
         auth_result: Optional[dict] = None
-        if self.auth_orchestrator and not payload.credentials.is_empty():
+        if (
+            self.invoke_auth_on_create
+            and self.auth_orchestrator
+            and not payload.credentials.is_empty()
+        ):
             auth_result = self.auth_orchestrator.authenticate(run_id, payload.credentials)
             status = "Authenticated" if auth_result.get("success") else "AuthFailed"
             run_record["status"] = status

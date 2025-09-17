@@ -5,8 +5,14 @@ import argparse
 import json
 import sys
 from pathlib import Path
+
 from .auth import build_auth_orchestrator
+from .bfs import BFSCrawler, CrawlConfig
+from .exploration import ExplorationConfig, ExplorationEngine
+from .observability import RunObservability
 from .run_service import RunService, ValidationError
+from .site_map import build_default_site_map
+from .workflow import RunWorkflow, WorkflowError
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -37,16 +43,31 @@ def main(argv: list[str] | None = None) -> None:
     service = RunService(
         storage_root=args.storage_root,
         auth_orchestrator=auth_orchestrator,
+        invoke_auth_on_create=False,
+    )
+    exploration_engine = ExplorationEngine(ExplorationConfig(storage_root=args.storage_root))
+    crawler = BFSCrawler(CrawlConfig(storage_root=args.storage_root))
+    telemetry = RunObservability(args.storage_root)
+    workflow = RunWorkflow(
+        service,
+        auth_orchestrator,
+        exploration_engine,
+        crawler,
+        telemetry=telemetry,
+        site_map_builder=build_default_site_map,
     )
     try:
-        run_record = service.create_run(payload)
+        result = workflow.start(payload)
     except ValidationError as exc:
         print("Failed to create run. See validation errors below:", file=sys.stderr)
         for field, message in exc.errors.items():
             print(f" - {field}: {message}", file=sys.stderr)
         raise SystemExit(1)
+    except WorkflowError as exc:
+        print(f"Workflow failed: {exc}", file=sys.stderr)
+        raise SystemExit(2)
     else:
-        print(json.dumps(run_record, indent=2))
+        print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":  # pragma: no cover

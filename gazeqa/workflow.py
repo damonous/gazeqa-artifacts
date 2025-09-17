@@ -4,11 +4,14 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence
+from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .bfs import BFSCrawler, CrawlResult
+from .models import CreateRunPayload
+from .telemetry import TelemetrySink, NoOpTelemetry
 from .exploration import ExplorationEngine, ExplorationResult, PageDescriptor
 from .models import CreateRunPayload
+from .observability import RunObservability
 from .run_service import RunService
 from .telemetry import NoOpTelemetry, TelemetrySink
 
@@ -128,20 +131,25 @@ class RunWorkflow:
         *,
         retry_policy: RetryPolicy | None = None,
         telemetry: Optional["TelemetrySink"] = None,
+        site_map_builder: Optional[
+            Callable[[CreateRunPayload], Tuple[List[PageDescriptor], Dict[str, List[PageDescriptor]]]]
+        ] = None,
     ) -> None:
         self.run_service = run_service
         self.auth_orchestrator = auth_orchestrator
         self.exploration_engine = exploration_engine
         self.crawler = crawler
         self.temporal = TemporalTaskRunner(run_service, retry_policy)
-        self.telemetry = telemetry or NoOpTelemetry()
+        self.telemetry = telemetry or RunObservability(run_service.storage_root)
+        self.site_map_builder = site_map_builder
+        self._bind_component_telemetry()
 
     def start(
         self,
         payload_dict: Dict[str, Any],
         *,
-        site_map: Iterable[PageDescriptor],
-        adjacency: Dict[str, List[PageDescriptor]],
+        site_map: Iterable[PageDescriptor] | None = None,
+        adjacency: Dict[str, List[PageDescriptor]] | None = None,
     ) -> Dict[str, Any]:
         run_record = self.run_service.create_run(payload_dict)
         run_id = run_record["id"]
@@ -151,27 +159,29 @@ class RunWorkflow:
         self,
         run_id: str,
         *,
-        site_map: Iterable[PageDescriptor],
-        adjacency: Dict[str, List[PageDescriptor]],
+        site_map: Iterable[PageDescriptor] | None = None,
+        adjacency: Dict[str, List[PageDescriptor]] | None = None,
     ) -> Dict[str, Any]:
         manifest = self.run_service.get_run(run_id)
         payload = CreateRunPayload.from_dict(manifest)
+        resolved_site_map, resolved_adjacency = self._resolve_site_map(site_map, adjacency, payload)
         self._record_checkpoint(run_id, "workflow.started", {"target_url": payload.target_url})
         self._emit("workflow.started", {"run_id": run_id, "target_url": payload.target_url})
         phase = "initializing"
         try:
             phase = "auth"
-            if payload.credentials.is_empty():
-                auth_result = {"success": True, "stage": "skipped"}
-                self.run_service.update_status(run_id, "AuthSkipped", {"phase": phase})
+            if payload.credentials.is_empty() or self.auth_orchestrator is None:
+                reason = "no_credentials" if payload.credentials.is_empty() else "orchestrator_unavailable"
+                auth_result = {"success": True, "stage": "skipped", "reason": reason}
+                self.run_service.update_status(run_id, "AuthSkipped", {"phase": phase, "reason": reason})
                 self._record_checkpoint(
                     run_id,
                     "auth.skipped",
-                    {"reason": "no_credentials"},
+                    {"reason": reason},
                 )
                 self._emit(
                     "auth.skipped",
-                    {"run_id": run_id, "reason": "no_credentials"},
+                    {"run_id": run_id, "reason": reason},
                 )
             else:
                 self.run_service.update_status(run_id, "AuthInProgress", {"phase": phase})
@@ -203,7 +213,7 @@ class RunWorkflow:
             exploration_result = self.temporal.run_activity(
                 run_id,
                 "exploration",
-                lambda: self.exploration_engine.explore(run_id, site_map),
+                lambda: self.exploration_engine.explore(run_id, resolved_site_map),
                 attempt_metadata={"phase": phase},
                 success_metadata_fn=lambda result: {
                     "coverage_percent": result.coverage_percent,
@@ -234,7 +244,7 @@ class RunWorkflow:
             crawl_result = self.temporal.run_activity(
                 run_id,
                 "crawl",
-                lambda: self.crawler.crawl(run_id, seeds, adjacency),
+                lambda: self.crawler.crawl(run_id, seeds, resolved_adjacency),
                 attempt_metadata={"phase": phase},
                 success_metadata_fn=lambda result: {
                     "visited_count": len(result.visited),
@@ -313,6 +323,28 @@ class RunWorkflow:
             self.telemetry.emit(event, _safe_metadata(payload))
         except Exception:  # pragma: no cover - defensive logging
             logger.exception("telemetry emit failed for %s", event)
+
+    def _bind_component_telemetry(self) -> None:
+        for component in (self.exploration_engine, self.crawler):
+            telemetry_attr = getattr(component, "telemetry", None)
+            try:
+                if telemetry_attr is None or isinstance(telemetry_attr, NoOpTelemetry):
+                    setattr(component, "telemetry", self.telemetry)
+            except Exception:  # pragma: no cover - defensive guard
+                logger.debug("Skipping telemetry binding for %s", component.__class__.__name__)
+
+    def _resolve_site_map(
+        self,
+        site_map: Iterable[PageDescriptor] | None,
+        adjacency: Dict[str, List[PageDescriptor]] | None,
+        payload: CreateRunPayload,
+    ) -> Tuple[List[PageDescriptor], Dict[str, List[PageDescriptor]]]:
+        if site_map is not None and adjacency is not None:
+            return list(site_map), dict(adjacency)
+        if self.site_map_builder is None:
+            raise WorkflowError("Site map builder not configured and site map not provided")
+        pages, graph = self.site_map_builder(payload)
+        return list(pages), dict(graph)
 
 
 __all__ = [

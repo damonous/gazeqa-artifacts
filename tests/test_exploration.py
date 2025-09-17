@@ -35,3 +35,38 @@ def test_exploration_requires_pages() -> None:
             assert "site_map" in str(exc)
         else:  # pragma: no cover
             assert False
+
+
+def test_exploration_rate_limit_guardrail(tmp_path: Path) -> None:
+    config = ExplorationConfig(
+        coverage_threshold=1.0,
+        storage_root=tmp_path,
+        max_pages_per_run=1,
+    )
+    engine = ExplorationEngine(config)
+    pages = [
+        PageDescriptor(url="https://example.test/safe", title="Safe", section="mission"),
+        PageDescriptor(url="https://example.test/more", title="More", section="mission"),
+    ]
+
+    result = engine.explore("RUN-EXP-GR", pages)
+
+    assert len(result.visited_pages) == 1
+    guardrail_path = tmp_path / "RUN-EXP-GR" / "exploration" / "guardrails.jsonl"
+    entries = [json.loads(line) for line in guardrail_path.read_text().splitlines() if line.strip()]
+    assert entries[0]["type"] == "rate_limit"
+
+
+def test_exploration_blocklist_guardrail(tmp_path: Path) -> None:
+    config = ExplorationConfig(coverage_threshold=1.0, storage_root=tmp_path)
+    engine = ExplorationEngine(config)
+    pages = [
+        PageDescriptor(url="https://example.test/safe", title="Safe", section="mission"),
+        PageDescriptor(url="https://example.test/admin/delete", title="Delete", section="mission"),
+    ]
+
+    result = engine.explore("RUN-EXP-BLOCK", pages)
+    guardrail_path = tmp_path / "RUN-EXP-BLOCK" / "exploration" / "guardrails.jsonl"
+    entries = [json.loads(line) for line in guardrail_path.read_text().splitlines() if line.strip()]
+    assert any(entry["type"] == "blocklist" for entry in entries)
+    assert any(page.url.endswith("/admin/delete") for page in result.skipped_pages)

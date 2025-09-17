@@ -2,16 +2,26 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import threading
 import urllib.parse
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
+from .auth import build_auth_orchestrator
+from .bfs import BFSCrawler, CrawlConfig
+from .exploration import ExplorationConfig, ExplorationEngine
 from .models import ValidationError
+from .observability import RunObservability
 from .run_service import RunService
+from .site_map import build_default_site_map
+from .workflow import RunWorkflow
+
+
+logger = logging.getLogger(__name__)
 
 
 class RunRequestHandler(BaseHTTPRequestHandler):
@@ -25,6 +35,10 @@ class RunRequestHandler(BaseHTTPRequestHandler):
     @property
     def ui_dir(self) -> Path:
         return self.server.ui_dir  # type: ignore[attr-defined]
+
+    @property
+    def workflow(self) -> Optional[RunWorkflow]:
+        return getattr(self.server, "workflow", None)  # type: ignore[attr-defined]
 
     # ------------------------------------------------------------------ helpers
     def _auth_valid(self, query: str) -> bool:
@@ -110,6 +124,9 @@ class RunRequestHandler(BaseHTTPRequestHandler):
                     self._send_artifacts(manifest, parsed.query)
                     return
                 if len(segments) == 4 and segments[3] == "events":
+                    self._send_run_events(run_id)
+                    return
+                if len(segments) == 5 and segments[3] == "events" and segments[4] == "stream":
                     self._stream_events(run_id, parsed.query)
                     return
             self.send_error(HTTPStatus.NOT_FOUND, "Not Found")
@@ -135,6 +152,12 @@ class RunRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"error": "validation_failed", "field_errors": exc.errors}, status=HTTPStatus.BAD_REQUEST)
                 return
             self._send_json(run_record, status=HTTPStatus.CREATED)
+            if self.workflow:
+                threading.Thread(
+                    target=self._execute_workflow,
+                    args=(run_record["id"],),
+                    daemon=True,
+                ).start()
             return
 
         if parsed.path.startswith("/runs/"):
@@ -203,6 +226,29 @@ class RunRequestHandler(BaseHTTPRequestHandler):
         )
         self._send_json(manifest_copy)
 
+    def _send_run_events(self, run_id: str) -> None:
+        try:
+            events = self.run_service.get_run_events(run_id)
+            history = self.run_service.get_status_history(run_id)
+        except FileNotFoundError:
+            self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
+            return
+        payload = {
+            "run_id": run_id,
+            "events": events,
+            "status_history": history,
+        }
+        self._send_json(payload)
+
+    def _execute_workflow(self, run_id: str) -> None:
+        workflow = self.workflow
+        if not workflow:
+            return
+        try:
+            workflow.execute(run_id)
+        except Exception:  # pragma: no cover - background execution guard
+            logger.exception("Workflow execution failed for run %s", run_id)
+
     def _stream_events(self, run_id: str, query: str) -> None:
         if not self._auth_valid(query):
             self._send_json({"error": "unauthorized"}, status=HTTPStatus.UNAUTHORIZED)
@@ -256,7 +302,27 @@ def serve(
     ui_root: Path | str = "webui",
 ) -> ThreadingHTTPServer:
     server = ThreadingHTTPServer((host, port), RunRequestHandler)
-    server.run_service = RunService(storage_root=storage_root)  # type: ignore[attr-defined]
+    storage_path = Path(storage_root)
+    storage_path.mkdir(parents=True, exist_ok=True)
+    auth_orchestrator = build_auth_orchestrator(storage_path)
+    run_service = RunService(
+        storage_root=storage_path,
+        auth_orchestrator=auth_orchestrator,
+        invoke_auth_on_create=False,
+    )
+    exploration_engine = ExplorationEngine(ExplorationConfig(storage_root=storage_path))
+    crawler = BFSCrawler(CrawlConfig(storage_root=storage_path))
+    telemetry = RunObservability(storage_path)
+    workflow = RunWorkflow(
+        run_service,
+        auth_orchestrator,
+        exploration_engine,
+        crawler,
+        telemetry=telemetry,
+        site_map_builder=build_default_site_map,
+    )
+    server.run_service = run_service  # type: ignore[attr-defined]
+    server.workflow = workflow  # type: ignore[attr-defined]
     server.ui_dir = Path(ui_root)  # type: ignore[attr-defined]
     server.ui_dir.mkdir(parents=True, exist_ok=True)
     threading.Thread(target=server.serve_forever, daemon=True).start()
