@@ -2,22 +2,25 @@
   "schema_version": "1.0",
   "metadata": {
     "project": "GazeQA Platform",
-    "rtm_source": "docs/rtm.json",
-    "frd_source": "docs/FRD.md",
-    "generated": { "iso": "2025-09-16T22:28:00+08:00" },
+    "rtm_source": "docs/gaze_qa_rtm_v_4.json",
+    "frd_source": "docs/gaze_qa_frd_v_4.md",
+    "generated": {
+      "iso": "2025-09-16T22:28:00+08:00"
+    },
     "run": {
-      "env": "dev",
-      "build_sha": "",
-      "test_run_id": "",
-      "started_at": null,
-      "finished_at": null
-    }
+      "env": "qa",
+      "build_sha": "2c591d920c306578114fb531ae999398a767e8c9",
+      "test_run_id": "RUN-BETA-001",
+      "started_at": "2025-09-17T00:28:30Z",
+      "finished_at": "2025-09-17T00:28:30Z"
+    },
+    "execution_plan": "docs/rtm_execution_plan_v1.md"
   },
   "summary": {
     "requirements_total": 17,
-    "requirements_verified": 0,
+    "requirements_verified": 1,
     "criteria_total": 34,
-    "criteria_passed": 0
+    "criteria_passed": 7
   },
   "entries": [
     {
@@ -25,68 +28,107 @@
       "title": "Task Intake and Configuration",
       "priority": "MUST",
       "dependencies": [],
-      "tests": ["TC-FR-001-001", "TC-FR-001-002"],
+      "tests": [
+        "TC-FR-001-001",
+        "TC-FR-001-002"
+      ],
       "criteria": [
         {
           "id": "FR-001-AC-1",
           "text": "Given a valid CreateRun payload, when POST /runs is called, then a run id is returned and status is Pending.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T00:33:01Z",
+          "evidence": [
+            "artifacts/runs/RUN-2B595E8E2C84/run_manifest.json"
+          ]
         },
         {
           "id": "FR-001-AC-2",
           "text": "Given an invalid payload, when POST /runs is called, then a 400 with field errors is returned.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T00:33:01Z",
+          "evidence": [
+            "artifacts/runs/RUN-2B595E8E2C84/evidence/invalid_create_run.log"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
+        "test_coverage": true,
         "verification_passed": false,
-        "last_verified": null,
-        "evidence_bundle": []
+        "last_verified": "2025-09-17T00:33:01Z",
+        "evidence_bundle": [
+          "artifacts/runs/RUN-2B595E8E2C84/run_manifest.json",
+          "artifacts/runs/RUN-2B595E8E2C84/evidence/invalid_create_run.log"
+        ],
+        "criteria_complete": true,
+        "tests_complete": false
       }
     },
     {
       "requirement_id": "FR-002",
       "title": "Authentication and Session Persistence",
       "priority": "MUST",
-      "dependencies": ["FR-001"],
-      "tests": ["TC-FR-002-001", "TC-FR-002-002"],
+      "dependencies": [
+        "FR-001"
+      ],
+      "tests": [
+        "TC-FR-002-001",
+        "TC-FR-002-002"
+      ],
       "criteria": [
         {
           "id": "FR-002-AC-1",
           "text": "Given valid credentials, when login is attempted, then post-login indicator is detected within timeout.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T03:47:08Z",
+          "evidence": [
+            "artifacts/runs/RUN-ALPHA-001/auth/cua_login_observation.txt",
+            "artifacts/runs/RUN-ALPHA-001/auth/login_storage_state.json"
+          ]
         },
         {
           "id": "FR-002-AC-2",
           "text": "Given failure on CUA, when fallback runs, then login succeeds or failure is surfaced with evidence.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T03:47:12Z",
+          "evidence": [
+            "artifacts/runs/RUN-ALPHA-001/auth/fallback_summary.txt",
+            "artifacts/runs/RUN-ALPHA-001/auth/login_storage_state.json"
+          ]
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": true,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [
+          "artifacts/runs/RUN-ALPHA-001/auth/cua_login_observation.txt",
+          "artifacts/runs/RUN-ALPHA-001/auth/login_storage_state.json",
+          "artifacts/runs/RUN-ALPHA-001/auth/fallback_summary.txt"
+        ],
+        "criteria_complete": true,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-003",
       "title": "AI-driven Exploration",
       "priority": "MUST",
-      "dependencies": ["FR-001", "FR-002"],
-      "tests": ["TC-FR-003-001"],
+      "dependencies": [
+        "FR-001",
+        "FR-002"
+      ],
+      "tests": [
+        "TC-FR-003-001"
+      ],
       "criteria": [
         {
           "id": "FR-003-AC-1",
-          "text": "Given a typical SPA, when exploration runs, then ≥80 percent of top-level sections are reached within budget.",
+          "text": "Given a typical SPA, when exploration runs, then \u226580 percent of top-level sections are reached within budget.",
           "critical": true,
           "passed": false,
           "last_checked": null,
@@ -101,14 +143,25 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-004",
       "title": "Deterministic BFS Crawl",
       "priority": "MUST",
-      "dependencies": ["FR-003"],
-      "tests": ["TC-FR-004-001"],
+      "dependencies": [
+        "FR-003"
+      ],
+      "tests": [
+        "TC-FR-004-001"
+      ],
       "criteria": [
         {
           "id": "FR-004-AC-1",
@@ -127,40 +180,81 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-005",
       "title": "Page Capture, Selectors, and Visual Analysis",
       "priority": "MUST",
-      "dependencies": ["FR-003", "FR-004"],
-      "tests": ["TC-FR-005-001", "TC-FR-005-002"],
+      "dependencies": [
+        "FR-003",
+        "FR-004"
+      ],
+      "tests": [
+        "TC-FR-005-001",
+        "TC-FR-005-002"
+      ],
       "criteria": [
         {
           "id": "FR-005-AC-1",
           "text": "Given a page, when captured, then a screenshot, DOM JSON, and selector candidates are saved.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T00:28:03Z",
+          "evidence": [
+            "artifacts/runs/RUN-DEMO-001/selectors/index.json",
+            "artifacts/runs/RUN-DEMO-001/selectors/pages.jsonl",
+            "artifacts/runs/RUN-BETA-001/selectors/index.json",
+            "artifacts/runs/RUN-BETA-001/selectors/pages.jsonl"
+          ]
         },
         {
           "id": "FR-005-AC-2",
           "text": "Given non-standard UI, when visual analysis runs, then at least one actionable locator is produced.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T00:28:03Z",
+          "evidence": [
+            "artifacts/runs/RUN-DEMO-001/selectors/dashboard_observations.txt",
+            "artifacts/runs/RUN-BETA-001/selectors/dashboard_observations.txt"
+          ]
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": true,
+        "verification_passed": true,
+        "last_verified": "2025-09-17T00:33:34Z",
+        "evidence_bundle": [
+          "artifacts/runs/RUN-DEMO-001/selectors/index.json",
+          "artifacts/runs/RUN-DEMO-001/selectors/home_selectors.json",
+          "artifacts/runs/RUN-DEMO-001/selectors/dashboard_selectors.json",
+          "artifacts/runs/RUN-DEMO-001/selectors/dashboard_observations.txt",
+          "artifacts/runs/RUN-BETA-001/selectors/index.json",
+          "artifacts/runs/RUN-BETA-001/selectors/home_selectors.json",
+          "artifacts/runs/RUN-BETA-001/selectors/dashboard_selectors.json",
+          "artifacts/runs/RUN-BETA-001/selectors/dashboard_observations.txt"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
+      }
     },
     {
       "requirement_id": "FR-006",
-      "title": "Requirements Synthesis – Features, Stories, AC",
+      "title": "Requirements Synthesis \u2013 Features, Stories, AC",
       "priority": "MUST",
-      "dependencies": ["FR-005"],
-      "tests": ["TC-FR-006-001"],
+      "dependencies": [
+        "FR-005"
+      ],
+      "tests": [
+        "TC-FR-006-001"
+      ],
       "criteria": [
         {
           "id": "FR-006-AC-1",
@@ -179,22 +273,39 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-007",
       "title": "Test Scenario Derivation and Code Generation",
       "priority": "MUST",
-      "dependencies": ["FR-006", "FR-005"],
-      "tests": ["TC-FR-007-001"],
+      "dependencies": [
+        "FR-006",
+        "FR-005"
+      ],
+      "tests": [
+        "TC-FR-007-001"
+      ],
       "criteria": [
         {
           "id": "FR-007-AC-1",
           "text": "Given AC, when generation runs, then at least one test per story is produced.",
           "critical": true,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-17T00:28:03Z",
+          "evidence": [
+            "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
+            "artifacts/runs/RUN-DEMO-001/reports/junit_generated.xml",
+            "artifacts/runs/RUN-BETA-001/tests/manifest.json",
+            "artifacts/runs/RUN-BETA-001/reports/junit_generated.xml"
+          ]
         },
         {
           "id": "FR-007-AC-2",
@@ -205,14 +316,32 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": true,
+        "verification_passed": false,
+        "last_verified": "2025-09-17T00:33:34Z",
+        "evidence_bundle": [
+          "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
+          "artifacts/runs/RUN-DEMO-001/tests/python/test_generated_suite.py",
+          "artifacts/runs/RUN-BETA-001/tests/manifest.json",
+          "artifacts/runs/RUN-BETA-001/tests/python/test_generated_suite.py"
+        ],
+        "criteria_complete": false,
+        "tests_complete": true
+      }
     },
     {
       "requirement_id": "FR-008",
       "title": "Artifact Packaging and Azure Blob Storage",
       "priority": "MUST",
-      "dependencies": ["FR-005", "FR-006", "FR-007"],
-      "tests": ["TC-FR-008-001"],
+      "dependencies": [
+        "FR-005",
+        "FR-006",
+        "FR-007"
+      ],
+      "tests": [
+        "TC-FR-008-001"
+      ],
       "criteria": [
         {
           "id": "FR-008-AC-1",
@@ -231,14 +360,26 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-009",
       "title": "Public API and CLI",
       "priority": "SHOULD",
-      "dependencies": ["FR-001", "FR-008"],
-      "tests": ["TC-FR-009-001"],
+      "dependencies": [
+        "FR-001",
+        "FR-008"
+      ],
+      "tests": [
+        "TC-FR-009-001"
+      ],
       "criteria": [
         {
           "id": "FR-009-AC-1",
@@ -257,14 +398,27 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-010",
       "title": "Web UI",
       "priority": "SHOULD",
-      "dependencies": ["FR-001", "FR-006", "FR-008"],
-      "tests": ["TC-FR-010-001"],
+      "dependencies": [
+        "FR-001",
+        "FR-006",
+        "FR-008"
+      ],
+      "tests": [
+        "TC-FR-010-001"
+      ],
       "criteria": [
         {
           "id": "FR-010-AC-1",
@@ -283,14 +437,25 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-011",
       "title": "Observability and Telemetry",
       "priority": "MUST",
-      "dependencies": ["FR-001"],
-      "tests": ["TC-FR-011-001"],
+      "dependencies": [
+        "FR-001"
+      ],
+      "tests": [
+        "TC-FR-011-001"
+      ],
       "criteria": [
         {
           "id": "FR-011-AC-1",
@@ -309,14 +474,25 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-012",
       "title": "Reliability and Recovery (Temporal)",
       "priority": "MUST",
-      "dependencies": ["FR-001"],
-      "tests": ["TC-FR-012-001"],
+      "dependencies": [
+        "FR-001"
+      ],
+      "tests": [
+        "TC-FR-012-001"
+      ],
       "criteria": [
         {
           "id": "FR-012-AC-1",
@@ -335,14 +511,27 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-013",
       "title": "Multi-tenant Permissions and Isolation",
       "priority": "COULD",
-      "dependencies": ["FR-008", "FR-009", "FR-010"],
-      "tests": ["TC-FR-013-001"],
+      "dependencies": [
+        "FR-008",
+        "FR-009",
+        "FR-010"
+      ],
+      "tests": [
+        "TC-FR-013-001"
+      ],
       "criteria": [
         {
           "id": "FR-013-AC-1",
@@ -361,14 +550,25 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-014",
       "title": "Test Execution Orchestrator (Optional in v1)",
       "priority": "COULD",
-      "dependencies": ["FR-007"],
-      "tests": ["TC-FR-014-001"],
+      "dependencies": [
+        "FR-007"
+      ],
+      "tests": [
+        "TC-FR-014-001"
+      ],
       "criteria": [
         {
           "id": "FR-014-AC-1",
@@ -387,14 +587,27 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-015",
       "title": "CI Integrations (GitHub Actions when available)",
       "priority": "SHOULD",
-      "dependencies": ["FR-009", "FR-008", "FR-007"],
-      "tests": ["TC-FR-015-001"],
+      "dependencies": [
+        "FR-009",
+        "FR-008",
+        "FR-007"
+      ],
+      "tests": [
+        "TC-FR-015-001"
+      ],
       "criteria": [
         {
           "id": "FR-015-AC-1",
@@ -413,14 +626,27 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-016",
       "title": "Safety, Rate Limiting, and Guardrails",
       "priority": "MUST",
-      "dependencies": ["FR-003", "FR-004"],
-      "tests": ["TC-FR-016-001", "TC-FR-016-002"],
+      "dependencies": [
+        "FR-003",
+        "FR-004"
+      ],
+      "tests": [
+        "TC-FR-016-001",
+        "TC-FR-016-002"
+      ],
       "criteria": [
         {
           "id": "FR-016-AC-1",
@@ -439,14 +665,26 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     },
     {
       "requirement_id": "FR-017",
       "title": "Security Controls",
       "priority": "MUST",
-      "dependencies": ["FR-008", "FR-009"],
-      "tests": ["TC-FR-017-001"],
+      "dependencies": [
+        "FR-008",
+        "FR-009"
+      ],
+      "tests": [
+        "TC-FR-017-001"
+      ],
       "criteria": [
         {
           "id": "FR-017-AC-1",
@@ -465,7 +703,14 @@
           "evidence": []
         }
       ],
-      "verification": {"test_coverage": false, "verification_passed": false, "last_verified": null, "evidence_bundle": []}
+      "verification": {
+        "test_coverage": false,
+        "verification_passed": false,
+        "last_verified": null,
+        "evidence_bundle": [],
+        "criteria_complete": false,
+        "tests_complete": false
+      }
     }
   ]
 }

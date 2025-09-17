@@ -10,10 +10,11 @@
 - Date: 2025-09-16 (Asia/Manila)
 - Source of truth repo or folder: to be created – `gazeqa-platform` (proposed) with `docs/` for artifacts
 - Related artifacts
-  - RTM JSON path: `docs/rtm.json`
-  - Checklist JSON path: `docs/checklist.json`
-  - Design docs: `docs/architecture.md`, `docs/agents.md`, `docs/deployment.md`
-  - API schema links: `docs/api/openapi.yaml`
+  - RTM JSON path: `docs/gaze_qa_rtm_v_4.json`
+  - Checklist JSON path: `docs/gaze_qa_checklist_v_4.json`
+  - Execution plan: `docs/rtm_execution_plan_v1.md`
+  - Design docs: _TBD (`docs/architecture.md`, `docs/agents.md`, `docs/deployment.md`)_
+  - API schema links: _TBD (`docs/api/openapi.yaml`)_
 
 ---
 

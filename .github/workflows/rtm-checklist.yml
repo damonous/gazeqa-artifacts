@@ -1,0 +1,74 @@
+name: RTM Checklist Update (draft)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  rtm-checklist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Prepare artifacts directory
+        run: |
+          mkdir -p artifacts metrics
+
+      - name: Generate selector and test artifacts
+        run: |
+          python3 tools/run_pipelines.py \
+            --run-id "${{ github.run_id }}" \
+            --output-root artifacts/runs
+
+      - name: Build run summary
+        run: |
+          python3 tools/build_run_summary.py \
+            --run-id "${{ github.run_id }}" \
+            --env "ci" \
+            --build-sha "${{ github.sha }}" \
+            --artifact-root "artifacts/runs/${{ github.run_id }}" \
+            --junit "artifacts/runs/${{ github.run_id }}/reports/junit_generated.xml" \
+            --test-evidence "artifacts/runs/${{ github.run_id }}/reports/test_evidence.json" \
+            --criteria-json "artifacts/runs/${{ github.run_id }}/reports/criteria.json" \
+            --output artifacts/run_summary.json
+
+      - name: Update RTM checklist
+        run: |
+          python3 docs/checklist_autoupdate.py artifacts/run_summary.json --evidence-root artifacts/runs/${{ github.run_id }}
+
+      - name: Export Prometheus metrics
+        run: |
+          python3 tools/run_summary_to_metrics.py artifacts/run_summary.json \
+            --checklist docs/gaze_qa_checklist_v_4.json \
+            --output metrics/gazeqa_metrics.prom
+
+      - name: Show checklist summary changes
+        run: |
+          python3 - <<'PY'
+import json
+from pathlib import Path
+path = Path('docs/gaze_qa_checklist_v_4.json')
+data = json.loads(path.read_text())
+summary = data.get('summary', {})
+print('Checklist summary:')
+for key, value in summary.items():
+    print(f"  {key}: {value}")
+print('\nMetrics preview:')
+print(Path('metrics/gazeqa_metrics.prom').read_text())
+PY
+
+      - name: Upload checklist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gazeqa-rtm-checklist
+          path: |
+            docs/gaze_qa_checklist_v_4.json
+            artifacts/run_summary.json
+            metrics/gazeqa_metrics.prom
