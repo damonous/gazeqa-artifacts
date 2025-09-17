@@ -1,0 +1,290 @@
+openapi: 3.1.0
+info:
+  title: GazeQA Platform API
+  version: 0.2.0
+  description: |
+    REST + SSE endpoints that back the GazeQA CLI and Lovable dashboard.
+    Authentication uses a bearer token (`GAZEQA_API_TOKEN`). SSE endpoints also
+    accept a `token` query parameter for situations (e.g. browser EventSource)
+    where custom headers are not available.
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    RunId:
+      name: runId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier returned by POST /runs.
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: Zero-based paging offset.
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 20
+      description: Maximum items to return.
+  schemas:
+    CreateRunRequest:
+      type: object
+      required: [target_url]
+      properties:
+        target_url:
+          type: string
+          format: uri
+        credentials:
+          type: object
+          properties:
+            username:
+              type: string
+            secret_ref:
+              type: string
+          additionalProperties: false
+        budgets:
+          type: object
+          properties:
+            time_budget_minutes:
+              type: integer
+              default: 30
+            page_budget:
+              type: integer
+              default: 200
+          additionalProperties: false
+        storage_profile:
+          type: string
+          default: default
+        tags:
+          type: array
+          items:
+            type: string
+    RunRecord:
+      type: object
+      description: Run manifest persisted by `RunService`.
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        status_history:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+        target_url:
+          type: string
+        credentials:
+          type: object
+        budgets:
+          type: object
+        storage_profile:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        auth:
+          type: object
+      additionalProperties: true
+    RunsListing:
+      type: object
+      properties:
+        runs:
+          type: array
+          items:
+            type: string
+        offset:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        next_offset:
+          type: integer
+          nullable: true
+        previous_offset:
+          type: integer
+          nullable: true
+    ArtifactEntry:
+      type: object
+      properties:
+        path:
+          type: string
+        size:
+          type: integer
+        sha256:
+          type: string
+    ArtifactListing:
+      type: object
+      properties:
+        run_id:
+          type: string
+        generated_at:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArtifactEntry'
+        offset:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        next_offset:
+          type: integer
+          nullable: true
+        previous_offset:
+          type: integer
+          nullable: true
+    StatusEvent:
+      type: object
+      properties:
+        event:
+          type: string
+          example: run.status
+        run_id:
+          type: string
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+paths:
+  /runs:
+    get:
+      summary: List runs
+      description: Paginates known run identifiers (most recent first).
+      parameters:
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Limit'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful listing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunsListing'
+        '401':
+          description: Missing or invalid bearer token
+    post:
+      summary: Create a run
+      description: Validate payload and start orchestration workflow.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRunRequest'
+      responses:
+        '201':
+          description: Run accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunRecord'
+        '400':
+          description: Validation error
+        '401':
+          description: Missing or invalid bearer token
+  /runs/{runId}:
+    get:
+      summary: Fetch run manifest
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Run manifest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunRecord'
+        '401':
+          description: Missing or invalid bearer token
+        '404':
+          description: Run not found
+  /runs/{runId}/artifacts:
+    get:
+      summary: Paginated artifact listing
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Limit'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Manifest entries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactListing'
+        '401':
+          description: Missing or invalid bearer token
+        '404':
+          description: Run not found
+  /runs/{runId}/events:
+    get:
+      summary: Stream run status events (SSE)
+      description: |
+        Streams `StatusEvent` objects using Server-Sent Events. Browser clients that
+        cannot set headers may supply `?token=<GAZEQA_API_TOKEN>`.
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - name: token
+          in: query
+          schema:
+            type: string
+          description: Optional bearer token for EventSource clients.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Stream of status events
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: |
+                  event: status
+                  data: {"run_id":"RUN-123","status":"Running","timestamp":"2025-09-17T00:00:00Z"}
+
+                  event: status
+                  data: {"run_id":"RUN-123","status":"Completed","timestamp":"2025-09-17T00:10:00Z"}
+        '401':
+          description: Missing or invalid bearer token
+        '404':
+          description: Run not found

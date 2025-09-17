@@ -85,3 +85,5 @@ Artifacts saved to `artifacts/runs/RUN-CRAWL-DEMO/crawl/crawl_result.json` feed 
 ### Pagination & Event Stream
 - `GET /runs?offset=<n>&limit=<m>` paginates run listings (default 20). Use this before requesting artifact manifests for large histories.
 - `GET /runs/<id>/events` returns a prototype Server-Sent Events stream (status updates). Capture responses for FR-009 checklist evidence.
+
+API specification: `docs/api/openapi.yaml` provides schemas for CLI/UI integrations.
