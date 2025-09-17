@@ -1,0 +1,11 @@
+{
+  "run_id": "RUN-BC6C36ED064E",
+  "events": [
+    {
+      "event": "run.created",
+      "run_id": "RUN-BC6C36ED064E",
+      "status": "Running",
+      "timestamp": "2025-09-17T03:49:32.985295+00:00"
+    }
+  ]
+}

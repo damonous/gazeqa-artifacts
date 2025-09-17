@@ -1,0 +1,187 @@
+{
+  "run_id": "RUN-FR006-009-004",
+  "generated_at": "2025-09-17T03:50:54Z",
+  "artifact_count": 36,
+  "artifacts": [
+    {
+      "path": "api/responses/get_run_events.json",
+      "sha256": "3a5e182c74395b103f558795adadf87d4a931d10fd31b387baf277adba65f733",
+      "size_bytes": 213
+    },
+    {
+      "path": "api/responses/get_runs_offset0_limit20.json",
+      "sha256": "819a2a513080ab77789c58d1a31c1a825ba5cd6101b04a081cab440d7228c56b",
+      "size_bytes": 137
+    },
+    {
+      "path": "api/responses/post_runs_response.json",
+      "sha256": "c6315c65d60829bf91bba13cd7d6528bf3ed6a0b2ea3d7a728bab5d84d59388a",
+      "size_bytes": 606
+    },
+    {
+      "path": "api_cli/RUN-BC6C36ED064E/events.jsonl",
+      "sha256": "46df50be71f1894e146ee504c0e518b5ed7ddcebafcc9cc111ab308d78c02cf5",
+      "size_bytes": 125
+    },
+    {
+      "path": "api_cli/RUN-BC6C36ED064E/run_manifest.json",
+      "sha256": "e467a1499661db0bd785f5211d5eb5cacb416a5dd47c3cddd2bbeebba79dc971",
+      "size_bytes": 605
+    },
+    {
+      "path": "api_cli/RUN-BC6C36ED064E/run_summary.json",
+      "sha256": "28c67f8c383451ebaf7eb79cc0e59184ff7ba4f7d5473d2986834768fbe75332",
+      "size_bytes": 320
+    },
+    {
+      "path": "api_cli/RUN-BC6C36ED064E/status_history.json",
+      "sha256": "f2ccb57edf720a03dbf24f9f186427a00dd83d5e4f0f66728c0fcec4ac024133",
+      "size_bytes": 174
+    },
+    {
+      "path": "frd/requirements_synthesis.md",
+      "sha256": "c117bae56e02e47c76c31af21945b27cf9ad7a2958e89e8f7666f570dcefefb9",
+      "size_bytes": 2006
+    },
+    {
+      "path": "frd/stories_export.json",
+      "sha256": "2d3b1b58ddd9f984a855c714f7610a056cf9be27705ff316bc2dd1cf8a7c412e",
+      "size_bytes": 3588
+    },
+    {
+      "path": "logs/artifact_packaging.log",
+      "sha256": "afc741d75ea516e6128bce447c6e38f9ee246ad8dc3ec15853b63f90acdf72ef",
+      "size_bytes": 421
+    },
+    {
+      "path": "logs/get_run_events.json",
+      "sha256": "3a5e182c74395b103f558795adadf87d4a931d10fd31b387baf277adba65f733",
+      "size_bytes": 213
+    },
+    {
+      "path": "logs/get_runs_offset0_limit20.json",
+      "sha256": "819a2a513080ab77789c58d1a31c1a825ba5cd6101b04a081cab440d7228c56b",
+      "size_bytes": 137
+    },
+    {
+      "path": "logs/maven_compile.log",
+      "sha256": "fed4628cfc07513225de0120783ca2468eb7f3383771671be4b88949f37affa3",
+      "size_bytes": 983
+    },
+    {
+      "path": "logs/post_runs_response.json",
+      "sha256": "c6315c65d60829bf91bba13cd7d6528bf3ed6a0b2ea3d7a728bab5d84d59388a",
+      "size_bytes": 606
+    },
+    {
+      "path": "logs/pytest_collect.log",
+      "sha256": "edb6d02b4283948db32301fb2c542bd91ff4dcf47688e3ee2db79aea6b03ec24",
+      "size_bytes": 584
+    },
+    {
+      "path": "logs/story_quality_review.log",
+      "sha256": "521fffd3de14474d91f6ad30f468e4b6e2efa90a28290f1193fc0536c47141a4",
+      "size_bytes": 361
+    },
+    {
+      "path": "reports/criteria.json",
+      "sha256": "34b43f0f1b4f391930c73b3c5df04138fbc70f439d4301803afac90fd3ad32f3",
+      "size_bytes": 1606
+    },
+    {
+      "path": "reports/test_evidence.json",
+      "sha256": "3b55fad38c2f1a5dac2c8955ed40028bcebf7851d5f310453f4fe3caafefc9c1",
+      "size_bytes": 750
+    },
+    {
+      "path": "run_manifest.json",
+      "sha256": "9254aed283e8f232c50ec558c23421f91ea2b3b926145686f78fb4f57b95e580",
+      "size_bytes": 1322
+    },
+    {
+      "path": "selectors/about_selectors.json",
+      "sha256": "4d7775264c7cc0028ed1a108c9171be5a8c22d96eee8444ae311bb5192dbd18d",
+      "size_bytes": 357
+    },
+    {
+      "path": "selectors/admin_selectors.json",
+      "sha256": "e9fb0194018150dc54bcfe993cbc61bdf75bb2a3a6d15222bdf520d7018039cb",
+      "size_bytes": 353
+    },
+    {
+      "path": "selectors/index.json",
+      "sha256": "f813da1e8f6e8890e9db7cc38deb4107032352bee244d283fa0da4f867042186",
+      "size_bytes": 616
+    },
+    {
+      "path": "selectors/team_selectors.json",
+      "sha256": "80f98fd5795a4246caba765bf83fe5fc21ccbec875c32454a93d9483f12995fe",
+      "size_bytes": 361
+    },
+    {
+      "path": "source/dom/about.html",
+      "sha256": "d90c8d0899b794d98edb6c2b693cc8c3d1cc05ec10869520eff90d189e823d60",
+      "size_bytes": 102
+    },
+    {
+      "path": "source/dom/admin.html",
+      "sha256": "4ff90cec0fae3889ed443a7ac55694e35eb8ae279f9ce744bf3b98e2b8807170",
+      "size_bytes": 140
+    },
+    {
+      "path": "source/dom/team.html",
+      "sha256": "66aa7f3fc3d1e7eef937d832699646c3faddf49786c5d79a690f725bfeaacf9b",
+      "size_bytes": 96
+    },
+    {
+      "path": "source/exploration/coverage_report.json",
+      "sha256": "5bfd67d51e7e9b57a62feafcac58158ce59e551aa96e58042458b21b3dd98ada",
+      "size_bytes": 159
+    },
+    {
+      "path": "source/exploration/visited_pages.jsonl",
+      "sha256": "e5b38d001c5280e524691d021c273f925703e22de89a0693a1b5e2f55048612d",
+      "size_bytes": 1751
+    },
+    {
+      "path": "source/screenshots/about.png",
+      "sha256": "5a6b305197c329e85ba8d1c4fed139f0df6bc0501c20f560b04d317fcef2113a",
+      "size_bytes": 33
+    },
+    {
+      "path": "source/screenshots/admin.png",
+      "sha256": "daa3a4b3ab8d12354471f7178d3f1943d51aed5276cc2f8ddde49af739997621",
+      "size_bytes": 33
+    },
+    {
+      "path": "source/screenshots/team.png",
+      "sha256": "014161950bd108cc36c362a74879233370d00af893ae23a5164a51392bfc4349",
+      "size_bytes": 32
+    },
+    {
+      "path": "tests/java/pom.xml",
+      "sha256": "a7bb9fa813e243cf31f444e9f9932c2615e74a68006160d5ea8b55eefa9af56c",
+      "size_bytes": 1047
+    },
+    {
+      "path": "tests/java/src/test/java/com/gazeqa/generated/DomBackedStoryLifecycleTest.java",
+      "sha256": "8384af9211d72e83d0effad12273d87494ece85b776bd7cbaa0ffa9ed216d44d",
+      "size_bytes": 2077
+    },
+    {
+      "path": "tests/manifest.json",
+      "sha256": "4c77268b20109cd185c8a1825c3313ca998cc1bf3915b6a298a67132ef9ce290",
+      "size_bytes": 875
+    },
+    {
+      "path": "tests/python/__pycache__/test_dom_selector_alignment.cpython-312-pytest-8.4.2.pyc",
+      "sha256": "9969e7444236f08dc44e72983e805abb5646adce60331c03647206c1ac2ff2ee",
+      "size_bytes": 7724
+    },
+    {
+      "path": "tests/python/test_dom_selector_alignment.py",
+      "sha256": "88e53f9e9568ba55cfdc5886850848633946e5a768e65c5f573facff826cd776",
+      "size_bytes": 1748
+    }
+  ]
+}

@@ -40,7 +40,7 @@
 
 ## Next Actions
 - Agent Alpha: produce first authenticated exploration run summary to validate criteria recording.
-- Agent Beta: extend synthesis/testing using adjacency-driven runs (e.g., RUN-FR006-009-003) and attach live API responses for FR-009.
+- Agent Beta: extend synthesis/testing using adjacency-driven runs (e.g., RUN-FR006-009-004) and attach live API responses for FR-009.
 - Codex agent: verify checklist diffs nightly and adjust alert thresholds as data matures.
 
 Following this process keeps the RTM checklist synchronized with live evidence and supports rapid triage of regressions.

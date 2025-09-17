@@ -1,0 +1,19 @@
+{
+  "page_id": "team",
+  "selectors": {
+    "team_list": {
+      "strategies": [
+        "css=ul.team",
+        "xpath=//ul[contains(@class,'team')]"
+      ],
+      "confidence": 0.9
+    },
+    "team_member_item": {
+      "strategies": [
+        "css=ul.team > li",
+        "xpath=//ul[contains(@class,'team')]/li"
+      ],
+      "confidence": 0.88
+    }
+  }
+}

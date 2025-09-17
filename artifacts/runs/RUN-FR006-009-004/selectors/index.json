@@ -1,0 +1,23 @@
+{
+  "run_id": "RUN-FR006-009-004",
+  "selector_packages": [
+    {
+      "page_id": "about",
+      "path": "selectors/about_selectors.json",
+      "dom_snapshot": "source/dom/about.html",
+      "screenshot": "source/screenshots/about.png"
+    },
+    {
+      "page_id": "team",
+      "path": "selectors/team_selectors.json",
+      "dom_snapshot": "source/dom/team.html",
+      "screenshot": "source/screenshots/team.png"
+    },
+    {
+      "page_id": "admin",
+      "path": "selectors/admin_selectors.json",
+      "dom_snapshot": "source/dom/admin.html",
+      "screenshot": "source/screenshots/admin.png"
+    }
+  ]
+}

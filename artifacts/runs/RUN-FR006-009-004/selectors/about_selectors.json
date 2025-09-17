@@ -1,0 +1,19 @@
+{
+  "page_id": "about",
+  "selectors": {
+    "mission_section": {
+      "strategies": [
+        "css=section#mission",
+        "xpath=//section[@id='mission']"
+      ],
+      "confidence": 0.95
+    },
+    "mission_heading": {
+      "strategies": [
+        "text=Our Mission",
+        "css=section#mission > h2"
+      ],
+      "confidence": 0.92
+    }
+  }
+}

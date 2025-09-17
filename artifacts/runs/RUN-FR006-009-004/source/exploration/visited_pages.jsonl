@@ -1,0 +1,8 @@
+{"page_id": "home", "url": "https://alpha-stage.example/home", "title": "Alpha App \u2013 Home", "section": "home", "screenshot": "exploration/screenshots/home.png", "dom_snapshot": "exploration/dom/home.html"}
+{"page_id": "about", "url": "https://alpha-stage.example/about", "title": "About Alpha", "section": "about", "screenshot": "exploration/screenshots/about.png", "dom_snapshot": "exploration/dom/about.html"}
+{"page_id": "team", "url": "https://alpha-stage.example/team", "title": "Our Team", "section": "team", "screenshot": "exploration/screenshots/team.png", "dom_snapshot": "exploration/dom/team.html"}
+{"page_id": "dashboard", "url": "https://alpha-stage.example/dashboard", "title": "Alpha App \u2013 Dashboard", "section": "dashboard", "screenshot": "exploration/screenshots/dashboard.png", "dom_snapshot": "exploration/dom/dashboard.html"}
+{"page_id": "settings", "url": "https://alpha-stage.example/settings", "title": "Alpha App \u2013 Settings", "section": "settings", "screenshot": "exploration/screenshots/settings.png", "dom_snapshot": "exploration/dom/settings.html"}
+{"page_id": "admin", "url": "https://alpha-stage.example/admin", "title": "Admin Console", "section": "admin", "screenshot": "exploration/screenshots/admin.png", "dom_snapshot": "exploration/dom/admin.html"}
+{"page_id": "reports", "url": "https://alpha-stage.example/reports", "title": "Alpha App \u2013 Reports", "section": "reports", "screenshot": "exploration/screenshots/reports.png", "dom_snapshot": "exploration/dom/reports.html"}
+{"page_id": "users", "url": "https://alpha-stage.example/admin/users", "title": "Alpha App \u2013 Users", "section": "admin", "screenshot": "exploration/screenshots/users.png", "dom_snapshot": "exploration/dom/users.html"}

@@ -99,8 +99,8 @@
 
 ## FR-006 Requirements Synthesis – Features, Stories, AC
 - Owner: Agent Beta
-- Status: Completed (RUN-FR006-009-003)
-- Latest Evidence: RUN-FR006-009-003 (adjacency-based frd exports, story quality review log)
+- Status: Completed (RUN-FR006-009-004)
+- Latest Evidence: RUN-FR006-009-004 (dom-backed adjacency exports, story quality review log)
 - Components: AnalysisStoryGen, WebUI, PersistenceIndexer
 - Dependencies: FR-005
 - Implementation Tasks:
@@ -115,8 +115,8 @@
 
 ## FR-007 Test Scenario Derivation and Code Generation
 - Owner: Agent Beta
-- Status: Completed (RUN-FR006-009-003)
-- Latest Evidence: RUN-FR006-009-003 (adjacency pytest + Maven compile logs)
+- Status: Completed (RUN-FR006-009-004)
+- Latest Evidence: RUN-FR006-009-004 (dom-backed pytest + Maven compile logs)
 - Components: TestGen, PersistenceIndexer
 - Dependencies: FR-005, FR-006
 - Implementation Tasks:
@@ -131,8 +131,8 @@
 
 ## FR-008 Artifact Packaging and Azure Blob Storage
 - Owner: Agent Beta
-- Status: Completed (RUN-FR006-009-003)
-- Latest Evidence: RUN-FR006-009-003 (selector index + packaging log)
+- Status: Completed (RUN-FR006-009-004)
+- Latest Evidence: RUN-FR006-009-004 (selector index + packaging log)
 - Components: PersistenceIndexer, Security
 - Dependencies: FR-005, FR-006, FR-007
 - Implementation Tasks:
@@ -148,7 +148,7 @@
 ## FR-009 Public API and CLI
 - Owner: Agent Beta
 - Status: In Progress
-- Latest Evidence: RUN-FR006-009-003 (CLI/API run creation logs)
+- Latest Evidence: RUN-FR006-009-004 (CLI/API pagination + events logs)
 - Components: API, CLI, Orchestrator
 - Dependencies: FR-001, FR-008
 - Implementation Tasks:

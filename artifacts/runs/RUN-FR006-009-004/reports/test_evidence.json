@@ -1,0 +1,27 @@
+{
+  "TC-FR-006-001": [
+    "frd/requirements_synthesis.md",
+    "frd/stories_export.json",
+    "logs/story_quality_review.log"
+  ],
+  "TC-FR-007-001": [
+    "tests/manifest.json",
+    "tests/python/test_dom_selector_alignment.py",
+    "tests/java/src/test/java/com/gazeqa/generated/DomBackedStoryLifecycleTest.java",
+    "logs/pytest_collect.log",
+    "logs/maven_compile.log"
+  ],
+  "TC-FR-008-001": [
+    "selectors/index.json",
+    "index.json",
+    "run_manifest.json",
+    "logs/artifact_packaging.log"
+  ],
+  "TC-FR-009-001": [
+    "api/responses/get_runs_offset0_limit20.json",
+    "api/responses/get_run_events.json",
+    "api/responses/post_runs_response.json",
+    "logs/get_runs_offset0_limit20.json",
+    "logs/get_run_events.json"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "run_id": "RUN-FR006-009-004",
+  "generated_at": "2025-09-17T07:05:00Z",
+  "source_runs": [
+    "RUN-ALPHA-EXP-003",
+    "RUN-CRAWL-DEMO-001",
+    "RUN-FR006-009-003"
+  ],
+  "features": [
+    {
+      "feature_id": "FEAT-FR-006-ABOUT",
+      "story_id": "STORY-FR-006-ABOUT",
+      "title": "Corporate About Hub",
+      "user_story": "As a prospect, I want the mission statement visible on the About page so I can evaluate the company quickly.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-ABOUT-1",
+          "behavior": "Mission section renders on About page",
+          "validation": "Assert source/dom/about.html contains section#mission",
+          "evidence": [
+            "source/dom/about.html",
+            "selectors/about_selectors.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-ABOUT-2",
+          "behavior": "Selector export exposes mission_section",
+          "validation": "Check selectors/about_selectors.json for mission_section",
+          "evidence": [
+            "selectors/about_selectors.json"
+          ]
+        }
+      ],
+      "quality_score": 0.92,
+      "traceability": {
+        "source_run": "RUN-ALPHA-EXP-003",
+        "dom_snapshot": "source/dom/about.html",
+        "screenshot": "source/screenshots/about.png",
+        "selector_package": "selectors/about_selectors.json"
+      }
+    },
+    {
+      "feature_id": "FEAT-FR-006-TEAM",
+      "story_id": "STORY-FR-006-TEAM",
+      "title": "Team Directory Insights",
+      "user_story": "As a hiring manager, I want an accurate team roster so I can confirm coverage.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-TEAM-1",
+          "behavior": "Team list includes entries",
+          "validation": "Ensure source/dom/team.html has li items under ul.team",
+          "evidence": [
+            "source/dom/team.html"
+          ]
+        },
+        {
+          "id": "AC-FR-006-TEAM-2",
+          "behavior": "Selector export enumerates team_member_item",
+          "validation": "Verify selectors/team_selectors.json contains team_member_item",
+          "evidence": [
+            "selectors/team_selectors.json"
+          ]
+        }
+      ],
+      "quality_score": 0.92,
+      "traceability": {
+        "source_run": "RUN-ALPHA-EXP-003",
+        "dom_snapshot": "source/dom/team.html",
+        "screenshot": "source/screenshots/team.png",
+        "selector_package": "selectors/team_selectors.json"
+      }
+    },
+    {
+      "feature_id": "FEAT-FR-006-ADMIN",
+      "story_id": "STORY-FR-006-ADMIN",
+      "title": "Admin Audit Console",
+      "user_story": "As a compliance officer, I want audit tables accessible so I can inspect user activity.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-ADMIN-1",
+          "behavior": "Audit table header includes User",
+          "validation": "Check source/dom/admin.html for table.audit with <th>User</th>",
+          "evidence": [
+            "source/dom/admin.html"
+          ]
+        },
+        {
+          "id": "AC-FR-006-ADMIN-2",
+          "behavior": "Selector export targets audit_table",
+          "validation": "Ensure selectors/admin_selectors.json contains audit_table",
+          "evidence": [
+            "selectors/admin_selectors.json"
+          ]
+        }
+      ],
+      "quality_score": 0.92,
+      "traceability": {
+        "source_run": "RUN-ALPHA-EXP-003",
+        "dom_snapshot": "source/dom/admin.html",
+        "screenshot": "source/screenshots/admin.png",
+        "selector_package": "selectors/admin_selectors.json"
+      }
+    }
+  ]
+}

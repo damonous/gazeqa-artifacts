@@ -1,0 +1,19 @@
+{
+  "page_id": "admin",
+  "selectors": {
+    "audit_table": {
+      "strategies": [
+        "css=table.audit",
+        "xpath=//table[contains(@class,'audit')]"
+      ],
+      "confidence": 0.9
+    },
+    "audit_header": {
+      "strategies": [
+        "text=User",
+        "css=table.audit th:first-child"
+      ],
+      "confidence": 0.87
+    }
+  }
+}

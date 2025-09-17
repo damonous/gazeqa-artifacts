@@ -1,0 +1,35 @@
+{
+  "generated_at": "2025-09-17T07:05:30Z",
+  "stories": [
+    {
+      "story_id": "STORY-FR-006-ABOUT",
+      "tests": [
+        {
+          "id": "TC-FR-006-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_dom_selector_alignment.py::test_story_ids_cover_about_team_admin"
+        }
+      ]
+    },
+    {
+      "story_id": "STORY-FR-006-TEAM",
+      "tests": [
+        {
+          "id": "TC-FR-007-001",
+          "framework": "PYTEST",
+          "path": "tests/python/test_dom_selector_alignment.py::test_team_list_has_members"
+        }
+      ]
+    },
+    {
+      "story_id": "STORY-FR-006-ADMIN",
+      "tests": [
+        {
+          "id": "TC-FR-007-001",
+          "framework": "JUNIT",
+          "path": "tests/java/src/test/java/com/gazeqa/generated/DomBackedStoryLifecycleTest.java#adminDomIncludesAuditTable"
+        }
+      ]
+    }
+  ]
+}

@@ -10,9 +10,9 @@
     "run": {
       "env": "qa",
       "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
-      "test_run_id": "RUN-FR006-009-003",
-      "started_at": "2025-09-17T06:44:30Z",
-      "finished_at": "2025-09-17T06:48:30Z"
+      "test_run_id": "RUN-FR006-009-004",
+      "started_at": "2025-09-17T07:03:30Z",
+      "finished_at": "2025-09-17T07:07:00Z"
     },
     "execution_plan": "docs/rtm_execution_plan_v1.md"
   },
@@ -132,10 +132,12 @@
           "text": "Given a typical SPA, when exploration runs, then \u226580 percent of top-level sections are reached within budget.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:16:02Z",
+          "last_checked": "2025-09-17T03:26:55.834548+00:00",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/coverage/report.json",
-            "artifacts/runs/RUN-ALPHA-EXP-001/coverage/coverage_summary.txt"
+            "artifacts/runs/RUN-ALPHA-EXP-001/coverage/coverage_summary.txt",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/coverage_report.json",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl"
           ]
         },
         {
@@ -143,13 +145,18 @@
           "text": "Given instrumented logging, when exploration completes, then each visited page has a screenshot and DOM snapshot.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:16:05Z",
+          "last_checked": "2025-09-17T03:26:55.834578+00:00",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/home.png",
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/dashboard.png",
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/dom/home.html",
-            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/dom/dashboard.html"
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/dom/dashboard.html",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/screenshots/about.png",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/dom/about.html",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/screenshots/team.png",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/dom/team.html"
           ]
         }
       ],
@@ -160,7 +167,12 @@
         "evidence_bundle": [
           "artifacts/runs/RUN-ALPHA-EXP-001/coverage/report.json",
           "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
-          "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/home.png"
+          "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/home.png",
+          "artifacts/runs/RUN-ALPHA-EXP-003/exploration/coverage_report.json",
+          "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl",
+          "artifacts/runs/RUN-ALPHA-EXP-003/exploration/screenshots/about.png",
+          "artifacts/runs/RUN-ALPHA-EXP-003/exploration/dom/about.html",
+          "artifacts/runs/RUN-ALPHA-EXP-003/exploration/screenshots/team.png"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -182,10 +194,12 @@
           "text": "Given a site with deep links, when BFS runs, then newly discovered pages are appended and de-duplicated.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:16:20Z",
+          "last_checked": "2025-09-17T03:26:55.834581+00:00",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/bfs/page_map.jsonl",
-            "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json"
+            "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json",
+            "artifacts/runs/RUN-ALPHA-EXP-003/bfs/page_map.jsonl",
+            "artifacts/runs/RUN-ALPHA-EXP-003/bfs/coverage_merge.json"
           ]
         },
         {
@@ -193,10 +207,12 @@
           "text": "Given exclusion rules, when encountering logout links, then they are skipped.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:16:27Z",
+          "last_checked": "2025-09-17T03:26:55.834582+00:00",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/bfs/skipped_links.json",
-            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl"
+            "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
+            "artifacts/runs/RUN-ALPHA-EXP-003/bfs/skipped_links.json",
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl"
           ]
         }
       ],
@@ -207,7 +223,10 @@
         "evidence_bundle": [
           "artifacts/runs/RUN-ALPHA-EXP-001/bfs/page_map.jsonl",
           "artifacts/runs/RUN-ALPHA-EXP-001/bfs/skipped_links.json",
-          "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json"
+          "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json",
+          "artifacts/runs/RUN-ALPHA-EXP-003/bfs/page_map.jsonl",
+          "artifacts/runs/RUN-ALPHA-EXP-003/bfs/skipped_links.json",
+          "artifacts/runs/RUN-ALPHA-EXP-003/bfs/coverage_merge.json"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -285,14 +304,16 @@
           "text": "Given captured pages, when synthesis runs, then each feature area has at least one story with AC.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T06:46:00Z",
+          "last_checked": "2025-09-17T07:05:30Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/frd/requirements_synthesis.md",
             "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json",
             "artifacts/runs/RUN-FR006-009-002/frd/requirements_synthesis.md",
             "artifacts/runs/RUN-FR006-009-002/frd/stories_export.json",
             "artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
-            "artifacts/runs/RUN-FR006-009-003/frd/stories_export.json"
+            "artifacts/runs/RUN-FR006-009-003/frd/stories_export.json",
+            "artifacts/runs/RUN-FR006-009-004/frd/requirements_synthesis.md",
+            "artifacts/runs/RUN-FR006-009-004/frd/stories_export.json"
           ]
         },
         {
@@ -300,18 +321,19 @@
           "text": "Given ambiguous flows, when critique pass runs, then low-quality stories are revised.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T06:46:00Z",
+          "last_checked": "2025-09-17T07:05:30Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/story_quality_review.log",
             "artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log",
-            "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log"
+            "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log",
+            "artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": "2025-09-17T06:48:30Z",
+        "last_verified": "2025-09-17T07:07:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-FR006-009-001/frd/requirements_synthesis.md",
           "artifacts/runs/RUN-FR006-009-001/frd/stories_export.json",
@@ -321,7 +343,10 @@
           "artifacts/runs/RUN-FR006-009-002/logs/story_quality_review.log",
           "artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
           "artifacts/runs/RUN-FR006-009-003/frd/stories_export.json",
-          "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log"
+          "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log",
+          "artifacts/runs/RUN-FR006-009-004/frd/requirements_synthesis.md",
+          "artifacts/runs/RUN-FR006-009-004/frd/stories_export.json",
+          "artifacts/runs/RUN-FR006-009-004/logs/story_quality_review.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -344,7 +369,7 @@
           "text": "Given AC, when generation runs, then at least one test per story is produced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T06:46:30Z",
+          "last_checked": "2025-09-17T07:06:00Z",
           "evidence": [
             "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
             "artifacts/runs/RUN-DEMO-001/reports/junit_generated.xml",
@@ -355,7 +380,9 @@
             "artifacts/runs/RUN-FR006-009-002/tests/manifest.json",
             "artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
             "artifacts/runs/RUN-FR006-009-003/tests/manifest.json",
-            "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log"
+            "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-004/tests/manifest.json",
+            "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log"
           ]
         },
         {
@@ -363,21 +390,23 @@
           "text": "Given generated tests, when collected by PyTest or compiled with Maven, then no syntax or compile errors occur.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T06:46:30Z",
+          "last_checked": "2025-09-17T07:06:00Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/pytest_collect.log",
             "artifacts/runs/RUN-FR006-009-001/logs/maven_compile.log",
             "artifacts/runs/RUN-FR006-009-002/logs/pytest_collect.log",
             "artifacts/runs/RUN-FR006-009-002/logs/maven_compile.log",
             "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
-            "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log"
+            "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log",
+            "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
+            "artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": "2025-09-17T06:48:30Z",
+        "last_verified": "2025-09-17T07:07:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-DEMO-001/tests/manifest.json",
           "artifacts/runs/RUN-DEMO-001/tests/python/test_generated_suite.py",
@@ -397,7 +426,12 @@
           "artifacts/runs/RUN-FR006-009-003/tests/python/test_adjacency_synthesis.py",
           "artifacts/runs/RUN-FR006-009-003/tests/java/src/test/java/com/gazeqa/generated/AdjacencyStoryLifecycleTest.java",
           "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
-          "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log"
+          "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log",
+          "artifacts/runs/RUN-FR006-009-004/tests/manifest.json",
+          "artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py",
+          "artifacts/runs/RUN-FR006-009-004/tests/java/src/test/java/com/gazeqa/generated/DomBackedStoryLifecycleTest.java",
+          "artifacts/runs/RUN-FR006-009-004/logs/pytest_collect.log",
+          "artifacts/runs/RUN-FR006-009-004/logs/maven_compile.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -421,14 +455,16 @@
           "text": "Given a completed run, when persistence runs, then all expected files are present and index lists them.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T06:47:15Z",
+          "last_checked": "2025-09-17T07:06:15Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/index.json",
             "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log",
             "artifacts/runs/RUN-FR006-009-002/index.json",
             "artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log",
             "artifacts/runs/RUN-FR006-009-003/index.json",
-            "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log"
+            "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-004/index.json",
+            "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
           ]
         },
         {
@@ -436,18 +472,19 @@
           "text": "Given missing upload, when retry policy executes, then eventual consistency is reached or error is surfaced.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T06:47:15Z",
+          "last_checked": "2025-09-17T07:06:15Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/artifact_packaging.log",
             "artifacts/runs/RUN-FR006-009-002/logs/artifact_packaging.log",
-            "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log"
+            "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
+            "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": "2025-09-17T06:48:30Z",
+        "last_verified": "2025-09-17T07:07:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-FR006-009-001/index.json",
           "artifacts/runs/RUN-FR006-009-001/run_manifest.json",
@@ -460,7 +497,11 @@
           "artifacts/runs/RUN-FR006-009-003/selectors/index.json",
           "artifacts/runs/RUN-FR006-009-003/index.json",
           "artifacts/runs/RUN-FR006-009-003/run_manifest.json",
-          "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log"
+          "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log",
+          "artifacts/runs/RUN-FR006-009-004/selectors/index.json",
+          "artifacts/runs/RUN-FR006-009-004/index.json",
+          "artifacts/runs/RUN-FR006-009-004/run_manifest.json",
+          "artifacts/runs/RUN-FR006-009-004/logs/artifact_packaging.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -483,7 +524,7 @@
           "text": "Given API keys, when POST /runs is called from CI, then a run starts and status is retrievable.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T06:48:00Z",
+          "last_checked": "2025-09-17T07:06:45Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log",
             "artifacts/runs/RUN-FR006-009-002/logs/api_run_create.log",
@@ -491,7 +532,9 @@
             "artifacts/runs/RUN-1212BF4DDBE2/api/get_runs_offset0_limit20.json",
             "artifacts/runs/RUN-1212BF4DDBE2/api/get_run_events.json",
             "artifacts/runs/RUN-FR006-009-003/logs/post_runs_response.json",
-            "artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json"
+            "artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json",
+            "artifacts/runs/RUN-FR006-009-004/logs/post_runs_response.json",
+            "artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json"
           ]
         },
         {
@@ -499,19 +542,21 @@
           "text": "Given a completed run, when CLI `gazeqa artifacts <id>` runs, then paths are printed and downloadable.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T06:48:00Z",
+          "last_checked": "2025-09-17T07:06:45Z",
           "evidence": [
             "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log",
             "artifacts/runs/RUN-FR006-009-002/logs/cli_run_create.log",
             "artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
-            "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json"
+            "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json",
+            "artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json",
+            "artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json"
           ]
         }
       ],
       "verification": {
         "test_coverage": true,
         "verification_passed": true,
-        "last_verified": "2025-09-17T06:48:30Z",
+        "last_verified": "2025-09-17T07:07:00Z",
         "evidence_bundle": [
           "artifacts/runs/RUN-FR006-009-001/logs/cli_run_create.log",
           "artifacts/runs/RUN-FR006-009-001/logs/api_run_create.log",
@@ -526,7 +571,12 @@
           "artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json",
           "artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
           "artifacts/runs/RUN-FR006-009-003/api/responses/get_runs_offset0_limit20.json",
-          "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json"
+          "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json",
+          "artifacts/runs/RUN-FR006-009-004/api/responses/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-FR006-009-004/api/responses/get_run_events.json",
+          "artifacts/runs/RUN-FR006-009-004/api/responses/post_runs_response.json",
+          "artifacts/runs/RUN-FR006-009-004/logs/get_runs_offset0_limit20.json",
+          "artifacts/runs/RUN-FR006-009-004/logs/get_run_events.json"
         ],
         "criteria_complete": true,
         "tests_complete": true

@@ -1,0 +1,7 @@
+artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py::test_story_ids_cover_about_team_admin
+artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py::test_about_mission_section_present
+artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py::test_team_list_has_members
+artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py::test_admin_audit_table_headers
+artifacts/runs/RUN-FR006-009-004/tests/python/test_dom_selector_alignment.py::test_selector_files_align_with_dom
+
+5 tests collected in 0.02s

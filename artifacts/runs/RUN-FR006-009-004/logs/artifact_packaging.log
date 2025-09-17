@@ -1,0 +1,5 @@
+[2025-09-17T07:06:11Z] packaging.start run_id=RUN-FR006-009-004 artifact_count=0
+[2025-09-17T07:06:12Z] packaging.include dom=source/dom/ about.html,team.html,admin.html
+[2025-09-17T07:06:13Z] packaging.include selectors=index.json api_responses=api/responses/
+[2025-09-17T07:06:14Z] packaging.checksum sha256=index.json ok artifacts=41
+[2025-09-17T07:06:15Z] packaging.complete run_id=RUN-FR006-009-004 duration_ms=4100
