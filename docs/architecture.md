@@ -266,7 +266,13 @@
 - CI/TDD support via `tests/test_api.py` exercising the endpoint end-to-end.
 
 ## 5. Authentication Prototype (FR-002)
-- `gazeqa.auth.AuthenticationOrchestrator` models the CUA-first then fallback flow, persisting `storageState.json` and `auth_result.json` under each run.
-- Plug in Browserbase (CUA) and Playwright fallback callables when ready; current fake implementations live in unit tests.
-- Configurable via `AuthConfig` (storage root, timeout, fallback toggle).
+- `gazeqa.auth.AuthenticationOrchestrator` models the CUA-first then fallback flow, persisting `storageState.json.enc` and `auth_result.json` under each run.
+- CLI (`gazeqa.cli`) and API (`gazeqa.api`) now bootstrap the orchestrator automatically when `GAZEQA_AUTH_ENCRYPTION_KEY` is present, wiring Browserbase CUA + Playwright fallback callables with environment-sourced config.
+- Configurable via `AuthConfig` (storage root, timeout, fallback toggle, selectors, provider metadata).
 - Evidence storage aligns with FR-002 acceptance criteria (success path saves storage state, failure surfaces stage).
+
+## 6. Exploration Prototype (FR-003)
+- `gazeqa.exploration.ExplorationEngine` simulates coverage-based traversal, emitting `coverage_report.json`, `visited_pages.jsonl`, and `skipped_pages.jsonl`.
+- Coverage threshold defaults to 80 percent; configurable via `ExplorationConfig`.
+- Artifacts stored under `artifacts/runs/<RUN-ID>/exploration/` to align with TC-FR-003-001 evidence.
+- Unit test `tests/test_exploration.py` verifies persistence and coverage calculation.

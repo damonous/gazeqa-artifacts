@@ -1,0 +1,20 @@
+# Local environment files
+.env
+.env.*
+
+# Generated artifacts
+artifacts/
+metrics/*.prom
+metrics/gazeqa_metrics.prom
+
+# Python env / build
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+gazeqa.egg-info/
+
+# macOS/sys
+.DS_Store

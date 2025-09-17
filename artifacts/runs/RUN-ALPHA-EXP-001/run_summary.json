@@ -1,0 +1,77 @@
+{
+  "run_id": "RUN-ALPHA-EXP-001",
+  "env": "qa",
+  "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
+  "started_at": "2025-09-17T00:51:46Z",
+  "finished_at": "2025-09-17T00:51:46Z",
+  "tests": [
+    {
+      "id": "TC-FR-003-001",
+      "status": "passed",
+      "evidence": [
+        "coverage/report.json",
+        "exploration/page_map.jsonl",
+        "exploration/screenshots/home.png"
+      ]
+    },
+    {
+      "id": "TC-FR-003-002",
+      "status": "passed",
+      "evidence": [
+        "exploration/dom/home.html",
+        "exploration/dom/dashboard.html",
+        "exploration/screenshots/dashboard.png"
+      ]
+    },
+    {
+      "id": "TC-FR-004-001",
+      "status": "passed",
+      "evidence": [
+        "bfs/page_map.jsonl",
+        "bfs/skipped_links.json",
+        "bfs/coverage_merge.json"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-003-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T04:16:02Z",
+      "evidence": [
+        "coverage/report.json",
+        "coverage/coverage_summary.txt"
+      ]
+    },
+    {
+      "id": "FR-003-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T04:16:05Z",
+      "evidence": [
+        "exploration/page_map.jsonl",
+        "exploration/screenshots/home.png",
+        "exploration/screenshots/dashboard.png",
+        "exploration/dom/home.html",
+        "exploration/dom/dashboard.html"
+      ]
+    },
+    {
+      "id": "FR-004-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T04:16:20Z",
+      "evidence": [
+        "bfs/page_map.jsonl",
+        "bfs/coverage_merge.json"
+      ]
+    },
+    {
+      "id": "FR-004-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T04:16:27Z",
+      "evidence": [
+        "bfs/skipped_links.json",
+        "exploration/page_map.jsonl"
+      ]
+    }
+  ]
+}

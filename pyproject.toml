@@ -1,0 +1,22 @@
+[project]
+name = "gazeqa"
+version = "0.1.0"
+description = "GazeQA tooling for run intake and automation"
+requires-python = ">=3.11"
+authors = [
+  { name = "GazeQA Team" }
+]
+readme = "README.md"
+dependencies = [
+  "cryptography>=41.0.0",
+  "requests>=2.31.0",
+]
+
+[project.scripts]
+gazeqa-cli = "gazeqa.cli:main"
+
+[tool.setuptools]
+packages = ["gazeqa"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
