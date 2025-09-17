@@ -1,0 +1,22 @@
+{
+  "run_id": "RUN-CRAWL-DEMO-001",
+  "timestamp": "2025-09-17T02:14:12.218695+00:00",
+  "pages": {
+    "https://example.test/home": {
+      "depth": 0
+    },
+    "https://example.test/about": {
+      "depth": 1
+    },
+    "https://example.test/settings": {
+      "depth": 1
+    },
+    "https://example.test/team": {
+      "depth": 2
+    },
+    "https://example.test/admin": {
+      "depth": 2
+    }
+  },
+  "skipped_urls": []
+}

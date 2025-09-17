@@ -1,0 +1,29 @@
+{
+  "run_id": "RUN-FR006-009-003",
+  "generated_at": "2025-09-17T06:47:45Z",
+  "artifacts": {
+    "frd_markdown": "frd/requirements_synthesis.md",
+    "stories_json": "frd/stories_export.json",
+    "selector_index": "selectors/index.json",
+    "crawl_result": "source/crawl/crawl_result.json",
+    "exploration_map": "source/exploration/visited_pages.jsonl",
+    "coverage_report": "source/exploration/coverage_report.json",
+    "test_manifest": "tests/manifest.json",
+    "criteria": "reports/criteria.json",
+    "test_evidence": "reports/test_evidence.json",
+    "api_responses": {
+      "get_runs": "api/responses/get_runs_offset0_limit20.json",
+      "get_run_events": "api/responses/get_run_events.json",
+      "post_runs": "api/responses/post_runs_response.json"
+    },
+    "logs": {
+      "story_quality_review": "logs/story_quality_review.log",
+      "pytest_collect": "logs/pytest_collect.log",
+      "maven_compile": "logs/maven_compile.log",
+      "artifact_packaging": "logs/artifact_packaging.log",
+      "api_get_runs": "logs/get_runs_offset0_limit20.json",
+      "api_get_run_events": "logs/get_run_events.json",
+      "api_post_runs": "logs/post_runs_response.json"
+    }
+  }
+}

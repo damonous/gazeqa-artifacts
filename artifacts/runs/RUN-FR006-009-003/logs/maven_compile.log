@@ -1,0 +1,18 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------< com.gazeqa.generated:story-lifecycle-adjacency >-----------
+[INFO] Building GazeQA Adjacency-Based Story Lifecycle Suite 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ story-lifecycle-adjacency ---
+[INFO] skip non existing resourceDirectory /home/rbrooks/code/gazeqa-cli-agents/artifacts/runs/RUN-FR006-009-003/tests/java/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ story-lifecycle-adjacency ---
+[INFO] No sources to compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.585 s
+[INFO] Finished at: 2025-09-17T11:09:16+08:00
+[INFO] ------------------------------------------------------------------------

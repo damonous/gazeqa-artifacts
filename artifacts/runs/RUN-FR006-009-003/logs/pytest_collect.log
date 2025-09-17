@@ -1,0 +1,5 @@
+artifacts/runs/RUN-FR006-009-003/tests/python/test_adjacency_synthesis.py::test_new_story_ids_present
+artifacts/runs/RUN-FR006-009-003/tests/python/test_adjacency_synthesis.py::test_crawl_contains_about_team_admin
+artifacts/runs/RUN-FR006-009-003/tests/python/test_adjacency_synthesis.py::test_selector_packages_exported
+
+3 tests collected in 0.01s

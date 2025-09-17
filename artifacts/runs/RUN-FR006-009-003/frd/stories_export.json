@@ -1,0 +1,101 @@
+{
+  "run_id": "RUN-FR006-009-003",
+  "generated_at": "2025-09-17T06:45:00Z",
+  "source_runs": [
+    "RUN-ALPHA-EXP-002",
+    "RUN-CRAWL-DEMO-001",
+    "RUN-FR006-009-002"
+  ],
+  "features": [
+    {
+      "feature_id": "FEAT-FR-006-ABOUT",
+      "story_id": "STORY-FR-006-ABOUT",
+      "title": "Corporate About Hub",
+      "user_story": "As a prospect, I want to review the company's About page so I can understand mission statements before onboarding.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-ABOUT-1",
+          "behavior": "About page discovered via BFS adjacency map",
+          "validation": "Assert crawl_result.json contains https://example.test/about",
+          "evidence": [
+            "source/crawl/crawl_result.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-ABOUT-2",
+          "behavior": "Selector export provides about_header locator",
+          "validation": "Inspect selectors/about_selectors.json for about_header key",
+          "evidence": [
+            "selectors/about_selectors.json"
+          ]
+        }
+      ],
+      "quality_score": 0.88,
+      "traceability": {
+        "source_run": "RUN-CRAWL-DEMO-001",
+        "crawl_artifact": "source/crawl/crawl_result.json",
+        "selector_package": "selectors/about_selectors.json"
+      }
+    },
+    {
+      "feature_id": "FEAT-FR-006-TEAM",
+      "story_id": "STORY-FR-006-TEAM",
+      "title": "Team Directory Insights",
+      "user_story": "As a hiring manager, I want the Team directory visible so I can confirm roster coverage.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-TEAM-1",
+          "behavior": "Team page recorded with depth metadata",
+          "validation": "Confirm crawl_result.json depth for team entry is >= 2",
+          "evidence": [
+            "source/crawl/crawl_result.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-TEAM-2",
+          "behavior": "Selector export exposes team_list strategy",
+          "validation": "Check selectors/team_selectors.json for team_list entry",
+          "evidence": [
+            "selectors/team_selectors.json"
+          ]
+        }
+      ],
+      "quality_score": 0.88,
+      "traceability": {
+        "source_run": "RUN-CRAWL-DEMO-001",
+        "crawl_artifact": "source/crawl/crawl_result.json",
+        "selector_package": "selectors/team_selectors.json"
+      }
+    },
+    {
+      "feature_id": "FEAT-FR-006-ADMIN",
+      "story_id": "STORY-FR-006-ADMIN",
+      "title": "Admin Audit Console",
+      "user_story": "As a compliance officer, I want the Admin panel enumerated so I can audit access quickly.",
+      "acceptance_criteria": [
+        {
+          "id": "AC-FR-006-ADMIN-1",
+          "behavior": "Admin page present in adjacency with depth 2",
+          "validation": "Verify crawl_result.json depth value equals 2 for admin URL",
+          "evidence": [
+            "source/crawl/crawl_result.json"
+          ]
+        },
+        {
+          "id": "AC-FR-006-ADMIN-2",
+          "behavior": "Selector export includes audit_table strategies",
+          "validation": "Inspect selectors/admin_selectors.json for audit_table key",
+          "evidence": [
+            "selectors/admin_selectors.json"
+          ]
+        }
+      ],
+      "quality_score": 0.88,
+      "traceability": {
+        "source_run": "RUN-CRAWL-DEMO-001",
+        "crawl_artifact": "source/crawl/crawl_result.json",
+        "selector_package": "selectors/admin_selectors.json"
+      }
+    }
+  ]
+}

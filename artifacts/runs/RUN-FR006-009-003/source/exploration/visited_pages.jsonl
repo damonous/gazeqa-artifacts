@@ -1,0 +1,4 @@
+{"url": "https://alpha-stage.example/home", "title": "Alpha App \u2013 Home", "section": "home", "page_id": "home", "screenshot": "exploration/screenshots/home.png", "dom_snapshot": "exploration/dom/home.html"}
+{"url": "https://alpha-stage.example/dashboard", "title": "Alpha App \u2013 Dashboard", "section": "dashboard", "page_id": "dashboard", "screenshot": "exploration/screenshots/dashboard.png", "dom_snapshot": "exploration/dom/dashboard.html"}
+{"url": "https://alpha-stage.example/settings", "title": "Alpha App \u2013 Settings", "section": "settings", "page_id": "settings", "screenshot": "exploration/screenshots/settings.png", "dom_snapshot": "exploration/dom/settings.html"}
+{"url": "https://alpha-stage.example/reports", "title": "Alpha App \u2013 Reports", "section": "reports", "page_id": "reports", "screenshot": "exploration/screenshots/reports.png", "dom_snapshot": "exploration/dom/reports.html"}

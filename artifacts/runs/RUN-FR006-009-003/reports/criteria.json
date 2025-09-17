@@ -1,0 +1,74 @@
+{
+  "criteria": [
+    {
+      "id": "FR-006-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:00Z",
+      "evidence": [
+        "frd/requirements_synthesis.md",
+        "frd/stories_export.json"
+      ]
+    },
+    {
+      "id": "FR-006-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:00Z",
+      "evidence": [
+        "logs/story_quality_review.log"
+      ]
+    },
+    {
+      "id": "FR-007-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:30Z",
+      "evidence": [
+        "tests/manifest.json",
+        "logs/pytest_collect.log"
+      ]
+    },
+    {
+      "id": "FR-007-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:30Z",
+      "evidence": [
+        "logs/pytest_collect.log",
+        "logs/maven_compile.log"
+      ]
+    },
+    {
+      "id": "FR-008-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:47:15Z",
+      "evidence": [
+        "index.json",
+        "logs/artifact_packaging.log"
+      ]
+    },
+    {
+      "id": "FR-008-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:47:15Z",
+      "evidence": [
+        "logs/artifact_packaging.log"
+      ]
+    },
+    {
+      "id": "FR-009-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:48:00Z",
+      "evidence": [
+        "logs/post_runs_response.json",
+        "logs/get_runs_offset0_limit20.json"
+      ]
+    },
+    {
+      "id": "FR-009-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:48:00Z",
+      "evidence": [
+        "logs/get_run_events.json",
+        "api/responses/get_run_events.json"
+      ]
+    }
+  ]
+}

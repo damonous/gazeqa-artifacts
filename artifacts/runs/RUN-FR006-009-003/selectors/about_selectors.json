@@ -1,0 +1,19 @@
+{
+  "page_id": "about",
+  "selectors": {
+    "about_header": {
+      "strategies": [
+        "text=About",
+        "css=h1"
+      ],
+      "confidence": 0.85
+    },
+    "about_body": {
+      "strategies": [
+        "css=main",
+        "xpath=//main"
+      ],
+      "confidence": 0.8
+    }
+  }
+}

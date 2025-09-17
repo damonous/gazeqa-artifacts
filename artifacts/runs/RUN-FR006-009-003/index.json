@@ -1,0 +1,142 @@
+{
+  "run_id": "RUN-FR006-009-003",
+  "generated_at": "2025-09-17T03:10:25Z",
+  "artifact_count": 27,
+  "artifacts": [
+    {
+      "path": "api/responses/get_run_events.json",
+      "sha256": "161fdc02e6d0922db20ae930e3a02e160b7e6fddb75709fa7dbe9b852ae788fd",
+      "size_bytes": 212
+    },
+    {
+      "path": "api/responses/get_runs_offset0_limit20.json",
+      "sha256": "585a2a4feda8b701d8ae1a17307495d1ea19516ece0c8b1b076ae3b080390d7f",
+      "size_bytes": 399
+    },
+    {
+      "path": "api/responses/post_runs_response.json",
+      "sha256": "4c2700f432a89b6d3d4417c0b1b9eba68be75470011ee3624c66226f10d3f7c3",
+      "size_bytes": 361
+    },
+    {
+      "path": "frd/requirements_synthesis.md",
+      "sha256": "e06323b9cef603089d5e7e1e8b656d730aaa794267a541c5e74dd66969312bb0",
+      "size_bytes": 2056
+    },
+    {
+      "path": "frd/stories_export.json",
+      "sha256": "37316995da2a534781b07d0af53f6342df117f76dacceef0f07d0daddcfe79ed",
+      "size_bytes": 3511
+    },
+    {
+      "path": "logs/artifact_packaging.log",
+      "sha256": "666d48462ae76e6b808659e7e55a4413e537a30500cff624fc1a2da5f5e4a750",
+      "size_bytes": 493
+    },
+    {
+      "path": "logs/get_run_events.json",
+      "sha256": "161fdc02e6d0922db20ae930e3a02e160b7e6fddb75709fa7dbe9b852ae788fd",
+      "size_bytes": 212
+    },
+    {
+      "path": "logs/get_runs_offset0_limit20.json",
+      "sha256": "585a2a4feda8b701d8ae1a17307495d1ea19516ece0c8b1b076ae3b080390d7f",
+      "size_bytes": 399
+    },
+    {
+      "path": "logs/maven_compile.log",
+      "sha256": "21100f60fbc3d6c2d1bbf058d328b2f592acfe60b725f06e92f106678010fb2d",
+      "size_bytes": 986
+    },
+    {
+      "path": "logs/post_runs_response.json",
+      "sha256": "4c2700f432a89b6d3d4417c0b1b9eba68be75470011ee3624c66226f10d3f7c3",
+      "size_bytes": 361
+    },
+    {
+      "path": "logs/pytest_collect.log",
+      "sha256": "083d5cb1e7a39e2a680732154e32f1089c39e2232be3195d431c0b65ec106f30",
+      "size_bytes": 349
+    },
+    {
+      "path": "logs/story_quality_review.log",
+      "sha256": "3640f395fb1ad521d74cc3d3266b6b0b0eb9c859a2850ce161138b028bfb6375",
+      "size_bytes": 350
+    },
+    {
+      "path": "reports/criteria.json",
+      "sha256": "cd598e5a123d1381f0c4fd6b6618322638d1198c8830121ac4c6254fbaeca719",
+      "size_bytes": 1606
+    },
+    {
+      "path": "reports/test_evidence.json",
+      "sha256": "053fd1c59f51bd26b19a58bec37172585e621d1b070e6fd87ccfa7271e7ae78d",
+      "size_bytes": 738
+    },
+    {
+      "path": "run_manifest.json",
+      "sha256": "a86523ed2e21d04e915e25754edf0617d0447840033d7e56dfa402dd83c11f55",
+      "size_bytes": 1194
+    },
+    {
+      "path": "selectors/about_selectors.json",
+      "sha256": "676bfab16f264ad241675439b527a097a7916ba2cd182bc8f0ecdfca19757f21",
+      "size_bytes": 295
+    },
+    {
+      "path": "selectors/admin_selectors.json",
+      "sha256": "0ee0ef79cd136ddc63fbdfcb3b60c7d222b658fda9d284f257321a1a90c81f51",
+      "size_bytes": 331
+    },
+    {
+      "path": "selectors/index.json",
+      "sha256": "47bf96fe42143de838b6ca8c373b20fd9fab93f702ae35b612262954cc40fc5f",
+      "size_bytes": 471
+    },
+    {
+      "path": "selectors/team_selectors.json",
+      "sha256": "53690968113f0a5225ea6f237274ba7230089ccfb6966a1e093bff60e811e46d",
+      "size_bytes": 319
+    },
+    {
+      "path": "source/crawl/crawl_result.json",
+      "sha256": "7479816252e38db184f54eb734e907b74a5c1de9dd1a1463df1864215f3d0092",
+      "size_bytes": 427
+    },
+    {
+      "path": "source/exploration/coverage_report.json",
+      "sha256": "cc48fe9c084019537dd05e41e65ccc262079f2154e6a6d5cf2a70d40f4f32641",
+      "size_bytes": 158
+    },
+    {
+      "path": "source/exploration/visited_pages.jsonl",
+      "sha256": "abb6af1844e0aacd0e140681bc69012fafd416fff2244d8fb71e1f69ae9f7e62",
+      "size_bytes": 916
+    },
+    {
+      "path": "tests/java/pom.xml",
+      "sha256": "12740516f19631fdf40a1824c790b792436cd82488bded2cdcac90ad42b2bfbe",
+      "size_bytes": 1051
+    },
+    {
+      "path": "tests/java/src/test/java/com/gazeqa/generated/AdjacencyStoryLifecycleTest.java",
+      "sha256": "464786888255fdf22171f7e4b632adb724c70ef57630426be8ba5de970c0fa60",
+      "size_bytes": 2593
+    },
+    {
+      "path": "tests/manifest.json",
+      "sha256": "0ad56c0900e68ee48b42094c23eb74f5aea945e63958be4b7a5f4ca8f3ea90e8",
+      "size_bytes": 1045
+    },
+    {
+      "path": "tests/python/__pycache__/test_adjacency_synthesis.cpython-312-pytest-8.4.2.pyc",
+      "sha256": "e34008cfb703ca1c2b306717e7c9ad43ab5ab357095cc37a1f38a34a79312971",
+      "size_bytes": 5277
+    },
+    {
+      "path": "tests/python/test_adjacency_synthesis.py",
+      "sha256": "aa197abceb85a5c04d74a958cf5d0a60a54398723c98853636374b4303040229",
+      "size_bytes": 1440
+    }
+  ]
+}

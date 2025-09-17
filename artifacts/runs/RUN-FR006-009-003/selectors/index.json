@@ -1,0 +1,20 @@
+{
+  "run_id": "RUN-FR006-009-003",
+  "selector_packages": [
+    {
+      "page_id": "about",
+      "path": "selectors/about_selectors.json",
+      "source": "source/crawl/crawl_result.json"
+    },
+    {
+      "page_id": "team",
+      "path": "selectors/team_selectors.json",
+      "source": "source/crawl/crawl_result.json"
+    },
+    {
+      "page_id": "admin",
+      "path": "selectors/admin_selectors.json",
+      "source": "source/crawl/crawl_result.json"
+    }
+  ]
+}

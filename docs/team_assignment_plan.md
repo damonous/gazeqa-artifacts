@@ -31,7 +31,7 @@
 - FR-014 Test Execution Orchestrator (optional v1) – sandbox runners, JUnit/trace aggregation.
 - **Immediate actions**
   - Extend FR-006 synthesis across additional captured flows using RUN-FR006-009-001 as the template and surface deltas in FRD/export JSON.
-  - Automate FR-007/FR-008 pipeline (pytest collect, Maven compile, packaging index) so each new run emits ready-to-publish evidence bundles.
+  - Automate FR-007/FR-008 pipeline (pytest collect, Maven compile, packaging index, API response capture) so each new run emits ready-to-publish evidence bundles.
   - Partner with Codex agent on CLI/API artifact listing + status streaming to close remaining FR-009 scope.
 
 ### Codex Agent – Observability, Safety, CI, Security (FR-011 – FR-013, FR-015 – FR-017) + Automation Backbone

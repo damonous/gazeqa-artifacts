@@ -1,0 +1,19 @@
+{
+  "page_id": "team",
+  "selectors": {
+    "team_header": {
+      "strategies": [
+        "text=Team",
+        "css=h1"
+      ],
+      "confidence": 0.84
+    },
+    "team_list": {
+      "strategies": [
+        "css=ul.team",
+        "xpath=//ul[contains(@class, 'team')]"
+      ],
+      "confidence": 0.79
+    }
+  }
+}

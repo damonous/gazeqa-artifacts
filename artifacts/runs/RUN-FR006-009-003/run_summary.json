@@ -1,0 +1,122 @@
+{
+  "run_id": "RUN-FR006-009-003",
+  "env": "qa",
+  "build_sha": "283f00d55968e1d0e24304a07e57dccfcd0141d9",
+  "started_at": "2025-09-17T06:44:30Z",
+  "finished_at": "2025-09-17T06:48:30Z",
+  "tests": [
+    {
+      "id": "TC-FR-006-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
+        "artifacts/runs/RUN-FR006-009-003/frd/stories_export.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log"
+      ]
+    },
+    {
+      "id": "TC-FR-007-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/tests/manifest.json",
+        "artifacts/runs/RUN-FR006-009-003/tests/python/test_adjacency_synthesis.py",
+        "artifacts/runs/RUN-FR006-009-003/tests/java/src/test/java/com/gazeqa/generated/AdjacencyStoryLifecycleTest.java",
+        "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
+        "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log"
+      ]
+    },
+    {
+      "id": "TC-FR-008-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/selectors/index.json",
+        "artifacts/runs/RUN-FR006-009-003/index.json",
+        "artifacts/runs/RUN-FR006-009-003/run_manifest.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log"
+      ]
+    },
+    {
+      "id": "TC-FR-009-001",
+      "status": "passed",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/logs/post_runs_response.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
+        "artifacts/runs/RUN-FR006-009-003/api/responses/get_runs_offset0_limit20.json",
+        "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json"
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-006-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/frd/requirements_synthesis.md",
+        "artifacts/runs/RUN-FR006-009-003/frd/stories_export.json"
+      ]
+    },
+    {
+      "id": "FR-006-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/logs/story_quality_review.log"
+      ]
+    },
+    {
+      "id": "FR-007-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:30Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/tests/manifest.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log"
+      ]
+    },
+    {
+      "id": "FR-007-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:46:30Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/logs/pytest_collect.log",
+        "artifacts/runs/RUN-FR006-009-003/logs/maven_compile.log"
+      ]
+    },
+    {
+      "id": "FR-008-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:47:15Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/index.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log"
+      ]
+    },
+    {
+      "id": "FR-008-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:47:15Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/logs/artifact_packaging.log"
+      ]
+    },
+    {
+      "id": "FR-009-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-17T06:48:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/logs/post_runs_response.json",
+        "artifacts/runs/RUN-FR006-009-003/logs/get_runs_offset0_limit20.json"
+      ]
+    },
+    {
+      "id": "FR-009-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-17T06:48:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR006-009-003/logs/get_run_events.json",
+        "artifacts/runs/RUN-FR006-009-003/api/responses/get_run_events.json"
+      ]
+    }
+  ]
+}
