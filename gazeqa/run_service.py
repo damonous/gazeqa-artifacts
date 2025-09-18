@@ -100,6 +100,14 @@ class RunService:
         builder = ArtifactManifestBuilder(self.storage_root)
         return builder.build(run_id)
 
+    def get_artifact_path(self, run_id: str, relative_path: str) -> Path:
+        run_dir = self.storage_root / run_id
+        candidate = (run_dir / relative_path).resolve()
+        base = run_dir.resolve()
+        if not str(candidate).startswith(str(base)):
+            raise ValueError("invalid artifact path")
+        return candidate
+
     def get_status_history(self, run_id: str) -> List[Dict[str, object]]:
         history_path = self.storage_root / run_id / "status_history.json"
         if history_path.exists():

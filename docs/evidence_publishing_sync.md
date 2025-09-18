@@ -61,3 +61,5 @@ Following this process keeps the RTM checklist synchronized with live evidence a
   - `gazeqa-junit`: PyTest JUnit XML for downstream reporting.
   - `gazeqa-ui-evidence`: Lovable dashboard captures and SSE transcripts.
 - Workflow execution trace stored at `artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log` and checklist evidence references `reports/ci_workflow.yml` + `reports/metrics_snapshot.prom` for FR-015 acceptance criteria.
+- For artifact proofs, use signed URLs from `GET /runs/{id}/artifacts` (`download_url` field) rather than direct filesystem paths.
+

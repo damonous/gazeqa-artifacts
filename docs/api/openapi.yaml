@@ -138,6 +138,9 @@ components:
           type: integer
         sha256:
           type: string
+        download_url:
+          type: string
+          description: Signed download URL (when artifact signing is enabled)
     ArtifactListing:
       type: object
       properties:
@@ -288,6 +291,46 @@ paths:
           description: Missing or invalid bearer token
         '404':
           description: Run not found
+  /runs/public/download:
+    get:
+      summary: Download artifact via signed URL
+      description: Requires `run_id`, `path`, `expires`, and `signature` produced with the signing key.
+      parameters:
+        - name: run_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: path
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: expires
+          in: query
+          required: true
+          schema:
+            type: integer
+            description: Unix epoch timestamp
+        - name: signature
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Artifact bytes
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Missing or invalid parameters
+        '401':
+          description: Unauthorized or expired signature
+        '404':
+          description: Artifact not found
   /runs/{runId}/status:
     post:
       summary: Update run status

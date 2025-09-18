@@ -76,3 +76,5 @@ Ensure workflow runner posts status and checkpoints to the API endpoints so the 
 - Wire real Temporal workers into `gazeqa/workflow.RunWorkflow`.
 - Implement TLS/CORS/secret rotation before exposing the API publicly.
 - Deploy Lovable frontend on a separate server pointing to the API load balancer.
+- Set `GAZEQA_SIGNING_KEY` (and optional `GAZEQA_SIGNING_TTL`) in deploy/.env so signed artifact downloads work. Never commit real keys.
+

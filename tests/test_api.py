@@ -10,7 +10,9 @@ API_TOKEN = "test-token"
 
 
 def _request(url: str, method: str = "GET", payload: dict | None = None):
-    headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    headers = {}
+    if api.RunRequestHandler.AUTH_TOKEN:
+        headers["Authorization"] = f"Bearer {API_TOKEN}"
     data = None
     if payload is not None:
         headers["Content-Type"] = "application/json"
@@ -93,3 +95,30 @@ def test_get_runs_pagination_and_events(tmp_path: Path) -> None:
     assert any(item.startswith('data:') for item in lines)
 
     server.shutdown(); server.server_close()
+
+
+def test_signed_artifact_download(tmp_path: Path) -> None:
+    api.RunRequestHandler.AUTH_TOKEN = ""
+    api.RunRequestHandler.SIGNING_KEY = "secret-key"
+    server = api.serve(port=0, storage_root=tmp_path)
+    host, port = server.server_address
+    base = f"http://{host}:{port}"
+
+    payload = {"target_url": "https://example.test"}
+    with _request(f"{base}/runs", method="POST", payload=payload) as resp:
+        run_id = json.loads(resp.read())["id"]
+
+    artifact_dir = tmp_path / run_id / "reports"
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+    artifact_path = artifact_dir / "sample.txt"
+    artifact_path.write_text("hello world", encoding="utf-8")
+
+    manifest = json.loads(_request(f"{base}/runs/{run_id}/artifacts").read().decode("utf-8"))
+    entry = next(item for item in manifest["entries"] if item["path"].endswith("sample.txt"))
+    download_url = entry["download_url"]
+    with urllib.request.urlopen(f"{base}{download_url}") as resp:
+        content = resp.read().decode("utf-8")
+    assert content == "hello world"
+
+    server.shutdown(); server.server_close()
+    api.RunRequestHandler.SIGNING_KEY = None

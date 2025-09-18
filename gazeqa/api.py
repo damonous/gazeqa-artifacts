@@ -8,11 +8,14 @@ import queue
 import threading
 import time
 import urllib.parse
+import hmac
+import hashlib
 from functools import partial
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Optional, Tuple
+from datetime import datetime, timezone
 
 from .auth import build_auth_orchestrator
 from .bfs import BFSCrawler, CrawlConfig
@@ -83,6 +86,8 @@ class WorkflowExecutor:
 class RunRequestHandler(BaseHTTPRequestHandler):
     server_version = "GazeQA/0.3"
     AUTH_TOKEN = os.getenv("GAZEQA_API_TOKEN")
+    SIGNING_KEY = os.getenv("GAZEQA_SIGNING_KEY")
+    SIGNING_TTL = int(os.getenv("GAZEQA_SIGNING_TTL", "900"))
 
     @property
     def run_service(self) -> RunService:
@@ -165,6 +170,10 @@ class RunRequestHandler(BaseHTTPRequestHandler):
 
         if path == "/runs":
             self._send_paginated_runs(parsed.query)
+            return
+
+        if path == "/runs/public/download":
+            self._serve_signed_artifact(parsed.query)
             return
 
         if path.startswith("/runs/"):
@@ -268,13 +277,24 @@ class RunRequestHandler(BaseHTTPRequestHandler):
         limit = max(1, min(200, int(params.get("limit", [50])[0])))
         entries = manifest.get("entries", [])
         total = len(entries)
-        slice_ = entries[offset : offset + limit]
+        slice_original = entries[offset : offset + limit]
         next_offset = offset + limit if offset + limit < total else None
         prev_offset = offset - limit if offset - limit >= 0 else None
+        processed = []
+        for entry in slice_original:
+            entry_copy = dict(entry)
+            if self.SIGNING_KEY:
+                expires = int(datetime.now(timezone.utc).timestamp()) + self.SIGNING_TTL
+                signature = _sign_path(self.SIGNING_KEY, manifest.get("run_id", ""), entry_copy.get("path", ""), expires)
+                entry_copy["download_url"] = (
+                    f"/runs/public/download?run_id={manifest.get('run_id')}&path={urllib.parse.quote(entry_copy.get('path', ''))}"
+                    f"&expires={expires}&signature={signature}"
+                )
+            processed.append(entry_copy)
         manifest_copy = dict(manifest)
         manifest_copy.update(
             {
-                "entries": slice_,
+                "entries": processed,
                 "offset": offset,
                 "limit": limit,
                 "total": total,
@@ -283,6 +303,45 @@ class RunRequestHandler(BaseHTTPRequestHandler):
             }
         )
         self._send_json(manifest_copy)
+
+    def _serve_signed_artifact(self, query: str) -> None:
+        if not self.SIGNING_KEY:
+            self._send_json({"error": "artifact signing disabled"}, status=HTTPStatus.BAD_REQUEST)
+            return
+        params = urllib.parse.parse_qs(query)
+        run_id = params.get("run_id", [None])[0]
+        relative_path = params.get("path", [None])[0]
+        signature = params.get("signature", [None])[0]
+        expires = params.get("expires", [None])[0]
+        if not all([run_id, relative_path, signature, expires]):
+            self._send_json({"error": "missing parameters"}, status=HTTPStatus.BAD_REQUEST)
+            return
+        try:
+            expires_int = int(expires)
+        except ValueError:
+            self._send_json({"error": "invalid expires"}, status=HTTPStatus.BAD_REQUEST)
+            return
+        if expires_int < int(datetime.now(timezone.utc).timestamp()):
+            self._send_json({"error": "signature expired"}, status=HTTPStatus.UNAUTHORIZED)
+            return
+        expected = _sign_path(self.SIGNING_KEY, run_id, relative_path, expires_int)
+        if not hmac.compare_digest(expected, signature):
+            self._send_json({"error": "invalid signature"}, status=HTTPStatus.UNAUTHORIZED)
+            return
+        try:
+            artifact_path = self.run_service.get_artifact_path(run_id, relative_path)
+        except ValueError:
+            self._send_json({"error": "invalid path"}, status=HTTPStatus.BAD_REQUEST)
+            return
+        if not artifact_path.exists() or not artifact_path.is_file():
+            self._send_json({"error": "not_found"}, status=HTTPStatus.NOT_FOUND)
+            return
+        content = artifact_path.read_bytes()
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", "application/octet-stream")
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
 
     def _send_run_events(self, run_id: str) -> None:
         try:

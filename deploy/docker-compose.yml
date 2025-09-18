@@ -62,6 +62,8 @@ services:
       GAZEQA_STORAGE_ROOT: /data/artifacts/runs
       GAZEQA_API_HOST: 0.0.0.0
       GAZEQA_API_PORT: 8000
+      GAZEQA_SIGNING_KEY: ${GAZEQA_SIGNING_KEY:-change-signing-key}
+      GAZEQA_SIGNING_TTL: ${GAZEQA_SIGNING_TTL:-900}
     volumes:
       - artifacts-data:/data/artifacts
     ports:

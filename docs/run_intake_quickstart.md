@@ -92,3 +92,5 @@ API specification: `docs/api/openapi.yaml` provides schemas for CLI/UI integrati
 - `POST /runs/{id}/status` — append a status event (body: `{ "status": "Exploring", "metadata": {...} }`).
 - `POST /runs/{id}/checkpoints` — record Temporal checkpoints (`{ "checkpoint": "exploration.complete", "details": {...} }`).
 Use these from orchestration jobs so the SSE stream and dashboard stay current.
+
+- `GET /runs/public/download?run_id=<id>&path=<artifact>&expires=<unix>&signature=<hmac>` — signed artifact download for Lovable/CLI (requires `GAZEQA_SIGNING_KEY`).
