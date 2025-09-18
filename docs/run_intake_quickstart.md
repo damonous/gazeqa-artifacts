@@ -94,3 +94,5 @@ API specification: `docs/api/openapi.yaml` provides schemas for CLI/UI integrati
 Use these from orchestration jobs so the SSE stream and dashboard stay current.
 
 - `GET /runs/public/download?run_id=<id>&path=<artifact>&expires=<unix>&signature=<hmac>` — signed artifact download for Lovable/CLI (requires `GAZEQA_SIGNING_KEY`).
+
+- Use `tools/generate_signed_artifact_url.py <run_id> <artifact_path> <signing_key>` to produce download links for Lovable or CLI clients.
