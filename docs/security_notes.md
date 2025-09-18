@@ -5,3 +5,5 @@
 - **Audit trail**: `run_manifest.json`, `status_history.json`, and `events.jsonl` form the audit baseline; long term ship to centralized logging.
 - **Artifact access**: When exposing beyond the CLI/UI, wrap `artifacts/index.json` with signed URLs. Current endpoints return metadata only.
 - **CORS & transport**: Enable TLS and restrict origins when hosting the Lovable dashboard.
+- **Deployment hardening**: Terminate TLS at reverse proxy (nginx/Traefik); enforce CORS for Lovable's origin; rotate tokens via env/secret manager.
+
