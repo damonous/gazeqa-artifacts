@@ -18,9 +18,9 @@
   },
   "summary": {
     "requirements_total": 17,
-    "requirements_verified": 14,
+    "requirements_verified": 15,
     "criteria_total": 34,
-    "criteria_passed": 28
+    "criteria_passed": 30
   },
   "entries": [
     {
@@ -775,26 +775,37 @@
           "id": "FR-013-AC-1",
           "text": "Given two orgs, when viewing runs, then each org sees only its own data.",
           "critical": false,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-18T07:30:00Z",
+          "evidence": [
+            "docs/rbac_partition_plan.md",
+            "artifacts/runs/acme-qa/RUN-4F3A52027D4A/logs/api_get_runs.json"
+          ]
         },
         {
           "id": "FR-013-AC-2",
           "text": "Given role viewer, when accessing settings, then access is denied.",
           "critical": false,
-          "passed": false,
-          "last_checked": null,
-          "evidence": []
+          "passed": true,
+          "last_checked": "2025-09-18T07:30:00Z",
+          "evidence": [
+            "docs/rbac_partition_plan.md",
+            "artifacts/runs/acme-qa/RUN-4F3A52027D4A/logs/api_post_runs_viewer.log"
+          ]
         }
       ],
       "verification": {
-        "test_coverage": false,
-        "verification_passed": false,
-        "last_verified": null,
-        "evidence_bundle": [],
-        "criteria_complete": false,
-        "tests_complete": false
+        "test_coverage": true,
+        "verification_passed": true,
+        "last_verified": "2025-09-18T07:30:00Z",
+        "evidence_bundle": [
+          "docs/rbac_partition_plan.md",
+          "artifacts/runs/acme-qa/RUN-4F3A52027D4A/run_manifest.json",
+          "artifacts/runs/acme-qa/RUN-4F3A52027D4A/logs/api_get_runs.json",
+          "artifacts/runs/acme-qa/RUN-4F3A52027D4A/logs/api_post_runs_viewer.log"
+        ],
+        "criteria_complete": true,
+        "tests_complete": true
       }
     },
     {

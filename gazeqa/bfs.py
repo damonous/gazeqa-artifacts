@@ -11,6 +11,7 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .exploration import PageDescriptor
 from .telemetry import NoOpTelemetry, TelemetrySink
+from .path_utils import resolve_run_path
 
 
 logger = logging.getLogger(__name__)
@@ -206,7 +207,7 @@ class BFSCrawler:
         result: CrawlResult,
         guardrail_events: List[Dict[str, object]],
     ) -> None:
-        run_dir = self.config.storage_root / run_id / "bfs"
+        run_dir = resolve_run_path(self.config.storage_root, run_id) / "bfs"
         run_dir.mkdir(parents=True, exist_ok=True)
 
         page_map_path = run_dir / "page_map.jsonl"

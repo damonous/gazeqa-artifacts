@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, Set, Dict
 
+from .path_utils import resolve_run_path
+
 
 @dataclass(slots=True)
 class CrawlConfig:
@@ -67,7 +69,7 @@ class BFSCrawler:
         return result
 
     def _persist(self, run_id: str, result: CrawlResult) -> None:
-        crawl_dir = self.config.storage_root / run_id / "crawl"
+        crawl_dir = resolve_run_path(self.config.storage_root, run_id) / "crawl"
         crawl_dir.mkdir(parents=True, exist_ok=True)
         (crawl_dir / "crawl_result.json").write_text(
             json.dumps(result.to_dict(), indent=2), encoding="utf-8"

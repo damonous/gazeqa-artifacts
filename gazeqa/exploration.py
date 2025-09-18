@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Sequence
 
 from .telemetry import NoOpTelemetry, TelemetrySink
+from .path_utils import resolve_run_path
 
 
 logger = logging.getLogger(__name__)
@@ -148,7 +149,7 @@ class ExplorationEngine:
         result: ExplorationResult,
         guardrail_events: List[Dict[str, object]],
     ) -> None:
-        run_dir = self.config.storage_root / run_id / "exploration"
+        run_dir = resolve_run_path(self.config.storage_root, run_id) / "exploration"
         run_dir.mkdir(parents=True, exist_ok=True)
         coverage_path = run_dir / "coverage_report.json"
         coverage_path.write_text(

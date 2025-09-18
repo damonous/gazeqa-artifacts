@@ -1,6 +1,7 @@
 """Core data models for GazeQA run intake."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 from urllib.parse import urlparse
@@ -41,6 +42,9 @@ class CreateRunPayload:
     budgets: BudgetSpec = field(default_factory=BudgetSpec)
     storage_profile: str = "default"
     tags: List[str] = field(default_factory=list)
+    organization: str = "default"
+    organization_slug: str = "default"
+    actor_role: str = "qa_runner"
 
     @classmethod
     def from_dict(cls, raw: Dict[str, object]) -> "CreateRunPayload":
@@ -85,6 +89,24 @@ class CreateRunPayload:
             errors["tags"] = "tags must be an array"
             tags = []
 
+        organization = str(raw.get("organization") or "").strip() or "default"
+        slug_input = str(raw.get("organization_slug") or "").strip()
+        if slug_input:
+            try:
+                organization_slug = _normalize_slug(slug_input)
+            except ValueError as exc:
+                errors["organization_slug"] = str(exc)
+                organization_slug = "default"
+        else:
+            organization_slug = _normalize_slug(organization) if organization != "default" else "default"
+
+        actor_role_raw = str(raw.get("actor_role") or "qa_runner").strip()
+        if not actor_role_raw:
+            errors["actor_role"] = "actor_role must not be empty"
+            actor_role = "qa_runner"
+        else:
+            actor_role = actor_role_raw
+
         if errors:
             raise ValidationError(errors)
 
@@ -94,6 +116,9 @@ class CreateRunPayload:
             budgets=budgets,
             storage_profile=storage_profile,
             tags=tags,
+            organization=organization,
+            organization_slug=organization_slug,
+            actor_role=actor_role,
         )
 
 
@@ -109,3 +134,20 @@ def _coerce_int(value: object, default: int) -> int:
         return int(value)
     except (TypeError, ValueError):
         return default
+
+
+_SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def _normalize_slug(value: str) -> str:
+    slug = value.strip().lower()
+    if not slug:
+        return "default"
+    slug = slug.replace("_", "-")
+    slug = re.sub(r"[^a-z0-9-]", "-", slug)
+    slug = re.sub(r"-+", "-", slug).strip("-")
+    if not slug:
+        raise ValueError("organization_slug must contain alphanumeric characters")
+    if not _SLUG_PATTERN.match(slug):
+        raise ValueError("organization_slug may contain lowercase letters, numbers, and hyphens")
+    return slug

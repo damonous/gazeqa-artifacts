@@ -10,6 +10,7 @@ from urllib.parse import urljoin, urlparse
 from .exploration import PageDescriptor
 from .models import CreateRunPayload
 from .site_map import build_default_site_map
+from .path_utils import resolve_run_path
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +79,7 @@ def _discover_with_playwright(
     if _sync_playwright is None:  # pragma: no cover - environment guard
         raise SiteDiscoveryError("Playwright runtime not available")
 
-    run_root = config.storage_root / run_id
+    run_root = resolve_run_path(config.storage_root, run_id)
     screenshot_root = run_root / config.screenshot_dir
     dom_root = run_root / config.dom_dir
     screenshot_root.mkdir(parents=True, exist_ok=True)

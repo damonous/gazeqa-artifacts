@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable
 
+from .path_utils import resolve_run_path
+
 
 @dataclass(slots=True)
 class ArtifactEntry:
@@ -28,10 +30,14 @@ class ArtifactManifestBuilder:
     def __init__(self, storage_root: Path | str = Path("artifacts/runs")) -> None:
         self.storage_root = Path(storage_root)
 
-    def build(self, run_id: str, include_patterns: Iterable[str] | None = None) -> Dict[str, object]:
-        run_dir = self.storage_root / run_id
-        if not run_dir.exists():
-            raise FileNotFoundError(f"Run directory not found: {run_dir}")
+    def build(
+        self,
+        run_id: str,
+        include_patterns: Iterable[str] | None = None,
+        *,
+        organization_slug: str | None = None,
+    ) -> Dict[str, object]:
+        run_dir = self._resolve_run_dir(run_id, organization_slug)
         include = set(include_patterns or [])
         entries: list[ArtifactEntry] = []
         for path in run_dir.rglob("*"):
@@ -60,6 +66,16 @@ class ArtifactManifestBuilder:
         manifest_dir.mkdir(parents=True, exist_ok=True)
         manifest_path = manifest_dir / "index.json"
         manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+    def _resolve_run_dir(self, run_id: str, organization_slug: str | None) -> Path:
+        if organization_slug:
+            candidate = Path(self.storage_root) / organization_slug / run_id
+            if candidate.exists():
+                return candidate
+        candidate = resolve_run_path(self.storage_root, run_id)
+        if candidate.exists() and candidate.is_dir():
+            return candidate
+        raise FileNotFoundError(f"Run directory not found for {run_id}")
 
 
 __all__ = ["ArtifactManifestBuilder", "ArtifactEntry"]

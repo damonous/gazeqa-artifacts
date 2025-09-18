@@ -46,16 +46,17 @@
 
 ## Implementation Steps
 1. **Instrumentation**
-   - Ensure all services emit structured logs with `run_id`, `component`, `severity`, `env`.
+   - Ensure all services emit structured logs with `run_id`, `organization_slug`, `component`, `severity`, `env`.
    - Export coverage metrics (FR-003/004) via Prometheus gauge `gazeqa_coverage_percent{run_id}`.
    - Emit `gazeqa_story_to_test_coverage{run_id}` from FR-007 pipeline.
    - Record artifact upload success/failure counters `gazeqa_artifact_upload_total{status}` in FR-008.
    - Publish guardrail metrics `gazeqa_guardrail_block_total{action}` from FR-016 logic.
 
 2. **Data Pipeline**
-   - Configure OpenTelemetry collectors to forward metrics/logs to central TSDB (Prometheus/Grafana) and log store (ELK or Loki).
-   - Connect Langfuse project to Grafana via plugin or embed external dashboard link.
-   - Integrate Temporal visibility API for workflow stats; push key metrics to Prometheus (retries, duration).
+- Configure OpenTelemetry collectors to forward metrics/logs to central TSDB (Prometheus/Grafana) and log store (ELK or Loki).
+- Connect Langfuse project to Grafana via plugin or embed external dashboard link.
+- Integrate Temporal visibility API for workflow stats; push key metrics to Prometheus (retries, duration).
+- Route Prometheus alerts through the bundled Alertmanager -> `/observability/alerts` webhook so the API audit log captures incidents (and onward integrations can fan out from there).
 
 3. **Dashboard Creation**
    - Build Grafana dashboards per sections above; store JSON definitions under `observability/dashboards/` (to be created) for version control.

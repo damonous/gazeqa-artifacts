@@ -133,8 +133,15 @@ class AuthenticationOrchestrator:
         self.cua_login = cua_login
         self.fallback_login = fallback_login
 
-    def authenticate(self, run_id: str, credentials: CredentialSpec) -> dict[str, Any]:
-        evidence_dir = self._ensure_evidence_dir(run_id)
+    def authenticate(
+        self,
+        run_id: str,
+        credentials: CredentialSpec,
+        *,
+        run_dir: Path | None = None,
+        organization_slug: str | None = None,
+    ) -> dict[str, Any]:
+        evidence_dir = self._ensure_evidence_dir(run_id, run_dir, organization_slug)
         attempts_log: list[dict[str, Any]] = []
 
         cua_attempt = self._execute_stage(
@@ -194,8 +201,18 @@ class AuthenticationOrchestrator:
             logger.exception("Authentication stage %s raised an exception", stage)
             return AuthAttempt(success=False, storage_state=None, error=str(exc))
 
-    def _ensure_evidence_dir(self, run_id: str) -> Path:
-        path = self.config.storage_root / run_id / "auth"
+    def _ensure_evidence_dir(
+        self,
+        run_id: str,
+        run_dir: Path | None = None,
+        organization_slug: str | None = None,
+    ) -> Path:
+        if run_dir is not None:
+            path = run_dir / "auth"
+        elif organization_slug:
+            path = self.config.storage_root / organization_slug / run_id / "auth"
+        else:
+            path = self.config.storage_root / run_id / "auth"
         path.mkdir(parents=True, exist_ok=True)
         return path
 

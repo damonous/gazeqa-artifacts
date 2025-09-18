@@ -9,5 +9,8 @@
     "page_budget": 250
   },
   "storage_profile": "azure-blob",
-  "tags": ["demo", "smoke"]
+  "tags": ["demo", "smoke"],
+  "organization": "Acme QA",
+  "organization_slug": "acme-qa",
+  "actor_role": "qa_runner"
 }

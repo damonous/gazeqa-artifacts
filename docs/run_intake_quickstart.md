@@ -10,7 +10,7 @@ python -m gazeqa.cli docs/examples/create_run_payload.json
 #gazeqa-cli docs/examples/create_run_payload.json
 ```
 
-Output includes the generated `run id`, budgets, and storage profile. Artifacts are stored under `artifacts/runs/<RUN-ID>/`.
+Output includes the generated `run id`, budgets, and storage profile. Artifacts are stored under `artifacts/runs/<organization_slug>/<RUN-ID>/` so each tenant has an isolated hierarchy.
 
 ## HTTP API
 
@@ -18,11 +18,27 @@ Output includes the generated `run id`, budgets, and storage profile. Artifacts 
 python -m gazeqa.api  # serves on http://127.0.0.1:8000
 curl -X POST http://127.0.0.1:8000/runs \
   -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer token-acme' \
   -d @docs/examples/create_run_payload.json
 ```
 
 - Success ⇒ `201 Created` with run manifest JSON.
 - Invalid payload ⇒ `400` with field-level errors, satisfying TC-FR-001-002.
+
+Example payload fragment (`docs/examples/create_run_payload.json`):
+
+```json
+{
+  "target_url": "https://example-app.test",
+  "organization": "Acme QA",
+  "organization_slug": "acme-qa",
+  "actor_role": "qa_runner",
+  "credentials": {
+    "username": "qa@example.com",
+    "secret_ref": "vault://kv/gazeqa/runs/demo"
+  }
+}
+```
 
 ## Tests
 
@@ -45,21 +61,37 @@ result = engine.explore('RUN-EXP-DEMO', site_map)
 print(result.coverage_percent)
 ```
 
-Artifacts land in `artifacts/runs/RUN-EXP-DEMO/exploration/` and can be referenced when building run summaries (`--test "TC-FR-003-001=passed"`).
+Artifacts land in `artifacts/runs/<org_slug>/RUN-EXP-DEMO/exploration/` and can be referenced when building run summaries (`--test "TC-FR-003-001=passed"`).
 
 
 ## Authentication
 
-Set `GAZEQA_API_TOKEN` to require Bearer auth for all API calls.
+Set `GAZEQA_API_TOKEN_REGISTRY` to map bearer tokens to organizations and roles. A minimal single-token setup can still use `GAZEQA_API_TOKEN`, but multi-tenant environments should provide JSON such as:
 
 ```bash
-export GAZEQA_API_TOKEN="local-token"
-curl -H "Authorization: Bearer $GAZEQA_API_TOKEN" http://127.0.0.1:8000/runs
+export GAZEQA_API_TOKEN_REGISTRY='{
+  "token-acme": {
+    "organization": "Acme QA",
+    "organization_slug": "acme-qa",
+    "actor_role": "qa_runner",
+    "scopes": ["runs:create", "runs:read", "runs:events"]
+  },
+  "token-viewer": {
+    "organization": "Acme QA",
+    "organization_slug": "acme-qa",
+    "actor_role": "qa_viewer",
+    "scopes": ["runs:read", "runs:events"]
+  }
+}'
+```
+
+```bash
+curl -H "Authorization: Bearer token-acme" http://127.0.0.1:8000/runs
 ```
 
 ## API Endpoints Snapshot
 
-- `GET /runs` – list run identifiers stored on disk.
+- `GET /runs` – list runs scoped to the caller's organization.
 - `GET /runs/<id>` – return the run manifest created via the CLI/API intake flow.
 - `GET /runs/<id>/artifacts` – generate and return `artifacts/index.json` (FR-008 manifest).
 - `POST /runs` – create a run (existing behaviour).
@@ -80,7 +112,7 @@ result = crawler.crawl('RUN-CRAWL-DEMO', 'https://example.test/home', link_graph
 print(result.discovered_pages)
 ```
 
-Artifacts saved to `artifacts/runs/RUN-CRAWL-DEMO/crawl/crawl_result.json` feed TC-FR-004-001.
+Artifacts saved to `artifacts/runs/<org_slug>/RUN-CRAWL-DEMO/crawl/crawl_result.json` feed TC-FR-004-001.
 
 ### Pagination & Event Stream
 - `GET /runs?offset=<n>&limit=<m>` paginates run listings (default 20). Use this before requesting artifact manifests for large histories.
@@ -93,6 +125,6 @@ API specification: `docs/api/openapi.yaml` provides schemas for CLI/UI integrati
 - `POST /runs/{id}/checkpoints` — record Temporal checkpoints (`{ "checkpoint": "exploration.complete", "details": {...} }`).
 Use these from orchestration jobs so the SSE stream and dashboard stay current.
 
-- `GET /runs/public/download?run_id=<id>&path=<artifact>&expires=<unix>&signature=<hmac>` — signed artifact download for Lovable/CLI (requires `GAZEQA_SIGNING_KEY`).
+- `GET /runs/public/download?run_id=<id>&organization_slug=<org>&path=<artifact>&expires=<unix>&signature=<hmac>` — signed artifact download for Lovable/CLI (requires `GAZEQA_SIGNING_KEY`). The `organization_slug` must match the run owner's slug and is part of the signature payload.
 
 - Use `tools/generate_signed_artifact_url.py <run_id> <artifact_path> <signing_key>` to produce download links for Lovable or CLI clients.

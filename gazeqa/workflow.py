@@ -308,7 +308,13 @@ class RunWorkflow:
         credentials = payload.credentials
         if credentials.is_empty():
             raise WorkflowError("No credentials provided for authentication phase")
-        result = self.auth_orchestrator.authenticate(run_id, credentials)
+        run_dir = self.run_service.get_run_directory(run_id)
+        result = self.auth_orchestrator.authenticate(
+            run_id,
+            credentials,
+            run_dir=run_dir,
+            organization_slug=payload.organization_slug,
+        )
         if not isinstance(result, dict):
             raise WorkflowError("Authentication orchestrator returned unexpected payload")
         if not result.get("success"):
