@@ -64,8 +64,19 @@ services:
       GAZEQA_API_PORT: 8000
       GAZEQA_SIGNING_KEY: ${GAZEQA_SIGNING_KEY:-change-signing-key}
       GAZEQA_SIGNING_TTL: ${GAZEQA_SIGNING_TTL:-900}
+      GAZEQA_ALLOWED_ORIGINS: ${GAZEQA_ALLOWED_ORIGINS:-}
+      GAZEQA_TLS_CERTFILE: ${GAZEQA_TLS_CERTFILE:-}
+      GAZEQA_TLS_KEYFILE: ${GAZEQA_TLS_KEYFILE:-}
+      GAZEQA_TOKEN_REGISTRY_FILE: ${GAZEQA_TOKEN_REGISTRY_FILE:-/etc/gazeqa/tokens/registry.json}
+      GAZEQA_API_TOKEN_FILE: ${GAZEQA_API_TOKEN_FILE:-/etc/gazeqa/tokens/default.token}
+      GAZEQA_SIGNING_KEY_FILE: ${GAZEQA_SIGNING_KEY_FILE:-/etc/gazeqa/keys/signing.keys}
+      GAZEQA_SIGNING_KEY_PREVIOUS: ${GAZEQA_SIGNING_KEY_PREVIOUS:-}
+      GAZEQA_ALERT_WEBHOOK_TOKEN: ${GAZEQA_ALERT_WEBHOOK_TOKEN:-}
     volumes:
       - artifacts-data:/data/artifacts
+      - ./secrets/api/tokens:/etc/gazeqa/tokens:ro
+      - ./secrets/api/keys:/etc/gazeqa/keys:ro
+      - ./secrets/tls:/etc/gazeqa/tls:ro
     ports:
       - "8000:8000"
     depends_on:
@@ -106,9 +117,12 @@ services:
     restart: unless-stopped
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../observability/alerts:/etc/prometheus/rules:ro
       - prometheus-data:/prometheus
     ports:
       - "9090:9090"
+    depends_on:
+      - alertmanager
 
   grafana:
     image: grafana/grafana:10.4.3
@@ -125,6 +139,18 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: gazeqa-alertmanager
+    restart: unless-stopped
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./secrets/alertmanager:/etc/alertmanager/secrets:ro
+    ports:
+      - "9093:9093"
+    depends_on:
+      - api
 
 volumes:
   postgres-data:

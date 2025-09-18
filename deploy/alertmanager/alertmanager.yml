@@ -1,0 +1,21 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: gazeqa-api
+  group_by: ['alertname', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 2h
+
+receivers:
+  - name: gazeqa-api
+    webhook_configs:
+      - url: http://gazeqa-api:8000/observability/alerts
+        send_resolved: true
+        http_config:
+          follow_redirects: false
+          # Uncomment when GAZEQA_ALERT_WEBHOOK_TOKEN is set and mount the token file:
+          # authorization:
+          #   type: Bearer
+          #   credentials_file: /etc/alertmanager/secrets/alert_webhook_token

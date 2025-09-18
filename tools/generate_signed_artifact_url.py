@@ -9,14 +9,24 @@ import time
 from urllib.parse import quote
 
 
-def sign_path(signing_key: str, run_id: str, path: str, expires: int) -> str:
-    message = f"{run_id}:{path}:{expires}".encode("utf-8")
+def sign_path(signing_key: str, run_id: str, organization_slug: str, path: str, expires: int) -> str:
+    message = f"{run_id}:{organization_slug}:{path}:{expires}".encode("utf-8")
     return hmac.new(signing_key.encode("utf-8"), message, hashlib.sha256).hexdigest()
 
 
-def build_url(base: str, run_id: str, path: str, expires: int, signature: str) -> str:
+def build_url(
+    base: str,
+    run_id: str,
+    organization_slug: str,
+    path: str,
+    expires: int,
+    signature: str,
+) -> str:
     quoted_path = quote(path)
-    return f"{base}/runs/public/download?run_id={run_id}&path={quoted_path}&expires={expires}&signature={signature}"
+    return (
+        f"{base}/runs/public/download?run_id={run_id}&organization_slug={organization_slug}"
+        f"&path={quoted_path}&expires={expires}&signature={signature}"
+    )
 
 
 def main() -> None:
@@ -26,11 +36,25 @@ def main() -> None:
     parser.add_argument("signing_key", help="GAZEQA_SIGNING_KEY value")
     parser.add_argument("--base-url", default="http://localhost:8000", help="API base URL")
     parser.add_argument("--ttl", type=int, default=900, help="Time to live in seconds")
+    parser.add_argument("--organization-slug", default="default", help="Organization slug for the run")
     args = parser.parse_args()
 
     expires = int(time.time()) + args.ttl
-    signature = sign_path(args.signing_key, args.run_id, args.artifact_path, expires)
-    url = build_url(args.base_url.rstrip('/'), args.run_id, args.artifact_path, expires, signature)
+    signature = sign_path(
+        args.signing_key,
+        args.run_id,
+        args.organization_slug,
+        args.artifact_path,
+        expires,
+    )
+    url = build_url(
+        args.base_url.rstrip('/'),
+        args.run_id,
+        args.organization_slug,
+        args.artifact_path,
+        expires,
+        signature,
+    )
     print(url)
 
 
