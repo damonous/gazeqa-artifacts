@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: gazeqa-api
+    static_configs:
+      - targets:
+          - gazeqa-api:8000
+        labels:
+          service: api
+  - job_name: gazeqa-metrics-files
+    metrics_path: /
+    static_configs:
+      - targets:
+          - gazeqa-prometheus:9091

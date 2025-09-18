@@ -395,7 +395,11 @@ def serve(
 
 
 def main() -> None:
-    server = serve()
+    host = os.getenv("GAZEQA_API_HOST", "0.0.0.0")
+    port = int(os.getenv("GAZEQA_API_PORT", "8000"))
+    storage_root = os.getenv("GAZEQA_STORAGE_ROOT", "artifacts/runs")
+    ui_root = os.getenv("GAZEQA_UI_ROOT", "webui")
+    server = serve(host=host, port=port, storage_root=storage_root, ui_root=ui_root)
     print(f"GazeQA API listening on http://{server.server_address[0]}:{server.server_address[1]}")
     try:
         while True:

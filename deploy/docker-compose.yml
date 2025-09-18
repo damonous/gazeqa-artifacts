@@ -1,0 +1,120 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: gazeqa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gazeqa}
+      POSTGRES_USER: ${POSTGRES_USER:-gazeqa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: gazeqa-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  temporal:
+    image: temporalio/auto-setup:1.22.4
+    container_name: gazeqa-temporal
+    restart: unless-stopped
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      DB_HOST: postgres
+      DB_NAME: ${POSTGRES_DB:-gazeqa}
+      DB_USER: ${POSTGRES_USER:-gazeqa}
+      DB_PWD: ${POSTGRES_PASSWORD:-changeme}
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamic.yml
+    volumes:
+      - temporal-data:/etc/temporal/config/dynamicconfig
+    depends_on:
+      - postgres
+    ports:
+      - "7233:7233"
+
+  temporal-ui:
+    image: temporalio/web:2.16.2
+    container_name: gazeqa-temporal-ui
+    restart: unless-stopped
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+    depends_on:
+      - temporal
+    ports:
+      - "8088:8080"
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    container_name: gazeqa-api
+    restart: unless-stopped
+    environment:
+      GAZEQA_API_TOKEN: ${GAZEQA_API_TOKEN:-local-token}
+      GAZEQA_STORAGE_ROOT: /data/artifacts/runs
+      GAZEQA_API_HOST: 0.0.0.0
+      GAZEQA_API_PORT: 8000
+    volumes:
+      - artifacts-data:/data/artifacts
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+
+  worker:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.worker
+    container_name: gazeqa-worker
+    restart: unless-stopped
+    environment:
+      GAZEQA_API_TOKEN: ${GAZEQA_API_TOKEN:-local-token}
+      GAZEQA_STORAGE_ROOT: /data/artifacts/runs
+    volumes:
+      - artifacts-data:/data/artifacts
+    depends_on:
+      - api
+      - temporal
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: gazeqa-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:10.4.3
+    container_name: gazeqa-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../observability/dashboards:/etc/grafana/provisioning/dashboards_json:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres-data:
+  temporal-data:
+  artifacts-data:
+  prometheus-data:
+  grafana-data:
