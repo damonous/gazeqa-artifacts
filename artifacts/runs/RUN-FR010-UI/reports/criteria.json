@@ -3,19 +3,19 @@
     {
       "id": "FR-010-AC-1",
       "passed": true,
-      "checked_at": "2025-09-17T09:04:33Z",
+      "checked_at": "2025-09-18T00:53:52Z",
       "evidence": [
-        "logs/api_get_run_RUN-F9CEE6BA24D2.json",
-        "logs/sse_session_RUN-F9CEE6BA24D2.log"
+        "logs/api_get_run_RUN-D21B8821286A.json",
+        "logs/sse_session_RUN-D21B8821286A.log"
       ]
     },
     {
       "id": "FR-010-AC-2",
       "passed": true,
-      "checked_at": "2025-09-17T09:04:33Z",
+      "checked_at": "2025-09-18T00:53:52Z",
       "evidence": [
         "ui/dashboard.html",
-        "logs/api_get_artifacts_RUN-F9CEE6BA24D2.json"
+        "logs/api_get_artifacts_RUN-D21B8821286A.json"
       ]
     }
   ]

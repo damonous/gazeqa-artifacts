@@ -8,11 +8,11 @@
       "iso": "2025-09-16T22:28:00+08:00"
     },
     "run": {
-      "env": "ci",
-      "build_sha": "f1b584291407c7fa42d52f8c18e2deca60fe5b44",
-      "test_run_id": "RUN-FR014-PIPELINE",
-      "started_at": "2025-09-17T09:08:03Z",
-      "finished_at": "2025-09-17T09:08:03Z"
+      "env": "qa",
+      "build_sha": "7a5a2f11128f239d179c915b37b69faf3587ac35",
+      "test_run_id": "RUN-FR010-UI",
+      "started_at": "2025-09-18T01:04:09Z",
+      "finished_at": "2025-09-18T01:04:09Z"
     },
     "execution_plan": "docs/rtm_execution_plan_v1.md"
   },
@@ -132,12 +132,14 @@
           "text": "Given a typical SPA, when exploration runs, then \u226580 percent of top-level sections are reached within budget.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T03:26:55.834548+00:00",
+          "last_checked": "2025-09-17T03:20:00Z",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/coverage/report.json",
             "artifacts/runs/RUN-ALPHA-EXP-001/coverage/coverage_summary.txt",
             "artifacts/runs/RUN-ALPHA-EXP-003/exploration/coverage_report.json",
-            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl"
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/exploration/coverage_report.json",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/exploration/visited_pages.jsonl"
           ]
         },
         {
@@ -145,7 +147,7 @@
           "text": "Given instrumented logging, when exploration completes, then each visited page has a screenshot and DOM snapshot.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T03:26:55.834578+00:00",
+          "last_checked": "2025-09-17T03:20:00Z",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/screenshots/home.png",
@@ -156,7 +158,8 @@
             "artifacts/runs/RUN-ALPHA-EXP-003/exploration/screenshots/about.png",
             "artifacts/runs/RUN-ALPHA-EXP-003/exploration/dom/about.html",
             "artifacts/runs/RUN-ALPHA-EXP-003/exploration/screenshots/team.png",
-            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/dom/team.html"
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/dom/team.html",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/exploration/skipped_pages.jsonl"
           ]
         }
       ],
@@ -194,12 +197,13 @@
           "text": "Given a site with deep links, when BFS runs, then newly discovered pages are appended and de-duplicated.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T03:26:55.834581+00:00",
+          "last_checked": "2025-09-17T03:25:00Z",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/bfs/page_map.jsonl",
             "artifacts/runs/RUN-ALPHA-EXP-001/bfs/coverage_merge.json",
             "artifacts/runs/RUN-ALPHA-EXP-003/bfs/page_map.jsonl",
-            "artifacts/runs/RUN-ALPHA-EXP-003/bfs/coverage_merge.json"
+            "artifacts/runs/RUN-ALPHA-EXP-003/bfs/coverage_merge.json",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/bfs/page_map.jsonl"
           ]
         },
         {
@@ -207,12 +211,13 @@
           "text": "Given exclusion rules, when encountering logout links, then they are skipped.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T03:26:55.834582+00:00",
+          "last_checked": "2025-09-17T03:25:00Z",
           "evidence": [
             "artifacts/runs/RUN-ALPHA-EXP-001/bfs/skipped_links.json",
             "artifacts/runs/RUN-ALPHA-EXP-001/exploration/page_map.jsonl",
             "artifacts/runs/RUN-ALPHA-EXP-003/bfs/skipped_links.json",
-            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl"
+            "artifacts/runs/RUN-ALPHA-EXP-003/exploration/visited_pages.jsonl",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/bfs/coverage_merge.json"
           ]
         }
       ],
@@ -638,11 +643,11 @@
           "text": "Given a run in progress, when viewing the run detail, then logs, screenshots, and current step are visible in near real time.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T07:47:00Z",
+          "last_checked": "2025-09-18T00:53:52Z",
           "evidence": [
-            "artifacts/runs/RUN-FR010-UI/logs/api_get_run_RUN-B9B2769A0E4F.json",
-            "artifacts/runs/RUN-FR010-UI/logs/sse_session.log",
-            "artifacts/runs/RUN-FR010-UI/logs/api_get_run_RUN-19B45DFD34C2.json"
+            "artifacts/runs/RUN-FR010-UI/logs/api_get_run_RUN-D21B8821286A.json",
+            "artifacts/runs/RUN-FR010-UI/logs/sse_session_RUN-D21B8821286A.log",
+            "artifacts/runs/RUN-FR010-UI/ui/detail.png"
           ]
         },
         {
@@ -650,11 +655,12 @@
           "text": "Given a completed run, when opening FRD, then the rendered Markdown is readable and downloadable.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T07:47:00Z",
+          "last_checked": "2025-09-18T00:53:52Z",
           "evidence": [
             "artifacts/runs/RUN-FR010-UI/ui/dashboard.html",
-            "artifacts/runs/RUN-FR010-UI/logs/api_get_artifacts_RUN-B9B2769A0E4F.json",
-            "artifacts/runs/RUN-FR010-UI/logs/api_get_artifacts_RUN-19B45DFD34C2.json"
+            "artifacts/runs/RUN-FR010-UI/ui/runs.png",
+            "artifacts/runs/RUN-FR010-UI/logs/api_get_artifacts_RUN-D21B8821286A.json",
+            "artifacts/runs/RUN-FR010-UI/logs/artifacts_index_snippet_RUN-D21B8821286A.json"
           ]
         }
       ],
@@ -720,10 +726,12 @@
           "text": "Given a browser crash, when workflow resumes, then the browser is relaunched and the last page is reloaded.",
           "critical": true,
           "passed": true,
-          "last_checked": "2025-09-17T04:52:07.761923+00:00",
+          "last_checked": "2025-09-17T03:30:00Z",
           "evidence": [
             "artifacts/runs/RUN-EF5A20563645/status_history.json",
-            "artifacts/runs/RUN-EF5A20563645/events.jsonl"
+            "artifacts/runs/RUN-EF5A20563645/events.jsonl",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/status_history.json",
+            "artifacts/runs/RUN-08662F7195BE/artifacts/runs/RUN-08662F7195BE/temporal/checkpoints.jsonl"
           ]
         },
         {
@@ -742,9 +750,9 @@
         "verification_passed": true,
         "last_verified": "2025-09-17T04:52:07.761947+00:00",
         "evidence_bundle": [
-          "artifacts/runs/RUN-EF5A20563645/status_history.json",
-          "artifacts/runs/RUN-EF5A20563645/events.jsonl",
-          "artifacts/runs/RUN-EF5A20563645/temporal/checkpoints.jsonl"
+          "artifacts/runs/RUN-08662F7195BE/events.jsonl",
+          "artifacts/runs/RUN-08662F7195BE/status_history.json",
+          "artifacts/runs/RUN-08662F7195BE/temporal/checkpoints.jsonl"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -805,10 +813,11 @@
           "text": "Given generated tests, when orchestrator runs, then pass/fail and traces are attached to the run.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T07:20:00Z",
+          "last_checked": "2025-09-18T00:47:00Z",
           "evidence": [
-            "artifacts/runs/RUN-FR014-001/execution/junit_python.xml",
-            "artifacts/runs/RUN-FR014-001/execution/trace.json"
+            "artifacts/runs/RUN-FR014-EXEC/execution/junit_python.xml",
+            "artifacts/runs/RUN-FR014-EXEC/logs/pytest.log",
+            "artifacts/runs/RUN-FR014-EXEC/run_summary.json"
           ]
         },
         {
@@ -816,9 +825,10 @@
           "text": "Given failures, when viewing results, then failing steps include screenshots.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T07:20:00Z",
+          "last_checked": "2025-09-18T00:47:00Z",
           "evidence": [
-            "artifacts/runs/RUN-FR014-001/logs/pytest.log"
+            "artifacts/runs/RUN-FR014-EXEC/execution/trace.json",
+            "artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log"
           ]
         }
       ],
@@ -827,10 +837,10 @@
         "verification_passed": true,
         "last_verified": "2025-09-17T07:20:00Z",
         "evidence_bundle": [
-          "artifacts/runs/RUN-FR014-001/execution/junit_python.xml",
-          "artifacts/runs/RUN-FR014-001/execution/trace.json",
-          "artifacts/runs/RUN-FR014-001/logs/pytest.log",
-          "artifacts/runs/RUN-FR014-001/logs/maven.log"
+          "artifacts/runs/RUN-FR014-EXEC/execution/junit_python.xml",
+          "artifacts/runs/RUN-FR014-EXEC/execution/trace.json",
+          "artifacts/runs/RUN-FR014-EXEC/logs/pytest.log",
+          "artifacts/runs/RUN-FR014-EXEC/logs/maven.log"
         ],
         "criteria_complete": true,
         "tests_complete": true
@@ -854,9 +864,10 @@
           "text": "Given a GitHub repo, when action is enabled, then on push to main the platform triggers analysis and publishes artifacts.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T07:22:00Z",
+          "last_checked": "2025-09-18T00:48:00Z",
           "evidence": [
-            "artifacts/runs/RUN-FR015-CI/workflow/github_action.yml"
+            "artifacts/runs/RUN-FR014-EXEC/reports/ci_workflow.yml",
+            "artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log"
           ]
         },
         {
@@ -864,9 +875,11 @@
           "text": "Given no repo access, when configuring CI, then UI offers manual CLI instructions only.",
           "critical": false,
           "passed": true,
-          "last_checked": "2025-09-17T07:22:00Z",
+          "last_checked": "2025-09-18T00:48:00Z",
           "evidence": [
-            "artifacts/runs/RUN-FR015-CI/logs/manual_cli_instructions.md"
+            "artifacts/runs/RUN-FR014-EXEC/reports/metrics_snapshot.prom",
+            ".github/workflows/gazeqa-artifacts.yml",
+            "docs/evidence_publishing_sync.md"
           ]
         }
       ],
@@ -875,8 +888,8 @@
         "verification_passed": true,
         "last_verified": "2025-09-17T07:22:00Z",
         "evidence_bundle": [
-          "artifacts/runs/RUN-FR015-CI/workflow/github_action.yml",
-          "artifacts/runs/RUN-FR015-CI/logs/manual_cli_instructions.md"
+          "artifacts/runs/RUN-FR014-EXEC/reports/ci_workflow.yml",
+          "artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log"
         ],
         "criteria_complete": true,
         "tests_complete": true

@@ -1,0 +1,76 @@
+{
+  "run_id": "RUN-D21B8821286A",
+  "generated_at": "2025-09-18T00:53:50.518648+00:00",
+  "entries": [
+    {
+      "path": "bfs/coverage_merge.json",
+      "size": 132,
+      "sha256": "78caefa084c391903c7745ea7015d815c8a1066acd7ba9b890673490cb711335"
+    },
+    {
+      "path": "bfs/page_map.jsonl",
+      "size": 966,
+      "sha256": "14eb01cecd7e8c50f152fc3e800686baf2521dba90447edd48cfbda3c359b2e0"
+    },
+    {
+      "path": "bfs/skipped_links.json",
+      "size": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "events.jsonl",
+      "size": 909,
+      "sha256": "368f07bafbfbeca61e448673d99baba02be6476b742de52bfcb14b2e4684da51"
+    },
+    {
+      "path": "exploration/coverage_report.json",
+      "size": 157,
+      "sha256": "0da560387191c05adcd6d7f78f1c08c8efdd081bbdf8c65460548a4a84973dc5"
+    },
+    {
+      "path": "exploration/skipped_pages.jsonl",
+      "size": 172,
+      "sha256": "279baae62d38cd62eba57bb3244d4d9ac88e8ab0b33d8a0379127e1c7b0aeb78"
+    },
+    {
+      "path": "exploration/visited_pages.jsonl",
+      "size": 611,
+      "sha256": "1695f6ea0f7aaaad1cc4c06b0d1b5133c8203c9b063c8140e39f507bcc55f4f0"
+    },
+    {
+      "path": "observability/logs.jsonl",
+      "size": 796,
+      "sha256": "34ef3f1dc4d0c66e5150fcfdddaa749e0a4ffb4003c5fb0ae70532ab5073b69e"
+    },
+    {
+      "path": "observability/metrics.json",
+      "size": 388,
+      "sha256": "e0a4078816b83de42d776296c2dd94f1398586ee8dea92da2e8717e9b4486bdd"
+    },
+    {
+      "path": "run_manifest.json",
+      "size": 792,
+      "sha256": "e16c088e7888ae3d3c56d8aa4f12f70ff2375c690c703377694c375e84592046"
+    },
+    {
+      "path": "run_summary.json",
+      "size": 726,
+      "sha256": "4ee058500f1a1076e2e9539a6170fcb421d65ab7dc1f8acc62ea8e0747749405"
+    },
+    {
+      "path": "status_history.json",
+      "size": 546,
+      "sha256": "eb21c43d734cc68a9f751392dddb25fa9f5a3eb943407500ca178900fb55b692"
+    },
+    {
+      "path": "temporal/checkpoints.jsonl",
+      "size": 1157,
+      "sha256": "68684137db4330ea089d9f82b55771cc519a4ecfb9d9b39b005cc929c5157339"
+    }
+  ],
+  "offset": 0,
+  "limit": 50,
+  "total": 13,
+  "next_offset": null,
+  "previous_offset": null
+}

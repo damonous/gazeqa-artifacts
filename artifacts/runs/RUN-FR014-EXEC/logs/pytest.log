@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/rbrooks/code/gazeqa-cli-agents
+configfile: pyproject.toml
+plugins: asyncio-1.1.0, anyio-4.10.0
+asyncio: mode=Mode.STRICT, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 9 items
+
+artifacts/runs/RUN-FR014-PIPELINE/tests/python/test_generated_suite.py . [ 11%]
+........                                                                 [ 33%]
+
+- generated xml file: /home/rbrooks/code/gazeqa-cli-agents/artifacts/runs/RUN-FR014-EXEC/execution/junit_python.xml -
+============================== 9 passed in 0.03s ===============================

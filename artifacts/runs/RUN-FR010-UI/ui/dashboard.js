@@ -7,6 +7,7 @@ const refreshArtifactsBtn = document.getElementById('refresh-artifacts');
 const configForm = document.getElementById('config-form');
 const apiBaseInput = document.getElementById('api-base');
 const apiTokenInput = document.getElementById('api-token');
+const statusMessage = document.getElementById('ui-status');
 
 let activeRunId = null;
 let eventSource = null;
@@ -32,6 +33,14 @@ const apiConfig = {
   base: initialBase,
   token: storedToken || urlParams.get('token') || '',
 };
+
+function setStatus(message, variant = 'info') {
+  if (!statusMessage) {
+    return;
+  }
+  statusMessage.textContent = message;
+  statusMessage.dataset.variant = variant;
+}
 
 apiBaseInput.value = apiConfig.base;
 if (apiConfig.token) {
@@ -163,6 +172,9 @@ async function selectRun(runId) {
     button.classList.toggle('active', button.textContent === runId);
   });
   runsList.setAttribute('aria-activedescendant', `run-${runId}`);
+  runSummary.setAttribute('aria-busy', 'true');
+  artifactList.setAttribute('aria-busy', 'true');
+  setStatus(`Loading run ${runId}…`);
   try {
     const manifest = await fetchJson(`/runs/${encodeURIComponent(runId)}`);
     renderSummary(manifest);
@@ -172,20 +184,32 @@ async function selectRun(runId) {
     const events = await fetchJson(`/runs/${encodeURIComponent(runId)}/events`);
     (events.events || []).forEach(appendLog);
     subscribeToEvents(runId);
+    setStatus(`Showing run ${runId}`);
   } catch (error) {
     console.error('Failed to load run', error);
+    setStatus(`Failed to load run ${runId}`, 'error');
+  } finally {
+    runSummary.removeAttribute('aria-busy');
+    artifactList.removeAttribute('aria-busy');
   }
 }
 
 async function refreshRuns() {
+  runsList.setAttribute('aria-busy', 'true');
+  setStatus('Loading recent runs…');
   try {
     const payload = await fetchJson('/runs?offset=0&limit=50');
     renderRuns(payload.runs);
     if (!activeRunId && payload.runs.length) {
       await selectRun(payload.runs[payload.runs.length - 1]);
+    } else {
+      setStatus('Runs refreshed');
     }
   } catch (error) {
     console.error('Failed to refresh runs', error);
+    setStatus('Failed to refresh runs', 'error');
+  } finally {
+    runsList.removeAttribute('aria-busy');
   }
 }
 

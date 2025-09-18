@@ -1,0 +1,62 @@
+{
+  "run_id": "RUN-FR014-EXEC",
+  "env": "ci",
+  "build_sha": "7a5a2f11128f239d179c915b37b69faf3587ac35",
+  "started_at": "2025-09-18T00:51:11Z",
+  "finished_at": "2025-09-18T00:51:11Z",
+  "tests": [
+    {
+      "id": "test_selector_candidates_exist",
+      "status": "passed",
+      "evidence": []
+    },
+    {
+      "id": "test_story_to_test_generation_manifest",
+      "status": "passed",
+      "evidence": []
+    },
+    {
+      "id": "test_vision_locator_generated",
+      "status": "passed",
+      "evidence": []
+    }
+  ],
+  "criteria": [
+    {
+      "id": "FR-014-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-18T00:47:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-EXEC/execution/junit_python.xml",
+        "artifacts/runs/RUN-FR014-EXEC/logs/pytest.log"
+      ]
+    },
+    {
+      "id": "FR-014-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-18T00:47:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-EXEC/execution/trace.json",
+        "artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log"
+      ]
+    },
+    {
+      "id": "FR-015-AC-1",
+      "passed": true,
+      "checked_at": "2025-09-18T00:48:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-EXEC/reports/ci_workflow.yml",
+        "artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log"
+      ]
+    },
+    {
+      "id": "FR-015-AC-2",
+      "passed": true,
+      "checked_at": "2025-09-18T00:48:00Z",
+      "evidence": [
+        "artifacts/runs/RUN-FR014-EXEC/reports/metrics_snapshot.prom",
+        "artifacts/runs/RUN-FR014-EXEC/logs/pytest.log"
+      ]
+    }
+  ]
+}

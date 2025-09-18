@@ -385,7 +385,7 @@ def serve(
     server.workflow_executor = WorkflowExecutor(workflow)  # type: ignore[attr-defined]
     ui_path = Path(ui_root)
     if not ui_path.exists():
-        fallback = Path("lovable")
+        fallback = Path("webui")
         if fallback.exists():
             ui_path = fallback
     ui_path.mkdir(parents=True, exist_ok=True)

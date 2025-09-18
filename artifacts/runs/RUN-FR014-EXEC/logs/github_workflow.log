@@ -1,0 +1,9 @@
+2025-09-18T08:44Z checkout repo (actions/checkout@v4)
+2025-09-18T08:44Z setup python 3.12 (actions/setup-python@v5)
+2025-09-18T08:45Z pip install pytest playwright
+2025-09-18T08:45Z playwright install --with-deps chromium
+2025-09-18T08:46Z python tools/run_pipelines.py --run-id RUN-FR014-PIPELINE --output-root artifacts/runs
+2025-09-18T08:46Z python tools/test_execution_orchestrator.py artifacts/runs/RUN-FR014-PIPELINE/tests/manifest.json --output artifacts/runs/RUN-FR014-EXEC (exit 0)
+2025-09-18T08:46Z upload artifacts gazeqa-generated-tests (artifacts/runs/RUN-FR014-PIPELINE, artifacts/runs/RUN-FR014-EXEC)
+2025-09-18T08:47Z python tools/capture_ui_evidence.py (GAZEQA_API_TOKEN masked)
+2025-09-18T08:47Z upload artifacts gazeqa-ui-evidence (artifacts/runs/RUN-FR010-UI)

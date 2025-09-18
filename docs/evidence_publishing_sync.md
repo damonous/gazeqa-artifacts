@@ -18,10 +18,14 @@
 3. **Checklist update** (responsible agent)
    - Execute `python3 docs/checklist_autoupdate.py artifacts/<date>/<run-id>/run_summary.json --evidence-root artifacts/<date>/<run-id>`.
    - Commit or upload updated `docs/gaze_qa_checklist_v_4.json` via CI artifact.
-4. **Dashboard export** (Codex agent)
+4. **UI evidence capture (FR-010)**
+   - Run `python3 tools/capture_ui_evidence.py` (requires `GAZEQA_API_TOKEN`) to spin up the `webui/` Lovable dashboard against the live API.
+   - Outputs stored under `artifacts/runs/RUN-FR010-UI/`:
+     - `ui/runs.png` (run list) and `ui/detail.png` (detail pane) screenshots.
+     - `ui/dashboard.png` full-page capture and `logs/sse_session_<run>.log` SSE transcript with `?token=` auth.
+     - `logs/artifacts_index_snippet_<run>.json` capturing the artifacts index excerpt for FR-009 evidence.
+5. **Metrics export / dashboards** (Codex agent)
    - Ensure metrics for the run are tagged with `run_id`; dashboards referenced in `docs/observability_dashboard_plan.md` will ingest data automatically.
-
-4. **Metrics export** (agent executing run)
    - Run `python3 tools/run_summary_to_metrics.py artifacts/<date>/<run-id>/run_summary.json --checklist docs/gaze_qa_checklist_v_4.json --observability artifacts/<date>/<run-id>/observability/metrics.json --output metrics/<run-id>.prom`.
    - Upload `.prom` file via CI artifact or expose through Prometheus textfile collector so dashboards receive updated gauges.
 
@@ -46,5 +50,14 @@
 Following this process keeps the RTM checklist synchronized with live evidence and supports rapid triage of regressions.
 
 - API responses (`GET /runs`, `GET /runs/<id>`, `GET /runs/<id>/artifacts`) should be captured for checklist updates covering FR-009 tests.
-- Web UI: capture screenshots of run list/detail pages and note SSE status updates (FR-010 evidence).
+- Web UI: `tools/capture_ui_evidence.py` now captures run list/detail screenshots, SSE transcripts, and an artifacts index snippet for FR-010 and FR-009 coverage.
 - Reliability runs store checkpoints under `temporal/checkpoints.jsonl` and status history via API (`POST /runs/{id}/status`) for FR-012 evidence.
+
+## FR-015 CI Workflow Notes
+- GitHub Actions workflow `.github/workflows/gazeqa-artifacts.yml` executes `tools/run_pipelines.py`, runs the orchestrator (`tools/test_execution_orchestrator.py`), and collects UI evidence.
+- Required secrets: `GAZEQA_API_TOKEN` (Bearer token for API/UI), optional storage credentials for artifact buckets when publishing to external stores.
+- Artifacts published by the workflow:
+  - `gazeqa-generated-tests`: generated selectors/tests and orchestrator execution outputs.
+  - `gazeqa-junit`: PyTest JUnit XML for downstream reporting.
+  - `gazeqa-ui-evidence`: Lovable dashboard captures and SSE transcripts.
+- Workflow execution trace stored at `artifacts/runs/RUN-FR014-EXEC/logs/github_workflow.log` and checklist evidence references `reports/ci_workflow.yml` + `reports/metrics_snapshot.prom` for FR-015 acceptance criteria.

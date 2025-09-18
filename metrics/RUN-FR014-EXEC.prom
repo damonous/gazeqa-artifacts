@@ -1,0 +1,52 @@
+# HELP gazeqa_tests_total Total RTM tests reported by run summary
+# TYPE gazeqa_tests_total gauge
+gazeqa_tests_total{env="ci",run_id="RUN-FR014-EXEC"} 3.0
+# HELP gazeqa_tests_passed Passed RTM tests for run
+# TYPE gazeqa_tests_passed gauge
+gazeqa_tests_passed{env="ci",run_id="RUN-FR014-EXEC"} 3.0
+# HELP gazeqa_tests_failed Failed RTM tests for run
+# TYPE gazeqa_tests_failed gauge
+gazeqa_tests_failed{env="ci",run_id="RUN-FR014-EXEC"} 0.0
+# HELP gazeqa_criteria_total Acceptance criteria evaluated in run summary
+# TYPE gazeqa_criteria_total gauge
+gazeqa_criteria_total{env="ci",run_id="RUN-FR014-EXEC"} 4.0
+# HELP gazeqa_criteria_passed Acceptance criteria passed in run summary
+# TYPE gazeqa_criteria_passed gauge
+gazeqa_criteria_passed{env="ci",run_id="RUN-FR014-EXEC"} 4.0
+# HELP gazeqa_requirements_total Checklist summary field requirements_total
+# TYPE gazeqa_requirements_total gauge
+gazeqa_requirements_total{env="ci"} 17.0
+# HELP gazeqa_requirements_verified Checklist summary field requirements_verified
+# TYPE gazeqa_requirements_verified gauge
+gazeqa_requirements_verified{env="ci"} 14.0
+# HELP gazeqa_checklist_criteria_total Checklist summary field criteria_total
+# TYPE gazeqa_checklist_criteria_total gauge
+gazeqa_checklist_criteria_total{env="ci"} 34.0
+# HELP gazeqa_checklist_criteria_passed Checklist summary field criteria_passed
+# TYPE gazeqa_checklist_criteria_passed gauge
+gazeqa_checklist_criteria_passed{env="ci"} 28.0
+# HELP gazeqa_auth_success Authentication success indicator (1=success)
+# TYPE gazeqa_auth_success gauge
+gazeqa_auth_success{env="ci",run_id="RUN-FR014-EXEC",stage="cua"} 1.0
+# HELP gazeqa_exploration_coverage_percent Exploration coverage percent
+# TYPE gazeqa_exploration_coverage_percent gauge
+gazeqa_exploration_coverage_percent{env="ci",run_id="RUN-FR014-EXEC"} 0.92
+# HELP gazeqa_exploration_visited_total Exploration visited pages
+# TYPE gazeqa_exploration_visited_total gauge
+gazeqa_exploration_visited_total{env="ci",run_id="RUN-FR014-EXEC"} 5.0
+# HELP gazeqa_exploration_skipped_total Exploration skipped pages
+# TYPE gazeqa_exploration_skipped_total gauge
+gazeqa_exploration_skipped_total{env="ci",run_id="RUN-FR014-EXEC"} 1.0
+# HELP gazeqa_crawl_visited_total Crawl visited nodes
+# TYPE gazeqa_crawl_visited_total gauge
+gazeqa_crawl_visited_total{env="ci",run_id="RUN-FR014-EXEC"} 5.0
+# HELP gazeqa_crawl_skipped_total Crawl skipped nodes
+# TYPE gazeqa_crawl_skipped_total gauge
+gazeqa_crawl_skipped_total{env="ci",run_id="RUN-FR014-EXEC"} 2.0
+# HELP gazeqa_crawl_health_ratio Crawl health ratio (visited / total)
+# TYPE gazeqa_crawl_health_ratio gauge
+gazeqa_crawl_health_ratio{env="ci",run_id="RUN-FR014-EXEC"} 0.7143
+# HELP gazeqa_guardrail_events_total Guardrail events recorded during run
+# TYPE gazeqa_guardrail_events_total gauge
+gazeqa_guardrail_events_total{env="ci",phase="exploration",run_id="RUN-FR014-EXEC",type="rate_limit"} 1.0
+gazeqa_guardrail_events_total{env="ci",phase="crawl",run_id="RUN-FR014-EXEC",type="blocklist"} 2.0

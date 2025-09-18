@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "pytest",
+      "--junitxml",
+      "artifacts/runs/RUN-FR014-EXEC/execution/junit_python.xml",
+      "artifacts/runs/RUN-FR014-PIPELINE/tests/python/test_generated_suite.py",
+      "artifacts/runs/RUN-FR014-PIPELINE/tests/python/test_generated_suite.py",
+      "artifacts/runs/RUN-FR014-PIPELINE/tests/python/test_generated_suite.py"
+    ],
+    "cwd": "/home/rbrooks/code/gazeqa-cli-agents",
+    "exit_code": 0,
+    "junit": "execution/junit_python.xml"
+  },
+  {
+    "command": [
+      "mvn",
+      "-B",
+      "-q",
+      "test"
+    ],
+    "cwd": "artifacts/runs/RUN-FR014-PIPELINE/tests/java",
+    "exit_code": null,
+    "skipped": "mvn not available"
+  }
+]

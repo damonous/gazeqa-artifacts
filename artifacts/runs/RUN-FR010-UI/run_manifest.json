@@ -1,19 +1,22 @@
 {
   "run_id": "RUN-FR010-UI",
-  "generated_at": "2025-09-17T09:04:33Z",
+  "generated_at": "2025-09-18T00:53:52Z",
   "artifacts": {
     "ui": {
       "dashboard": "ui/dashboard.html",
       "script": "ui/dashboard.js",
       "styles": "ui/styles.css",
+      "run_list": "ui/runs.png",
+      "run_detail": "ui/detail.png",
       "screenshot": "ui/dashboard.png"
     },
     "logs": {
       "accessibility": "logs/accessibility_report.txt",
       "api_get_runs": "logs/api_get_runs.json",
-      "api_get_run": "logs/api_get_run_RUN-F9CEE6BA24D2.json",
-      "api_get_artifacts": "logs/api_get_artifacts_RUN-F9CEE6BA24D2.json",
-      "sse_session": "logs/sse_session_RUN-F9CEE6BA24D2.log"
+      "api_get_run": "logs/api_get_run_RUN-D21B8821286A.json",
+      "api_get_artifacts": "logs/api_get_artifacts_RUN-D21B8821286A.json",
+      "sse_session": "logs/sse_session_RUN-D21B8821286A.log",
+      "artifacts_index_snippet": "logs/artifacts_index_snippet_RUN-D21B8821286A.json"
     },
     "reports": {
       "criteria": "reports/criteria.json"

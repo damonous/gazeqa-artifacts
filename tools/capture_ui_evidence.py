@@ -16,12 +16,14 @@ from typing import Dict, List
 from gazeqa.api import serve
 
 OUTPUT_RUN = Path("artifacts/runs/RUN-FR010-UI")
-UI_SOURCE_DIR = Path("lovable")
+UI_SOURCE_DIR = Path("webui")
 API_HOST = "127.0.0.1"
 API_PORT = 8056
 API_BASE = f"http://{API_HOST}:{API_PORT}"
 API_TOKEN = os.getenv("GAZEQA_API_TOKEN", "")
 UI_SCREENSHOT = OUTPUT_RUN / "ui" / "dashboard.png"
+RUN_LIST_SCREENSHOT = OUTPUT_RUN / "ui" / "runs.png"
+RUN_DETAIL_SCREENSHOT = OUTPUT_RUN / "ui" / "detail.png"
 
 try:  # pragma: no cover - optional dependency
     from playwright.sync_api import sync_playwright
@@ -120,7 +122,7 @@ def capture_sse_snapshot(run_id: str, output: Path, max_events: int = 12) -> Non
         output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def capture_dashboard_screenshot() -> None:
+def capture_dashboard_views(run_id: str) -> None:
     if sync_playwright is None:  # pragma: no cover - optional dependency
         note = OUTPUT_RUN / "logs" / "screenshot_unavailable.txt"
         note.parent.mkdir(parents=True, exist_ok=True)
@@ -140,8 +142,20 @@ def capture_dashboard_screenshot() -> None:
         context = browser.new_context()
         page = context.new_page()
         page.goto(dashboard_url, wait_until="networkidle", timeout=15000)
-        page.wait_for_timeout(1000)
+        page.wait_for_selector('nav[aria-label="Runs"] button', timeout=15000)
         UI_SCREENSHOT.parent.mkdir(parents=True, exist_ok=True)
+        RUN_LIST_SCREENSHOT.parent.mkdir(parents=True, exist_ok=True)
+        RUN_DETAIL_SCREENSHOT.parent.mkdir(parents=True, exist_ok=True)
+
+        runs_nav = page.locator('nav[aria-label="Runs"]')
+        runs_nav.screenshot(path=str(RUN_LIST_SCREENSHOT))
+
+        # Focus on the requested run to ensure detail pane evidence.
+        page.locator(f'nav[aria-label="Runs"] button:has-text("{run_id}")').first.click()
+        page.wait_for_timeout(500)
+
+        detail_section = page.locator('.run-details')
+        detail_section.screenshot(path=str(RUN_DETAIL_SCREENSHOT))
         page.screenshot(path=str(UI_SCREENSHOT), full_page=True)
         browser.close()
 
@@ -181,8 +195,18 @@ def build_manifest(api_calls: Dict[str, Path], sse_log: Path, accessibility_resu
         },
         "accessibility_checks": accessibility_result,
     }
+    if RUN_LIST_SCREENSHOT.exists():
+        manifest["artifacts"]["ui"]["run_list"] = "ui/runs.png"
+    if RUN_DETAIL_SCREENSHOT.exists():
+        manifest["artifacts"]["ui"]["run_detail"] = "ui/detail.png"
     if UI_SCREENSHOT.exists():
         manifest["artifacts"]["ui"]["screenshot"] = "ui/dashboard.png"
+    snippet_files = sorted(
+        (OUTPUT_RUN / "logs").glob("artifacts_index_snippet_*.json"),
+        key=lambda path: path.stat().st_mtime,
+    )
+    if snippet_files:
+        manifest["artifacts"]["logs"]["artifacts_index_snippet"] = str(snippet_files[-1].relative_to(OUTPUT_RUN))
     (OUTPUT_RUN / "run_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     artifacts = []
@@ -250,7 +274,18 @@ def main() -> None:
         record_api_call(f"/runs/{run_id}", api_logs['run_detail'])
         record_api_call(f"/runs/{run_id}/artifacts", api_logs['artifacts'])
 
-        capture_dashboard_screenshot()
+        capture_dashboard_views(run_id)
+
+        index_path = Path('artifacts') / 'runs' / run_id / 'artifacts' / 'index.json'
+        if index_path.exists():
+            data = json.loads(index_path.read_text(encoding="utf-8"))
+            snippet = {
+                "run_id": run_id,
+                "generated_at": data.get("generated_at"),
+                "artifacts": data.get("artifacts", [])[:10],
+            }
+            snippet_path = OUTPUT_RUN / "logs" / f"artifacts_index_snippet_{run_id}.json"
+            snippet_path.write_text(json.dumps(snippet, indent=2) + "\n", encoding="utf-8")
 
         build_manifest(api_logs, sse_log, accessibility_result)
         write_checklist_stub(api_logs, sse_log)

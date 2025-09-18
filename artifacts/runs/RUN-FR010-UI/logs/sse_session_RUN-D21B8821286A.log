@@ -1,0 +1,18 @@
+event: status
+data: {"status": "Pending", "timestamp": "2025-09-18T00:53:39.478908+00:00"}
+
+event: status
+data: {"status": "Running", "timestamp": "2025-09-18T00:53:39.478919+00:00"}
+
+event: status
+data: {"status": "AuthSkipped", "timestamp": "2025-09-18T00:53:40.075508+00:00"}
+
+event: status
+data: {"status": "ExplorationInProgress", "timestamp": "2025-09-18T00:53:40.076376+00:00"}
+
+event: status
+data: {"status": "CrawlInProgress", "timestamp": "2025-09-18T00:53:40.078724+00:00"}
+
+event: status
+data: {"status": "Completed", "timestamp": "2025-09-18T00:53:40.081904+00:00"}
+

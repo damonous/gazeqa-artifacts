@@ -87,6 +87,8 @@ def orchestrate(manifest_path: Path, output_dir: Path) -> None:
             "exit_code": exit_code,
             "junit": str(junit_path.relative_to(output_dir)),
         })
+        if exit_code != 0:
+            raise RuntimeError(f"Pytest execution failed with exit code {exit_code}")
 
     java_dir = collect_java_project(run_root)
     java_reports_rel = None
@@ -110,6 +112,8 @@ def orchestrate(manifest_path: Path, output_dir: Path) -> None:
             reports_dir = java_dir / "target" / "surefire-reports"
             if reports_dir.exists():
                 java_reports_rel = str(reports_dir.relative_to(Path.cwd()))
+            if exit_code != 0:
+                raise RuntimeError(f"Maven execution failed with exit code {exit_code}")
         else:
             log_path.write_text("Maven binary not found; skipping Java execution.\n", encoding="utf-8")
             trace.append({

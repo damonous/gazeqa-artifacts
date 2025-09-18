@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#run-title">Skip to run details</a>
     <header>
       <h1>GazeQA Run Dashboard</h1>
       <p class="tagline">Monitor automated synthesis runs, download artifacts, and watch live status updates.</p>
@@ -53,6 +54,7 @@
         This prototype Lovable dashboard consumes the local GazeQA API.
         Configure <code>GAZEQA_API_BASE</code> to point at a remote instance.
       </p>
+      <p id="ui-status" class="sr-only" role="status" aria-live="polite"></p>
     </footer>
     <script src="dashboard.js" type="module"></script>
   </body>
